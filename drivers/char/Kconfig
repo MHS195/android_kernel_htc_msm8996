@@ -591,7 +591,11 @@ config TELCLOCK
 config DEVPORT
 	bool "/dev/port character device"
 	depends on ISA || PCI
+<<<<<<< HEAD
 	default n
+=======
+	default y
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	help
 	  Say Y here if you want to support the /dev/port device. The /dev/port
 	  device is similar to /dev/mem, but for I/O ports.

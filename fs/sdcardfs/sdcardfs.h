@@ -73,6 +73,7 @@
 
 #define AID_PACKAGE_INFO  1027
 
+<<<<<<< HEAD
 
 /*
  * Permissions are handled by our permission function.
@@ -88,6 +89,48 @@
 		(x)->i_mode = ((x)->i_mode & S_IFMT) | 0775;\
 	} while (0)
 
+=======
+
+/*
+ * Permissions are handled by our permission function.
+ * We don't want anyone who happens to look at our inode value to prematurely
+ * block access, so store more permissive values. These are probably never
+ * used.
+ */
+#define fixup_tmp_permissions(x)	\
+	do {						\
+		(x)->i_uid = make_kuid(&init_user_ns,	\
+				SDCARDFS_I(x)->data->d_uid);	\
+		(x)->i_gid = make_kgid(&init_user_ns, AID_SDCARD_RW);	\
+		(x)->i_mode = ((x)->i_mode & S_IFMT) | 0775;\
+	} while (0)
+
+/* OVERRIDE_CRED() and REVERT_CRED()
+ *	OVERRIDE_CRED()
+ *		backup original task->cred
+ *		and modifies task->cred->fsuid/fsgid to specified value.
+ *	REVERT_CRED()
+ *		restore original task->cred->fsuid/fsgid.
+ * These two macro should be used in pair, and OVERRIDE_CRED() should be
+ * placed at the beginning of a function, right after variable declaration.
+ */
+#define OVERRIDE_CRED(sdcardfs_sbi, saved_cred, info)		\
+	do {	\
+		saved_cred = override_fsids(sdcardfs_sbi, info->data);	\
+		if (!saved_cred)	\
+			return -ENOMEM;	\
+	} while (0)
+
+#define OVERRIDE_CRED_PTR(sdcardfs_sbi, saved_cred, info)	\
+	do {	\
+		saved_cred = override_fsids(sdcardfs_sbi, info->data);	\
+		if (!saved_cred)	\
+			return ERR_PTR(-ENOMEM);	\
+	} while (0)
+
+#define REVERT_CRED(saved_cred)	revert_fsids(saved_cred)
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* Android 5.0 support */
 
 /* Permission mode for a specific node. Controls how file permissions
@@ -176,7 +219,10 @@ struct sdcardfs_inode_info {
 	struct sdcardfs_inode_data *data;
 
 	/* top folder for ownership */
+<<<<<<< HEAD
 	spinlock_t top_lock;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct sdcardfs_inode_data *top_data;
 
 	struct inode vfs_inode;
@@ -195,6 +241,7 @@ struct sdcardfs_mount_options {
 	gid_t fs_low_gid;
 	userid_t fs_user_id;
 	bool multiuser;
+<<<<<<< HEAD
 	bool gid_derivation;
 	unsigned int reserved_mb;
 	bool nocache;
@@ -205,6 +252,16 @@ struct sdcardfs_vfsmount_options {
 	mode_t mask;
 };
 
+=======
+	unsigned int reserved_mb;
+};
+
+struct sdcardfs_vfsmount_options {
+	gid_t gid;
+	mode_t mask;
+};
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern int parse_options_remount(struct super_block *sb, char *options, int silent,
 		struct sdcardfs_vfsmount_options *vfsopts);
 
@@ -356,12 +413,16 @@ static inline struct sdcardfs_inode_data *data_get(
 static inline struct sdcardfs_inode_data *top_data_get(
 		struct sdcardfs_inode_info *info)
 {
+<<<<<<< HEAD
 	struct sdcardfs_inode_data *top_data;
 
 	spin_lock(&info->top_lock);
 	top_data = data_get(info->top_data);
 	spin_unlock(&info->top_lock);
 	return top_data;
+=======
+	return data_get(info->top_data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 extern void data_release(struct kref *ref);
@@ -383,6 +444,7 @@ static inline void release_own_data(struct sdcardfs_inode_info *info)
 }
 
 static inline void set_top(struct sdcardfs_inode_info *info,
+<<<<<<< HEAD
 			struct sdcardfs_inode_info *top_owner)
 {
 	struct sdcardfs_inode_data *old_top;
@@ -407,6 +469,25 @@ static inline int get_gid(struct vfsmount *mnt,
 	struct sdcardfs_sb_info *sbi = SDCARDFS_SB(sb);
 
 	if (vfsopts->gid == AID_SDCARD_RW && !sbi->options.default_normal)
+=======
+			struct sdcardfs_inode_data *top)
+{
+	struct sdcardfs_inode_data *old_top = info->top_data;
+
+	if (top)
+		data_get(top);
+	info->top_data = top;
+	if (old_top)
+		data_put(old_top);
+}
+
+static inline int get_gid(struct vfsmount *mnt,
+		struct sdcardfs_inode_data *data)
+{
+	struct sdcardfs_vfsmount_options *opts = mnt->data;
+
+	if (opts->gid == AID_SDCARD_RW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* As an optimization, certain trusted system components only run
 		 * as owner but operate across all users. Since we're now handing
 		 * out the sdcard_rw GID only to trusted apps, we're okay relaxing
@@ -415,7 +496,11 @@ static inline int get_gid(struct vfsmount *mnt,
 		 */
 		return AID_SDCARD_RW;
 	else
+<<<<<<< HEAD
 		return multiuser_get_uid(data->userid, vfsopts->gid);
+=======
+		return multiuser_get_uid(data->userid, opts->gid);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static inline int get_mode(struct vfsmount *mnt,
@@ -502,7 +587,12 @@ struct limit_search {
 };
 
 extern void setup_derived_state(struct inode *inode, perm_t perm,
+<<<<<<< HEAD
 			userid_t userid, uid_t uid);
+=======
+		userid_t userid, uid_t uid, bool under_android,
+		struct sdcardfs_inode_data *top);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern void get_derived_permission(struct dentry *parent, struct dentry *dentry);
 extern void get_derived_permission_new(struct dentry *parent, struct dentry *dentry, const struct qstr *name);
 extern void fixup_perms_recursive(struct dentry *dentry, struct limit_search *limit);
@@ -644,7 +734,11 @@ static inline bool str_n_case_eq(const char *s1, const char *s2, size_t len)
 
 static inline bool qstr_case_eq(const struct qstr *q1, const struct qstr *q2)
 {
+<<<<<<< HEAD
 	return q1->len == q2->len && str_n_case_eq(q1->name, q2->name, q2->len);
+=======
+	return q1->len == q2->len && str_case_eq(q1->name, q2->name);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /* */

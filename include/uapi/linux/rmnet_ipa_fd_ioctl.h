@@ -38,7 +38,10 @@
 #define WAN_IOCTL_SET_LAN_CLIENT_INFO        13
 #define WAN_IOCTL_CLEAR_LAN_CLIENT_INFO      14
 #define WAN_IOCTL_SEND_LAN_CLIENT_MSG        15
+<<<<<<< HEAD
 #define WAN_IOCTL_QUERY_TETHER_STATS_ALL  16
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /* User space may not have this defined. */
 #ifndef IFNAMSIZ
@@ -246,8 +249,11 @@ struct wan_ioctl_query_per_client_stats {
 #define WAN_IOC_CLEAR_LAN_CLIENT_INFO _IOWR(WAN_IOC_MAGIC, \
 			WAN_IOCTL_CLEAR_LAN_CLIENT_INFO, \
 			struct wan_ioctl_lan_client_info *)
+<<<<<<< HEAD
 
 #define WAN_IOC_QUERY_TETHER_STATS_ALL _IOWR(WAN_IOC_MAGIC, \
 		WAN_IOCTL_QUERY_TETHER_STATS_ALL, \
 		struct wan_ioctl_query_tether_stats_all *)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif /* _RMNET_IPA_FD_IOCTL_H */

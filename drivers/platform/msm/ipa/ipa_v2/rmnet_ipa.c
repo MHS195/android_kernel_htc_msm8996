@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -2661,6 +2665,11 @@ int rmnet_ipa_query_tethering_stats(struct wan_ioctl_query_tether_stats *data,
 		return -EINVAL;
 	}
 
+	if (data != NULL) {
+		data->upstreamIface[IFNAMSIZ-1] = '\0';
+		data->tetherIface[IFNAMSIZ-1] = '\0';
+	}
+
 	req = kzalloc(sizeof(struct ipa_get_data_stats_req_msg_v01),
 			GFP_KERNEL);
 	if (!req) {
@@ -2684,10 +2693,14 @@ int rmnet_ipa_query_tethering_stats(struct wan_ioctl_query_tether_stats *data,
 		IPAWANDBG("reset the pipe stats\n");
 	} else {
 		/* print tethered-client enum */
+<<<<<<< HEAD
 		if (data == NULL)
 			return -EINVAL;
 		IPAWANDBG_LOW("Tethered-client enum(%d)\n",
 				data->ipa_client);
+=======
+		IPAWANDBG_LOW("Tethered-client enum(%d)\n", data->ipa_client);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	rc = ipa_qmi_get_data_stats(req, resp);

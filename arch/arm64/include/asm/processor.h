@@ -178,6 +178,9 @@ static inline void spin_lock_prefetch(const void *x)
 
 void cpu_enable_pan(void *__unused);
 void cpu_enable_uao(void *__unused);
+<<<<<<< HEAD
 #include <asm-generic/processor.h>
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #endif /* __ASM_PROCESSOR_H */

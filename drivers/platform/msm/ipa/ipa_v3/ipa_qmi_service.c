@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -618,6 +622,7 @@ int ipa3_qmi_filter_request_send(struct ipa_install_fltr_rule_req_msg_v01 *req)
 		req->filter_spec_list_len);
 	}
 
+<<<<<<< HEAD
 	if (req->filter_spec_list_len >= QMI_IPA_MAX_FILTERS_V01) {
 		IPAWANDBG(
 		"IPACM passes the number of filtering rules exceed limit\n");
@@ -651,6 +656,8 @@ int ipa3_qmi_filter_request_send(struct ipa_install_fltr_rule_req_msg_v01 *req)
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	mutex_lock(&ipa3_qmi_lock);
 	if (ipa3_qmi_ctx != NULL) {
 		/* cache the qmi_filter_request */
@@ -690,6 +697,7 @@ int ipa3_qmi_filter_request_ex_send(
 	struct ipa_install_fltr_rule_resp_ex_msg_v01 resp;
 	struct msg_desc req_desc, resp_desc;
 	int rc;
+<<<<<<< HEAD
 	int i;
 
 	/* check if modem up */
@@ -699,6 +707,8 @@ int ipa3_qmi_filter_request_ex_send(
 		IPAWANDBG("modem QMI haven't up yet\n");
 		return -EINVAL;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* check if the filter rules from IPACM is valid */
 	if (req->filter_spec_ex_list_len == 0) {
@@ -708,6 +718,7 @@ int ipa3_qmi_filter_request_ex_send(
 		req->filter_spec_ex_list_len);
 	}
 
+<<<<<<< HEAD
 	if (req->filter_spec_ex_list_len >= QMI_IPA_MAX_FILTERS_EX_V01) {
 		IPAWANDBG(
 		"IPACM pass the number of filtering rules exceed limit\n");
@@ -736,6 +747,8 @@ int ipa3_qmi_filter_request_ex_send(
 			QMI_IPA_FILTER_ACTION_EXCEPTION_V01))
 			return -EINVAL;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	mutex_lock(&ipa3_qmi_lock);
 	if (ipa3_qmi_ctx != NULL) {
 		/* cache the qmi_filter_request */
@@ -934,6 +947,7 @@ int ipa3_qmi_filter_notify_send(
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (req->install_status != IPA_QMI_RESULT_SUCCESS_V01) {
 		IPAWANERR(" UL filter rule for pipe %d install_status = %d\n",
 			req->source_pipe_index, req->install_status);
@@ -960,6 +974,8 @@ int ipa3_qmi_filter_notify_send(
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (req->source_pipe_index == -1) {
 		IPAWANERR("Source pipe index invalid\n");
 		return -EINVAL;

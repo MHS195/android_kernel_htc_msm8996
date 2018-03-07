@@ -3721,8 +3721,14 @@ int ext4_punch_hole(struct inode *inode, loff_t offset, loff_t length)
 		EXT4_BLOCK_SIZE_BITS(sb);
 	stop_block = (offset + length) >> EXT4_BLOCK_SIZE_BITS(sb);
 
+<<<<<<< HEAD
 	/* If there are blocks to remove, do it */
 	if (stop_block > first_block) {
+=======
+	/* If there are no blocks to remove, return now */
+	if (first_block >= stop_block)
+		goto out_stop;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		down_write(&EXT4_I(inode)->i_data_sem);
 		ext4_discard_preallocations(inode);
@@ -4828,10 +4834,21 @@ int ext4_setattr(struct dentry *dentry, struct iattr *attr)
 		 * Truncate pagecache after we've waited for commit
 		 * in data=journal mode to make pages freeable.
 		 */
+<<<<<<< HEAD
 		truncate_pagecache(inode, inode->i_size);
 		if (shrink)
 			ext4_truncate(inode);
 	}
+=======
+			truncate_pagecache(inode, inode->i_size);
+	}
+	/*
+	 * We want to call ext4_truncate() even if attr->ia_size ==
+	 * inode->i_size for cases like truncation of fallocated space
+	 */
+	if (attr->ia_valid & ATTR_SIZE)
+		ext4_truncate(inode);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (!rc) {
 		setattr_copy(inode, attr);

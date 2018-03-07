@@ -36,6 +36,12 @@
 
 #ifdef CONFIG_HTC_FD_MONITOR
 extern int in_fd_list(const int fd, const int mid);
+<<<<<<< HEAD
+=======
+#endif
+#ifdef CONFIG_UCI
+#include <linux/uci/uci.h>
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 
 int do_truncate2(struct vfsmount *mnt, struct dentry *dentry, loff_t length,

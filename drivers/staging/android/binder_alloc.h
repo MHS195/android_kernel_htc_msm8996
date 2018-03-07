@@ -21,9 +21,13 @@
 #include <linux/rtmutex.h>
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/list_lru.h>
 
 extern struct list_lru binder_alloc_lru;
+=======
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 struct binder_transaction;
 
 /**
@@ -50,7 +54,12 @@ struct binder_buffer {
 	unsigned free:1;
 	unsigned allow_user_free:1;
 	unsigned async_transaction:1;
+<<<<<<< HEAD
 	unsigned debug_id:29;
+=======
+	unsigned free_in_progress:1;
+	unsigned debug_id:28;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	struct binder_transaction *transaction;
 
@@ -58,6 +67,7 @@ struct binder_buffer {
 	size_t data_size;
 	size_t offsets_size;
 	size_t extra_buffers_size;
+<<<<<<< HEAD
 	void *data;
 };
 
@@ -71,6 +81,9 @@ struct binder_lru_page {
 	struct list_head lru;
 	struct page *page_ptr;
 	struct binder_alloc *alloc;
+=======
+	uint8_t data[0];
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 /**
@@ -88,10 +101,17 @@ struct binder_lru_page {
  * @allocated_buffers:  rb tree of allocated buffers sorted by address
  * @free_async_space:   VA space available for async buffers. This is
  *                      initialized at mmap time to 1/2 the full VA space
+<<<<<<< HEAD
  * @pages:              array of binder_lru_page
  * @buffer_size:        size of address space specified via mmap
  * @pid:                pid for associated binder_proc (invariant after init)
  * @pages_high:         high watermark of offset in @pages
+=======
+ * @pages:              array of physical page addresses for each
+ *                      page of mmap'd space
+ * @buffer_size:        size of address space specified via mmap
+ * @pid:                pid for associated binder_proc (invariant after init)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * Bookkeeping structure for per-proc address space management for binder
  * buffers. It is normally initialized during binder_init() and binder_mmap()
@@ -100,6 +120,10 @@ struct binder_lru_page {
  */
 struct binder_alloc {
 	struct mutex mutex;
+<<<<<<< HEAD
+=======
+	struct task_struct *tsk;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct vm_area_struct *vma;
 	struct mm_struct *vma_vm_mm;
 	void *buffer;
@@ -108,6 +132,7 @@ struct binder_alloc {
 	struct rb_root free_buffers;
 	struct rb_root allocated_buffers;
 	size_t free_async_space;
+<<<<<<< HEAD
 	struct binder_lru_page *pages;
 	size_t buffer_size;
 	uint32_t buffer_free;
@@ -122,13 +147,24 @@ static inline void binder_selftest_alloc(struct binder_alloc *alloc) {}
 #endif
 enum lru_status binder_alloc_free_page(struct list_head *item,
 				       spinlock_t *lock, void *cb_arg);
+=======
+	struct page **pages;
+	size_t buffer_size;
+	uint32_t buffer_free;
+	int pid;
+};
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
 						  size_t data_size,
 						  size_t offsets_size,
 						  size_t extra_buffers_size,
 						  int is_async);
 extern void binder_alloc_init(struct binder_alloc *alloc);
+<<<<<<< HEAD
 void binder_alloc_shrinker_init(void);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern void binder_alloc_vma_close(struct binder_alloc *alloc);
 extern struct binder_buffer *
 binder_alloc_prepare_to_free(struct binder_alloc *alloc,
@@ -141,8 +177,11 @@ extern void binder_alloc_deferred_release(struct binder_alloc *alloc);
 extern int binder_alloc_get_allocated_count(struct binder_alloc *alloc);
 extern void binder_alloc_print_allocated(struct seq_file *m,
 					 struct binder_alloc *alloc);
+<<<<<<< HEAD
 void binder_alloc_print_pages(struct seq_file *m,
 			      struct binder_alloc *alloc);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /**
  * binder_alloc_get_free_async_space() - get free space available for async

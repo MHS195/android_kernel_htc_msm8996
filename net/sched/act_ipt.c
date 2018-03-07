@@ -45,7 +45,10 @@ static int ipt_init_target(struct xt_entry_target *t, char *table, unsigned int 
 	t->u.kernel.target = target;
 	memset(&par, 0, sizeof(par));
 	par.table     = table;
+<<<<<<< HEAD
 	par.entryinfo = &e;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	par.target    = target;
 	par.targinfo  = t->data;
 	par.hook_mask = hook;

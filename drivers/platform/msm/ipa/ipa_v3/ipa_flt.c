@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1085,7 +1089,11 @@ static int __ipa_validate_flt_rule(const struct ipa_flt_rule *rule,
 			}
 
 			if ((*rt_tbl)->cookie != IPA_RT_TBL_COOKIE) {
+<<<<<<< HEAD
 				IPAERR_RL("RT table cookie is invalid\n");
+=======
+				IPAERR("RT table cookie is invalid\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				goto error;
 			}
 		} else {
@@ -1168,8 +1176,13 @@ static int __ipa_finish_flt_rule_add(struct ipa3_flt_tbl *tbl,
 		entry->rt_tbl->ref_cnt++;
 	id = ipa3_id_alloc(entry);
 	if (id < 0) {
+<<<<<<< HEAD
 		IPAERR_RL("failed to add to tree\n");
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		IPAERR("failed to add to tree\n");
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto ipa_insert_failed;
 	}
 	*rule_hdl = id;
@@ -1524,6 +1537,7 @@ int ipa3_add_flt_rule_after(struct ipa_ioc_add_flt_rule_after *rules)
 	entry = ipa3_id_find(rules->add_after_hdl);
 	if (entry == NULL) {
 		IPAERR_RL("lookup failed\n");
+<<<<<<< HEAD
 		result = -EINVAL;
 		goto bail;
 	}
@@ -1531,6 +1545,8 @@ int ipa3_add_flt_rule_after(struct ipa_ioc_add_flt_rule_after *rules)
 	if (entry->cookie != IPA_FLT_COOKIE) {
 		IPAERR_RL("Invalid cookie value =  %u flt hdl id = %d\n",
 			entry->cookie, rules->add_after_hdl);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		result = -EINVAL;
 		goto bail;
 	}
@@ -1789,14 +1805,22 @@ void ipa3_install_dflt_flt_rules(u32 ipa_ep_idx)
 	tbl = &ipa3_ctx->flt_tbl[ipa_ep_idx][IPA_IP_v4];
 	rule.action = IPA_PASS_TO_EXCEPTION;
 	__ipa_add_flt_rule(tbl, IPA_IP_v4, &rule, true,
+<<<<<<< HEAD
 			&ep->dflt_flt4_rule_hdl, false);
+=======
+			&ep->dflt_flt4_rule_hdl);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa3_ctx->ctrl->ipa3_commit_flt(IPA_IP_v4);
 	tbl->sticky_rear = true;
 
 	tbl = &ipa3_ctx->flt_tbl[ipa_ep_idx][IPA_IP_v6];
 	rule.action = IPA_PASS_TO_EXCEPTION;
 	__ipa_add_flt_rule(tbl, IPA_IP_v6, &rule, true,
+<<<<<<< HEAD
 			&ep->dflt_flt6_rule_hdl, false);
+=======
+			&ep->dflt_flt6_rule_hdl);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa3_ctx->ctrl->ipa3_commit_flt(IPA_IP_v6);
 	tbl->sticky_rear = true;
 	mutex_unlock(&ipa3_ctx->lock);

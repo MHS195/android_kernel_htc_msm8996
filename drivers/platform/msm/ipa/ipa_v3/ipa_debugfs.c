@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -66,11 +70,15 @@ const char *ipa3_event_name[] = {
 	__stringify(ADD_VLAN_IFACE),
 	__stringify(DEL_VLAN_IFACE),
 	__stringify(ADD_L2TP_VLAN_MAPPING),
+<<<<<<< HEAD
 	__stringify(DEL_L2TP_VLAN_MAPPING),
 	__stringify(IPA_QUOTA_REACH),
 	__stringify(IPA_SSR_BEFORE_SHUTDOWN),
 	__stringify(IPA_SSR_AFTER_POWERUP),
 	__stringify(WLAN_FWR_SSR_BEFORE_SHUTDOWN),
+=======
+	__stringify(DEL_L2TP_VLAN_MAPPING)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 const char *ipa3_hdr_l2_type_name[] = {
@@ -517,6 +525,7 @@ static int ipa3_attrib_dump(struct ipa_rule_attrib *attrib,
 	if (attrib->attrib_mask & IPA_FLT_TCP_SYN_L2TP)
 		pr_err("tcp syn l2tp ");
 
+<<<<<<< HEAD
 	if (attrib->attrib_mask & IPA_FLT_L2TP_INNER_IP_TYPE)
 		pr_err("l2tp inner ip type: %d ", attrib->type);
 
@@ -526,6 +535,8 @@ static int ipa3_attrib_dump(struct ipa_rule_attrib *attrib,
 		pr_err("dst_addr:%pI4 dst_addr_mask:%pI4 ", addr, mask);
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	pr_err("\n");
 	return 0;
 }
@@ -1796,7 +1807,11 @@ static ssize_t ipa3_enable_ipc_low(struct file *file,
 					"ipa_low", 0);
 		}
 			if (ipa_ipc_low_buff == NULL)
+<<<<<<< HEAD
 				IPADBG("failed to get logbuf_low\n");
+=======
+				IPAERR("failed to get logbuf_low\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		ipa3_ctx->logbuf_low = ipa_ipc_low_buff;
 	} else {
 		ipa3_ctx->logbuf_low = NULL;

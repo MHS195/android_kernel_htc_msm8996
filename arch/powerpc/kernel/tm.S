@@ -201,6 +201,7 @@ dont_backup_fp:
 
 	std	r11, GPR11(r1)			/* Temporary stash */
 
+<<<<<<< HEAD
 	/*
 	 * Move the saved user r1 to the kernel stack in case PACATMSCRATCH is
 	 * clobbered by an exception once we turn on MSR_RI below.
@@ -215,11 +216,16 @@ dont_backup_fp:
 	GET_SCRATCH0(r11)
 	std	r11, GPR13(r1)
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Reset MSR RI so we can take SLB faults again */
 	li	r11, MSR_RI
 	mtmsrd	r11, 1
 
+<<<<<<< HEAD
 	/* Store the PPR in r11 and reset to decent value */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	mfspr	r11, SPRN_PPR
 	HMT_MEDIUM
 

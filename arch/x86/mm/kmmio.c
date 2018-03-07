@@ -445,7 +445,11 @@ int register_kmmio_probe(struct kmmio_probe *p)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	pte = lookup_address(addr, &l);
+=======
+	pte = lookup_address(p->addr, &l);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!pte) {
 		ret = -EINVAL;
 		goto out;
@@ -535,13 +539,21 @@ void unregister_kmmio_probe(struct kmmio_probe *p)
 	unsigned int l;
 	pte_t *pte;
 
+<<<<<<< HEAD
 	pte = lookup_address(addr, &l);
+=======
+	pte = lookup_address(p->addr, &l);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!pte)
 		return;
 
 	spin_lock_irqsave(&kmmio_lock, flags);
 	while (size < size_lim) {
+<<<<<<< HEAD
 		release_kmmio_fault_page(addr + size, &release_list);
+=======
+		release_kmmio_fault_page(p->addr + size, &release_list);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		size += page_level_size(l);
 	}
 	list_del_rcu(&p->list);

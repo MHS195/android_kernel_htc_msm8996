@@ -86,6 +86,7 @@ enum flat_binder_object_flags {
 	 * scheduling policy from the caller (for synchronous transactions).
 	 */
 	FLAT_BINDER_FLAG_INHERIT_RT = 0x800,
+<<<<<<< HEAD
 
 	/**
 	 * @FLAT_BINDER_FLAG_TXN_SECURITY_CTX: request security contexts
@@ -94,6 +95,8 @@ enum flat_binder_object_flags {
 	 * context
 	 */
 	FLAT_BINDER_FLAG_TXN_SECURITY_CTX = 0x1000,
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 #ifdef BINDER_IPC_32BIT
@@ -261,7 +264,10 @@ struct binder_node_debug_info {
 #define BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
 #define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
 #define BINDER_GET_NODE_DEBUG_INFO	_IOWR('b', 11, struct binder_node_debug_info)
+<<<<<<< HEAD
 #define BINDER_SET_CONTEXT_MGR_EXT	_IOW('b', 13, struct flat_binder_object)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /*
  * NOTE: Two special error codes you should check for when calling
@@ -320,11 +326,14 @@ struct binder_transaction_data {
 	} data;
 };
 
+<<<<<<< HEAD
 struct binder_transaction_data_secctx {
 	struct binder_transaction_data transaction_data;
 	binder_uintptr_t secctx;
 };
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 struct binder_transaction_data_sg {
 	struct binder_transaction_data transaction_data;
 	binder_size_t buffers_size;

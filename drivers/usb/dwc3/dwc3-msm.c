@@ -295,7 +295,11 @@ struct dwc3_msm {
 	enum dwc3_pd_power_role power_role;
 	enum dwc3_pd_data_role data_role;
 #endif
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct delayed_work		otg_tps_work;
 #endif
 	bool xo_vote_for_charger;
@@ -326,7 +330,11 @@ static struct dwc3_msm *context = NULL; /* 2015/10/12, USB Team, PCN00021 */
 static int htc_id_backup;
 static int htc_vbus_backup;
 /*-- 2015/10/13, USB Team, PCN00022 --*/
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static void dwc3_otg_tps_work(struct work_struct *w);
 #endif
 
@@ -3225,7 +3233,11 @@ static int dwc3_msm_probe(struct platform_device *pdev)
 #if defined(CONFIG_ANALOGIX_OHIO) || defined(CONFIG_ANALOGIX_7688)
 	INIT_DELAYED_WORK(&mdwc->vbus_notify_work, dwc3_notify_vbus_work);
 #endif
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	INIT_DELAYED_WORK(&mdwc->otg_tps_work, dwc3_otg_tps_work);
 #endif
 	INIT_DELAYED_WORK(&mdwc->sm_work, dwc3_msm_otg_sm_work);
@@ -3708,7 +3720,11 @@ static int dwc3_msm_remove(struct platform_device *pdev)
 
 #define VBUS_REG_CHECK_DELAY	(msecs_to_jiffies(1000))
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define tps_max_retry	10
 bool tps_switch = 0;	/* 0: switch to default; 1: switch to TPS*/
 bool tps_status = 0;
@@ -3872,7 +3888,11 @@ int dwc3_pd_vbus_ctrl(int on)
 	else { // on == 0   or   on == -1
 		dev_dbg(dwc->dev, "%s: turn off regulator\n", __func__);
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (tps_status) {
 			tps_switch = 0;
 			schedule_delayed_work(&mdwc->otg_tps_work, 0);
@@ -4522,7 +4542,11 @@ static void dwc3_msm_otg_sm_work(struct work_struct *w)
 				dwc3_msm_gadget_vbus_draw(mdwc,
 						dcp_max_current);
 				atomic_set(&dwc->in_lpm, 1);
+<<<<<<< HEAD
 #ifndef CONFIG_MACH_MSM8996_15801
+=======
+				dbg_event(0xFF, "RelaxDCP", 0);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				pm_relax(mdwc->dev);
 #endif
 				break;

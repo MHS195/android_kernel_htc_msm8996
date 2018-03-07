@@ -1239,6 +1239,9 @@ static int cpufreq_stat_notifier_policy(struct notifier_block *nb,
 	if (val == CPUFREQ_UPDATE_POLICY_CPU) {
 		cpufreq_stats_update_policy_cpu(policy);
 		return 0;
+	} else if (val == CPUFREQ_REMOVE_POLICY) {
+		__cpufreq_stats_free_table(policy);
+		return 0;
 	}
 
 	table = cpufreq_frequency_get_table(cpu);
@@ -1257,9 +1260,13 @@ static int cpufreq_stat_notifier_policy(struct notifier_block *nb,
 	}
 
 	if (val == CPUFREQ_CREATE_POLICY)
+<<<<<<< HEAD
 		ret = __cpufreq_stats_create_table(policy, cpu, table, count);
 	else if (val == CPUFREQ_REMOVE_POLICY)
 		__cpufreq_stats_free_table(policy);
+=======
+		ret = __cpufreq_stats_create_table(policy, table, count);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	return ret;
 }

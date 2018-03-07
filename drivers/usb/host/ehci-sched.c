@@ -1606,7 +1606,11 @@ iso_stream_schedule (
 
 	/* Is the schedule about to wrap around? */
 	if (unlikely(!empty && start < period)) {
+<<<<<<< HEAD
 		ehci_dbg(ehci, "request %p would overflow (%u-%u < %u mod %u)\n",
+=======
+		ehci_dbg(ehci, "iso sched full %pK (%u-%u < %u mod %u)\n",
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				urb, stream->next_uframe, base, period, mod);
 		status = -EFBIG;
 		goto fail;

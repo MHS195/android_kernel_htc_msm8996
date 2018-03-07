@@ -1567,7 +1567,11 @@ static int elantech_set_properties(struct elantech_data *etd)
 		case 5:
 			etd->hw_version = 3;
 			break;
+<<<<<<< HEAD
 		case 6 ... 15:
+=======
+		case 6 ... 14:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			etd->hw_version = 4;
 			break;
 		default:

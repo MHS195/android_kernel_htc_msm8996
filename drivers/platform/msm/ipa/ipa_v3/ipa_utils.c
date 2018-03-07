@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -775,7 +779,15 @@ static const struct ipa_ep_configuration ipa3_ep_mapping
 	[IPA_3_5_MHI][IPA_CLIENT_HSIC4_PROD]          = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_USB4_PROD]           = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_HSIC5_PROD]          = IPA_CLIENT_NOT_USED,
+<<<<<<< HEAD
 	[IPA_3_5_MHI][IPA_CLIENT_USB_PROD]            = IPA_CLIENT_NOT_USED,
+=======
+	[IPA_3_5_MHI][IPA_CLIENT_USB_PROD]            = {
+			0, IPA_v3_5_MHI_GROUP_DDR, true,
+			IPA_DPS_HPS_SEQ_TYPE_2ND_PKT_PROCESS_PASS_NO_DEC_UCP,
+			QMB_MASTER_SELECT_DDR,
+			{ 0, 7, 8, 16, IPA_EE_AP } },
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	[IPA_3_5_MHI][IPA_CLIENT_UC_USB_PROD]         = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_A5_WLAN_AMPDU_PROD]  = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_A2_EMBEDDED_PROD]    = IPA_CLIENT_NOT_USED,
@@ -868,8 +880,21 @@ static const struct ipa_ep_configuration ipa3_ep_mapping
 	[IPA_3_5_MHI][IPA_CLIENT_USB4_CONS]           = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_WLAN4_CONS]          = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_HSIC5_CONS]          = IPA_CLIENT_NOT_USED,
+<<<<<<< HEAD
 	[IPA_3_5_MHI][IPA_CLIENT_USB_CONS]            = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_USB_DPL_CONS]        = IPA_CLIENT_NOT_USED,
+=======
+	[IPA_3_5_MHI][IPA_CLIENT_USB_CONS]            = {
+			17, IPA_v3_5_MHI_GROUP_DDR, false,
+			IPA_DPS_HPS_SEQ_TYPE_INVALID,
+			QMB_MASTER_SELECT_DDR,
+			{ 17, 11, 8, 8, IPA_EE_AP } },
+	[IPA_3_5_MHI][IPA_CLIENT_USB_DPL_CONS]        = {
+			14, IPA_v3_5_MHI_GROUP_DDR, false,
+			IPA_DPS_HPS_SEQ_TYPE_INVALID,
+			QMB_MASTER_SELECT_DDR,
+			{ 14, 10, 4, 6, IPA_EE_AP } },
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	[IPA_3_5_MHI][IPA_CLIENT_A2_EMBEDDED_CONS]    = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_A2_TETHERED_CONS]    = IPA_CLIENT_NOT_USED,
 	[IPA_3_5_MHI][IPA_CLIENT_A5_LAN_WAN_CONS]     = IPA_CLIENT_NOT_USED,
@@ -2727,6 +2752,7 @@ static int ipa3_generate_hw_rule_ip6(u16 *en_rule,
 		ihl_ofst_meq32 += 2;
 	}
 
+<<<<<<< HEAD
 	if (attrib->attrib_mask & IPA_FLT_L2TP_INNER_IP_TYPE) {
 		if (ipa_ihl_ofst_meq32[ihl_ofst_meq32] == -1) {
 			IPAERR("ran out of ihl_meq32 eq\n");
@@ -2756,6 +2782,8 @@ static int ipa3_generate_hw_rule_ip6(u16 *en_rule,
 		ihl_ofst_meq32++;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (attrib->attrib_mask & IPA_FLT_META_DATA) {
 		*en_rule |= IPA_METADATA_COMPARE;
 		rest = ipa3_write_32(attrib->meta_data_mask, rest);
@@ -3575,6 +3603,7 @@ int ipa3_generate_flt_eq_ip6(enum ipa_ip_type ip,
 		ihl_ofst_meq32 += 2;
 	}
 
+<<<<<<< HEAD
 	if (attrib->attrib_mask & IPA_FLT_L2TP_INNER_IP_TYPE) {
 		if (ipa_ihl_ofst_meq32[ihl_ofst_meq32] == -1) {
 			IPAERR("ran out of ihl_meq32 eq\n");
@@ -3605,6 +3634,8 @@ int ipa3_generate_flt_eq_ip6(enum ipa_ip_type ip,
 		ihl_ofst_meq32++;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (attrib->attrib_mask & IPA_FLT_MAC_ETHER_TYPE) {
 		if (ipa_ofst_meq32[ofst_meq32] == -1) {
 			IPAERR("ran out of meq128 eq\n");
@@ -5825,8 +5856,12 @@ void ipa3_proxy_clk_vote(void)
 		return;
 
 	mutex_lock(&ipa3_ctx->q6_proxy_clk_vote_mutex);
+<<<<<<< HEAD
 	if (!ipa3_ctx->q6_proxy_clk_vote_valid ||
 		(ipa3_ctx->q6_proxy_clk_vote_cnt > 0)) {
+=======
+	if (!ipa3_ctx->q6_proxy_clk_vote_valid) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		IPA_ACTIVE_CLIENTS_INC_SPECIAL("PROXY_CLK_VOTE");
 		ipa3_ctx->q6_proxy_clk_vote_cnt++;
 		ipa3_ctx->q6_proxy_clk_vote_valid = true;
@@ -6897,8 +6932,13 @@ int ipa3_load_fws(const struct firmware *firmware, phys_addr_t gsi_mem_base)
 {
 	const struct elf32_hdr *ehdr;
 	const struct elf32_phdr *phdr;
+<<<<<<< HEAD
 	unsigned long gsi_iram_ofst = 0;
 	unsigned long gsi_iram_size = 0;
+=======
+	unsigned long gsi_iram_ofst;
+	unsigned long gsi_iram_size;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	phys_addr_t ipa_reg_mem_base;
 	u32 ipa_reg_ofst;
 	int rc;
@@ -7017,6 +7057,7 @@ bool ipa3_is_msm_device(void)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_disable_prefetch() - disable\enable tx prefetch
  *
  * @client: the client which is related to the TX where prefetch will be
@@ -7025,6 +7066,16 @@ bool ipa3_is_msm_device(void)
  * Return value: Non applicable
  *
  */
+=======
+* ipa3_disable_prefetch() - disable\enable tx prefetch
+*
+* @client: the client which is related to the TX where prefetch will be
+*          disabled
+*
+* Return value: Non applicable
+*
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_disable_prefetch(enum ipa_client_type client)
 {
 	struct ipahal_reg_tx_cfg cfg;

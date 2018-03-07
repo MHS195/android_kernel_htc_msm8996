@@ -516,7 +516,11 @@ static int anx7688_cc_change(u8 cc_status)
 			break;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (notify_batt && data->batt_psy && data->batt_psy->set_property) {
 		ret = data->batt_psy->set_property(
 			data->batt_psy, POWER_SUPPLY_PROP_TYPEC_SINK_CURRENT,
@@ -729,9 +733,12 @@ static void anx7688_work_func(struct work_struct *work)
 					msecs_to_jiffies(workqueu_timer));
 #endif
 	anx7688_enable_cbl_det();
+<<<<<<< HEAD
 
 	if (strcmp(htc_get_bootmode(), "offmode_charging") == 0)
 	    try_sink();
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 #endif
 
@@ -808,10 +815,13 @@ static unsigned char confirmed_cable_det(void *data)
 }
 #endif
 
+<<<<<<< HEAD
 #if 1
 extern void register_charging(int on);
 #endif
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static irqreturn_t anx7688_cbl_det_isr(int irq, void *data)
 {
 	struct anx7688_data *platform = data;
@@ -832,10 +842,13 @@ static irqreturn_t anx7688_cbl_det_isr(int irq, void *data)
 						__func__, cable_connected);
 #endif
 
+<<<<<<< HEAD
 #if 1
 	register_charging(cable_connected);
 #endif
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (cable_connected == DONGLE_CABLE_INSERT) {
 		if (atomic_read(&anx7688_power_status) == 1) {
 #ifdef CABLE_DET_PIN_HAS_GLITCH
@@ -867,7 +880,11 @@ static irqreturn_t anx7688_cbl_det_isr(int irq, void *data)
 			anx7688_platform_vconn_ctl(0);
 		platform->curr_cc = 0x00;
 		batt_prop.intval = utccNone;
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (platform->batt_psy && platform->batt_psy->set_property) {
 			platform->batt_psy->set_property(
 			platform->batt_psy, POWER_SUPPLY_PROP_TYPEC_SINK_CURRENT,

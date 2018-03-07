@@ -32,20 +32,36 @@ static void inherit_derived_state(struct inode *parent, struct inode *child)
 	ci->data->under_android = pi->data->under_android;
 	ci->data->under_cache = pi->data->under_cache;
 	ci->data->under_obb = pi->data->under_obb;
+<<<<<<< HEAD
+=======
+	set_top(ci, pi->top_data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /* helper function for derived state */
 void setup_derived_state(struct inode *inode, perm_t perm, userid_t userid,
+<<<<<<< HEAD
 					uid_t uid)
+=======
+					uid_t uid, bool under_android,
+					struct sdcardfs_inode_data *top)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	struct sdcardfs_inode_info *info = SDCARDFS_I(inode);
 
 	info->data->perm = perm;
 	info->data->userid = userid;
 	info->data->d_uid = uid;
+<<<<<<< HEAD
 	info->data->under_android = false;
 	info->data->under_cache = false;
 	info->data->under_obb = false;
+=======
+	info->data->under_android = under_android;
+	info->data->under_cache = false;
+	info->data->under_obb = false;
+	set_top(info, top);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /* While renaming, there is a point where we want the path from dentry,
@@ -55,14 +71,22 @@ void get_derived_permission_new(struct dentry *parent, struct dentry *dentry,
 				const struct qstr *name)
 {
 	struct sdcardfs_inode_info *info = SDCARDFS_I(dentry->d_inode);
+<<<<<<< HEAD
 	struct sdcardfs_inode_info *parent_info = SDCARDFS_I(parent->d_inode);
 	struct sdcardfs_inode_data *parent_data = parent_info->data;
+=======
+	struct sdcardfs_inode_data *parent_data =
+			SDCARDFS_I(parent->d_inode)->data;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	appid_t appid;
 	unsigned long user_num;
 	int err;
 	struct qstr q_Android = QSTR_LITERAL("Android");
 	struct qstr q_data = QSTR_LITERAL("data");
+<<<<<<< HEAD
 	struct qstr q_sandbox = QSTR_LITERAL("sandbox");
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct qstr q_obb = QSTR_LITERAL("obb");
 	struct qstr q_media = QSTR_LITERAL("media");
 	struct qstr q_cache = QSTR_LITERAL("cache");
@@ -78,15 +102,24 @@ void get_derived_permission_new(struct dentry *parent, struct dentry *dentry,
 	inherit_derived_state(parent->d_inode, dentry->d_inode);
 
 	/* Files don't get special labels */
+<<<<<<< HEAD
 	if (!S_ISDIR(dentry->d_inode->i_mode)) {
 		set_top(info, parent_info);
 		return;
 	}
+=======
+	if (!S_ISDIR(dentry->d_inode->i_mode))
+		return;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Derive custom permissions based on parent and current node */
 	switch (parent_data->perm) {
 	case PERM_INHERIT:
 	case PERM_ANDROID_PACKAGE_CACHE:
+<<<<<<< HEAD
 		set_top(info, parent_info);
+=======
+		/* Already inherited above */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		break;
 	case PERM_PRE_ROOT:
 		/* Legacy internal layout places users at top level */
@@ -96,6 +129,10 @@ void get_derived_permission_new(struct dentry *parent, struct dentry *dentry,
 			info->data->userid = 0;
 		else
 			info->data->userid = user_num;
+<<<<<<< HEAD
+=======
+		set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		break;
 	case PERM_ROOT:
 		/* Assume masked off by default. */
@@ -103,27 +140,43 @@ void get_derived_permission_new(struct dentry *parent, struct dentry *dentry,
 			/* App-specific directories inside; let anyone traverse */
 			info->data->perm = PERM_ANDROID;
 			info->data->under_android = true;
+<<<<<<< HEAD
 		} else {
 			set_top(info, parent_info);
+=======
+			set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		break;
 	case PERM_ANDROID:
 		if (qstr_case_eq(name, &q_data)) {
 			/* App-specific directories inside; let anyone traverse */
 			info->data->perm = PERM_ANDROID_DATA;
+<<<<<<< HEAD
 		} else if (qstr_case_eq(name, &q_sandbox)) {
 			/* App-specific directories inside; let anyone traverse */
 			info->data->perm = PERM_ANDROID_DATA;
+=======
+			set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		} else if (qstr_case_eq(name, &q_obb)) {
 			/* App-specific directories inside; let anyone traverse */
 			info->data->perm = PERM_ANDROID_OBB;
 			info->data->under_obb = true;
+<<<<<<< HEAD
+=======
+			set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			/* Single OBB directory is always shared */
 		} else if (qstr_case_eq(name, &q_media)) {
 			/* App-specific directories inside; let anyone traverse */
 			info->data->perm = PERM_ANDROID_MEDIA;
+<<<<<<< HEAD
 		} else {
 			set_top(info, parent_info);
+=======
+			set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		break;
 	case PERM_ANDROID_OBB:
@@ -134,13 +187,20 @@ void get_derived_permission_new(struct dentry *parent, struct dentry *dentry,
 		if (appid != 0 && !is_excluded(name->name, parent_data->userid))
 			info->data->d_uid =
 				multiuser_get_uid(parent_data->userid, appid);
+<<<<<<< HEAD
+=======
+		set_top(info, info->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		break;
 	case PERM_ANDROID_PACKAGE:
 		if (qstr_case_eq(name, &q_cache)) {
 			info->data->perm = PERM_ANDROID_PACKAGE_CACHE;
 			info->data->under_cache = true;
 		}
+<<<<<<< HEAD
 		set_top(info, parent_info);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		break;
 	}
 }
@@ -178,9 +238,12 @@ void fixup_lower_ownership(struct dentry *dentry, const char *name)
 	gid_t gid = sbi->options.fs_low_gid;
 	struct iattr newattrs;
 
+<<<<<<< HEAD
 	if (!sbi->options.gid_derivation)
 		return;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	info = SDCARDFS_I(dentry->d_inode);
 	info_d = info->data;
 	perm = info_d->perm;
@@ -360,8 +423,12 @@ int need_graft_path(struct dentry *dentry)
 	struct sdcardfs_sb_info *sbi = SDCARDFS_SB(dentry->d_sb);
 	struct qstr obb = QSTR_LITERAL("obb");
 
+<<<<<<< HEAD
 	if (!sbi->options.unshared_obb &&
 			parent_info->data->perm == PERM_ANDROID &&
+=======
+	if (parent_info->data->perm == PERM_ANDROID &&
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			qstr_case_eq(&dentry->d_name, &obb)) {
 
 		/* /Android/obb is the base obbpath of DERIVED_UNIFIED */

@@ -1450,6 +1450,13 @@ static int fanout_add(struct sock *sk, u16 id, u16 type_flags)
 
 	mutex_lock(&fanout_mutex);
 
+<<<<<<< HEAD
+=======
+	err = -EINVAL;
+	if (!po->running)
+		goto out;
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	err = -EALREADY;
 	if (po->fanout)
 		goto out;

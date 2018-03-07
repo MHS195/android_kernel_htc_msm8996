@@ -28,7 +28,13 @@
 #include <linux/slab.h>
 #include <linux/suspend.h>
 #include <linux/tick.h>
+<<<<<<< HEAD
 #include <linux/sched.h>
+=======
+#ifdef CONFIG_SMP
+#include <linux/sched.h>
+#endif
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #include <trace/events/power.h>
 
 /**
@@ -422,8 +428,11 @@ static void cpufreq_notify_post_transition(struct cpufreq_policy *policy,
 void cpufreq_freq_transition_begin(struct cpufreq_policy *policy,
 		struct cpufreq_freqs *freqs)
 {
+<<<<<<< HEAD
 	int cpu;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/*
 	 * Catch double invocations of _begin() which lead to self-deadlock.
 	 * ASYNC_NOTIFICATION drivers are left out because the cpufreq core
@@ -450,10 +459,13 @@ wait:
 
 	spin_unlock(&policy->transition_lock);
 
+<<<<<<< HEAD
 
 	for_each_cpu(cpu, policy->cpus)
 		trace_cpu_capacity(capacity_curr_of(cpu), cpu);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	scale_freq_capacity(policy, freqs);
 
 	cpufreq_notify_transition(policy, freqs, CPUFREQ_PRECHANGE);
@@ -1604,8 +1616,10 @@ static int __cpufreq_remove_dev_finish(struct device *dev,
 		list_del(&policy->policy_list);
 		write_unlock_irqrestore(&cpufreq_driver_lock, flags);
 
-		if (!cpufreq_suspended)
+		if (!cpufreq_suspended) {
+			flush_work(&policy->update);
 			cpufreq_policy_free(policy);
+		}
 	} else if (has_target()) {
 		ret = __cpufreq_governor(policy, CPUFREQ_GOV_START);
 		if (!ret)

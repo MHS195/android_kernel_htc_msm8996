@@ -603,6 +603,7 @@ static const struct dmi_system_id __initconst i8042_dmi_reset_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Lenovo ThinkPad L460 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
@@ -610,6 +611,8 @@ static const struct dmi_system_id __initconst i8042_dmi_reset_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* Clevo P650RS, 650RP6, Sager NP8152-S, and others */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Notebook"),
@@ -709,6 +712,7 @@ static const struct dmi_system_id __initconst i8042_dmi_notimeout_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK UH544"),
 		},
 	},
+<<<<<<< HEAD
 	{ }
 };
 
@@ -723,6 +727,8 @@ static const struct dmi_system_id i8042_dmi_forcemux_table[] __initconst = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "VGN-CS"),
 		},
 	},
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	{ }
 };
 
@@ -833,6 +839,7 @@ static const struct dmi_system_id __initconst i8042_dmi_kbdreset_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Gigabyte P57 - Elantech touchpad */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
@@ -840,6 +847,8 @@ static const struct dmi_system_id __initconst i8042_dmi_kbdreset_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* Schenker XMG C504 - Elantech touchpad */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "XMG"),

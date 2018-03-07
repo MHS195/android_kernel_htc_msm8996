@@ -827,8 +827,11 @@ static int hwarc_probe(struct usb_interface *iface,
 
 	if (iface->cur_altsetting->desc.bNumEndpoints < 1)
 		return -ENODEV;
+<<<<<<< HEAD
 	if (!usb_endpoint_xfer_int(&iface->cur_altsetting->endpoint[0].desc))
 		return -ENODEV;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	result = -ENOMEM;
 	uwb_rc = uwb_rc_alloc();

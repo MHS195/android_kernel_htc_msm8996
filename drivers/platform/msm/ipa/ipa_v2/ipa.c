@@ -1492,6 +1492,7 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		break;
 
+<<<<<<< HEAD
 	case IPA_IOC_CLEANUP:
 		/*Route and filter rules will also be clean*/
 		IPADBG("Got IPA_IOC_CLEANUP\n");
@@ -1508,6 +1509,9 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		break;
 
 	default:
+=======
+	default:        /* redundant, as cmd was checked against MAXNR */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		IPA_ACTIVE_CLIENTS_DEC_SIMPLE();
 		return -ENOTTY;
 	}
@@ -3941,7 +3945,11 @@ static int ipa_init(const struct ipa_plat_drv_res *resource_p,
 
 	ipa_ctx->logbuf = ipc_log_context_create(IPA_IPC_LOG_PAGES, "ipa", 0);
 	if (ipa_ctx->logbuf == NULL)
+<<<<<<< HEAD
 		IPADBG("failed to create IPC log, continue...\n");
+=======
+		IPAERR("failed to create IPC log, continue...\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	ipa_ctx->pdev = ipa_dev;
 	ipa_ctx->uc_pdev = ipa_dev;

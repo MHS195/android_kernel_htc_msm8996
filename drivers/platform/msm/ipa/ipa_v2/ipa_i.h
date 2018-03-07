@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -65,8 +69,11 @@
 
 #define IPA_IPC_LOG_PAGES 50
 
+<<<<<<< HEAD
 #define IPA_MAX_NUM_REQ_CACHE 10
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define IPADBG(fmt, args...) \
 	do { \
 		pr_debug(DRV_NAME " %s:%d " fmt, __func__, __LINE__, ## args);\
@@ -1591,12 +1598,15 @@ int ipa2_setup_uc_ntn_pipes(struct ipa_ntn_conn_in_params *inp,
 int ipa2_tear_down_uc_offload_pipes(int ipa_ep_idx_ul, int ipa_ep_idx_dl);
 int ipa2_ntn_uc_reg_rdyCB(void (*ipauc_ready_cb)(void *), void *priv);
 void ipa2_ntn_uc_dereg_rdyCB(void);
+<<<<<<< HEAD
 
 int ipa2_conn_wdi3_pipes(struct ipa_wdi3_conn_in_params *in,
 	struct ipa_wdi3_conn_out_params *out);
 int ipa2_disconn_wdi3_pipes(int ipa_ep_idx_tx, int ipa_ep_idx_rx);
 int ipa2_enable_wdi3_pipes(int ipa_ep_idx_tx, int ipa_ep_idx_rx);
 int ipa2_disable_wdi3_pipes(int ipa_ep_idx_tx, int ipa_ep_idx_rx);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /*
  * To retrieve doorbell physical address of

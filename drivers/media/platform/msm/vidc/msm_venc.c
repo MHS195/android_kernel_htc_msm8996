@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1799,6 +1803,7 @@ static inline int msm_venc_power_save_mode_enable(struct msm_vidc_inst *inst)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	hdev = inst->core->device;
 	inst_load = msm_comm_get_inst_load(inst, quirks);
 	hq_max = inst->capability.mbs_per_sec.max;
@@ -1826,6 +1831,21 @@ static inline int msm_venc_power_save_mode_enable(struct msm_vidc_inst *inst)
 	}
 
 	if (enable_low_power) {
+=======
+	inst_load = msm_comm_get_inst_load(inst, quirks);
+	power_save_min = inst->capability.mbs_per_sec_power_save.min;
+	power_save_max = inst->capability.mbs_per_sec_power_save.max;
+
+	dprintk(VIDC_DBG,
+		"Power Save Mode min mb's %d max mb's %d inst load %d\n",
+		power_save_min, power_save_max, inst_load);
+
+	if (!power_save_min || !power_save_max)
+		return rc;
+
+	hdev = inst->core->device;
+	if (inst_load >= power_save_min) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		prop_id = HAL_CONFIG_VENC_PERF_MODE;
 		venc_mode = HAL_PERF_MODE_POWER_SAVE;
 		pdata = &venc_mode;

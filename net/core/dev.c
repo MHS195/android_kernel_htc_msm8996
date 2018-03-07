@@ -2487,7 +2487,11 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
 
 	segs = skb_mac_gso_segment(skb, features);
 
+<<<<<<< HEAD
 	if (unlikely(skb_needs_check(skb, tx_path) && !IS_ERR(segs)))
+=======
+	if (unlikely(skb_needs_check(skb, tx_path)))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		skb_warn_bad_offload(skb);
 
 	return segs;

@@ -3541,9 +3541,14 @@ static int l2cap_parse_conf_rsp(struct l2cap_chan *chan, void *rsp, int len,
 				    efs.stype != chan->local_stype)
 					return -ECONNREFUSED;
 
+<<<<<<< HEAD
 				l2cap_add_conf_opt(&ptr, L2CAP_CONF_EFS, sizeof(efs),
 						   (unsigned long) &efs);
 			}
+=======
+			l2cap_add_conf_opt(&ptr, L2CAP_CONF_EFS, sizeof(efs),
+					   (unsigned long) &efs);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			break;
 
 		case L2CAP_CONF_FCS:

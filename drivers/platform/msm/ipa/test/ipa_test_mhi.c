@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1363,6 +1367,7 @@ static int ipa_mhi_test_q_transfer_re(struct ipa_mem_buffer *mmio,
 	IPA_UT_LOG("wp_ofst=0x%x rp_ofst=0x%x rlen=%llu avail_ev=%u\n",
 		wp_ofst, rp_ofst, p_events[event_ring_index].rlen, avail_ev);
 
+<<<<<<< HEAD
 	if (num_of_ed_to_queue > ((u32)p_events[event_ring_index].rlen /
 		sizeof(struct ipa_mhi_event_ring_element))) {
 		IPA_UT_LOG("event ring too small for %u credits\n",
@@ -1387,6 +1392,12 @@ static int ipa_mhi_test_q_transfer_re(struct ipa_mem_buffer *mmio,
 			p_events[event_ring_index].wp,
 			&(gsi_ctx->per.phys_addr),
 			GSI_EE_n_EV_CH_k_DOORBELL_0_OFFS(
+=======
+	/* write value to event ring doorbell */
+	IPA_UT_LOG("DB to event 0x%llx: base %pa ofst 0x%x\n",
+		p_events[event_ring_index].wp,
+		&(gsi_ctx->per.phys_addr), GSI_EE_n_EV_CH_k_DOORBELL_0_OFFS(
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			event_ring_index + IPA_MHI_GSI_ER_START, 0));
 		iowrite32(p_events[event_ring_index].wp,
 			test_mhi_ctx->gsi_mmio +

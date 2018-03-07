@@ -301,6 +301,12 @@ static void sysrq_handle_showstate_blocked(int key)
 {
 	show_state_filter(TASK_UNINTERRUPTIBLE);
 	pr_info("### Show All Tasks in System Server ###\n");
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_QHMP
+	show_thread_group_state_filter("system_server", 0);
+#endif
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 static struct sysrq_key_op sysrq_showstate_blocked_op = {
 	.handler	= sysrq_handle_showstate_blocked,

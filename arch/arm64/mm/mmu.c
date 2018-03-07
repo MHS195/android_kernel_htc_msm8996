@@ -52,7 +52,11 @@ u64 idmap_t0sz = TCR_T0SZ(VA_BITS);
 unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
 EXPORT_SYMBOL(empty_zero_page);
 
+<<<<<<< HEAD
 static bool dma_overlap(phys_addr_t start, phys_addr_t end);
+=======
+static bool __init dma_overlap(phys_addr_t start, phys_addr_t end);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #ifdef CONFIG_STRICT_MEMORY_RWX
 static struct {

@@ -4,7 +4,10 @@ obj-y					+= ion/
 obj-$(CONFIG_FIQ_DEBUGGER)		+= fiq_debugger/
 
 obj-$(CONFIG_ANDROID_BINDER_IPC)	+= binder.o binder_alloc.o
+<<<<<<< HEAD
 obj-$(CONFIG_ANDROID_BINDER_IPC_SELFTEST) += binder_alloc_selftest.o
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 obj-$(CONFIG_ASHMEM)			+= ashmem.o
 obj-$(CONFIG_ANDROID_LOGGER)           += logger.o
 obj-$(CONFIG_ANDROID_TIMED_OUTPUT)	+= timed_output.o

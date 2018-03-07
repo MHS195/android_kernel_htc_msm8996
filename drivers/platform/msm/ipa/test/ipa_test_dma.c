@@ -364,11 +364,19 @@ static int ipa_test_dma_sync_async_memcpy(int size)
 }
 
 /**
+<<<<<<< HEAD
  * TEST: test enable/disable dma
  *	1. enable dma
  *	2. disable dma
  */
 static int ipa_test_dma_enable_disable(void *priv)
+=======
+ * TEST: test control API - enable/disable dma
+ *	1. enable dma
+ *	2. disable dma
+ */
+static int ipa_test_dma_control_api(void *priv)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	int rc;
 
@@ -392,6 +400,7 @@ static int ipa_test_dma_enable_disable(void *priv)
 }
 
 /**
+<<<<<<< HEAD
  * TEST: test init/enable/disable/destroy dma
  *	1. init dma
  *	2. enable dma
@@ -478,6 +487,8 @@ static int ipa_test_dma_enblx2_disablex2(void *priv)
 }
 
 /**
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * TEST: memcpy before dma enable
  *
  *	1. sync memcpy - should fail
@@ -1085,6 +1096,7 @@ static int ipa_test_dma_sync_memcpy_max_pkt_size(void *priv)
 IPA_UT_DEFINE_SUITE_START(dma, "DMA for GSI",
 	ipa_test_dma_setup, ipa_test_dma_teardown)
 {
+<<<<<<< HEAD
 	IPA_UT_ADD_TEST(init_enable_disable_destroy,
 		"Init->Enable->Disable->Destroy",
 		ipa_test_dma_enable_disable,
@@ -1096,6 +1108,11 @@ IPA_UT_DEFINE_SUITE_START(dma, "DMA for GSI",
 	IPA_UT_ADD_TEST(init_enablex2_disablex2_destroy,
 		"Init->Enablex2->Disablex2->Destroy",
 		ipa_test_dma_enblx2_disablex2,
+=======
+	IPA_UT_ADD_TEST(control_api,
+		"Control API",
+		ipa_test_dma_control_api,
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		true, IPA_HW_v3_0, IPA_HW_MAX),
 	IPA_UT_ADD_TEST(memcpy_before_enable,
 		"Call memcpy before dma enable and expect it to fail",

@@ -267,7 +267,10 @@ static const struct xpad_device {
 	{ 0x1430, 0xf801, "RedOctane Controller", 0, XTYPE_XBOX360 },
 	{ 0x146b, 0x0601, "BigBen Interactive XBOX 360 Controller", 0, XTYPE_XBOX360 },
 	{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
+<<<<<<< HEAD
 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
@@ -1789,6 +1792,7 @@ static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id
 		goto err_free_in_urb;
 	}
 
+<<<<<<< HEAD
 	ep_irq_in = ep_irq_out = NULL;
 
 	for (i = 0; i < 2; i++) {
@@ -1809,6 +1813,9 @@ static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id
 	}
 
 	error = xpad_init_output(intf, xpad, ep_irq_out);
+=======
+	error = xpad_init_output(intf, xpad);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (error)
 		goto err_free_in_urb;
 

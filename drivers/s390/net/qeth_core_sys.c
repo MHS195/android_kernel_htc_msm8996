@@ -456,7 +456,10 @@ static ssize_t qeth_dev_layer2_store(struct device *dev,
 	if (card->discipline) {
 		card->discipline->remove(card->gdev);
 		qeth_core_free_discipline(card);
+<<<<<<< HEAD
 		card->options.layer2 = -1;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	rc = qeth_core_load_discipline(card, newdis);

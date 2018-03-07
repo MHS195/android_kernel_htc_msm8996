@@ -2732,11 +2732,16 @@ int adm_open(int port_id, int path, int rate, int channel_mode, int topology,
 
 /* HTC_AUD_START - HTC Effect {HPKB:2082}*/
 #ifndef CONFIG_NO_USE_HTC_EFFECT
+<<<<<<< HEAD
 #ifndef CONFIG_UULTRA
 // HTC 10 call place
         htc_effect_by_adm_open(port_id, topology);
 #endif
 #endif
+=======
+        htc_effect_by_adm_open(port_id, topology);
+#endif
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* HTC_AUD_END */
 
 	return copp_idx;

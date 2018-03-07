@@ -42,19 +42,27 @@
 #include <linux/power/htc_battery.h>
 #include <linux/htc_flags.h>
 #endif
+<<<<<<< HEAD
 #include <linux/pmic-voter.h>
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #include <linux/input/siw_touch_notify.h>
 #define CONNECT_NONE (0x00)
 #define CONNECT_USB  (0x01)
 #define CONNECT_DC   (0x02)
 #define CONNECT_OTG  (0x03)
+<<<<<<< HEAD
 #endif
 #include <linux/pmic-voter.h>
 
 #ifdef CONFIG_FORCE_FAST_CHARGE
 #include <linux/fastchg.h>
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
+#include <linux/pmic-voter.h>
 
 /* Mask/Bit helpers */
 #define _SMB_MASK(BITS, POS) \
@@ -313,7 +321,11 @@ struct smbchg_chip {
 #ifdef CONFIG_HTC_BATT
 	struct delayed_work		re_enable_qc3_work;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct delayed_work             sink_current_change_work;
 	struct delayed_work             smbchg_unlimit_fcc_worker;
 	int				sink_current;
@@ -349,7 +361,11 @@ struct smbchg_chip {
 #ifdef CONFIG_HTC_BATT
 #define RE_ENABLE_QC3_TIME_MS			(10000)
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define MAX_FCC_PREPARE_MA      (300)
 #define FCC_LIMIT_TIME_MS       (20000)
 static bool g_is_fcc_limit = false;
@@ -386,8 +402,13 @@ static bool g_is_cable_workable_detect = false;
 #define USB_MA_1500	(1500)
 #define USB_MA_1600	(1600)
 #define USB_MA_2000	(2000)
+<<<<<<< HEAD
 #endif 
 #ifdef CONFIG_MACH_OCE
+=======
+#endif //CONFIG_HTC_BATT_PCN0010/CONFIG_HTC_BATT_WA_PCN0006/CONFIG_HTC_BATT_WA_PCN0008
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define USB_MA_3000     (3000)
 typedef enum {
 	utccNone = 0,
@@ -464,9 +485,15 @@ enum wake_reason {
 #define RESTRICTED_CHG_FCC_VOTER	"RESTRICTED_CHG_FCC_VOTER"
 #ifdef CONFIG_HTC_BATT_PCN0016
 #define HTCCHG_FCC_VOTER "HTCCHG_FCC_VOTER"
+<<<<<<< HEAD
 #endif 
 #ifdef CONFIG_MACH_OCE
 #define	HTC_DISPLAY_FLICKER_WA_FCC_VOTER "HTC_DISPLAY_FLICKER_WA_FCC_VOTER"
+=======
+#endif //CONFIG_HTC_BATT_PCN0016
+#ifdef CONFIG_MACH_DUMMY
+#define HTC_DISPLAY_FLICKER_WA_FCC_VOTER "HTC_DISPLAY_FLICKER_WA_FCC_VOTER"
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 
 
@@ -518,6 +545,7 @@ enum wake_reason {
  */
 #define FAKE_BATTERY_EN_VOTER	"FAKE_BATTERY_EN_VOTER"
 
+<<<<<<< HEAD
 
 
 
@@ -590,6 +618,8 @@ enum wake_reason {
 
 
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* battchg_enable_voters */
 	/* userspace has disabled battery charging */
 #define BATTCHG_USER_EN_VOTER	"BATTCHG_USER_EN_VOTER"
@@ -611,7 +641,11 @@ enum wake_reason {
 /* Weak charger voter */
 #define WEAK_CHARGER_HW_AICL_VOTER	"WEAK_CHARGER_HW_AICL_VOTER"
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define HTC_DISPLAY_FLICKER_WA_VOTER "HTC_DISPLAY_FLICKER_WA_VOTER"
 #endif
 
@@ -746,7 +780,11 @@ static int g_count_same_dischg = 0;
 static bool g_is_hvdcp_detect_done = false;
 static bool g_is_charger_ability_detected = false;
 static bool g_is_5v_2a_detected = false;
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static bool g_is_typec_charger = false;
 #endif
 
@@ -1070,7 +1108,11 @@ static void smbchg_stay_awake(struct smbchg_chip *chip, int reason)
 	mutex_lock(&chip->pm_lock);
 	reasons = chip->wake_reasons | reason;
 	if (reasons != 0 && chip->wake_reasons == 0) {
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		pr_smb(PR_STATUS, "staying awake: 0x%02x (bit %d)\n",
 				reasons, reason);
 #else
@@ -1090,7 +1132,11 @@ static void smbchg_relax(struct smbchg_chip *chip, int reason)
 	mutex_lock(&chip->pm_lock);
 	reasons = chip->wake_reasons & (~reason);
 	if (reasons == 0 && chip->wake_reasons != 0) {
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		pr_smb(PR_STATUS, "relaxing: 0x%02x (bit %d)\n",
 				reasons, reason);
 #else
@@ -2209,6 +2255,7 @@ static int smbchg_set_high_usb_chg_current(struct smbchg_chip *chip,
 	return rc;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_FORCE_FAST_CHARGE
 static int fcharge_enabled(void) {
 	if (force_fast_charge == 1) {
@@ -2217,6 +2264,8 @@ static int fcharge_enabled(void) {
 }
 #endif
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* if APSD results are used
  *	if SDP is detected it will look at 500mA setting
  *		if set it will draw 500mA
@@ -2264,18 +2313,6 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 	} else {
 		rc = vote(chip->usb_suspend_votable, USB_EN_VOTER, false, 0);
 	}
-
-// fastcharge
-#ifdef CONFIG_FORCE_FAST_CHARGE
-	if (fcharge_enabled()) {
-		pr_err("%s FCHARGE supplytype %d\n", __func__ , chip->usb_supply_type);
-		if (chip->usb_supply_type == POWER_SUPPLY_TYPE_UNKNOWN) {
-			chip->usb_supply_type = POWER_SUPPLY_TYPE_USB;
-		}
-		pr_err("%s FCHARGE final supplytype %d current_ma %d\n", __func__ , chip->usb_supply_type, current_ma);
-	}
-#endif
-// end of fastcharge
 
 	switch (chip->usb_supply_type) {
 	case POWER_SUPPLY_TYPE_USB:
@@ -2368,10 +2405,6 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 			chip->usb_max_current_ma = 150;
 		}
 		if (current_ma == CURRENT_500_MA) {
-// fastcharge
-#ifdef CONFIG_FORCE_FAST_CHARGE
-		if (!fcharge_enabled()) {
-#endif
 			rc = smbchg_sec_masked_write(chip,
 					chip->usb_chgpth_base + CHGPTH_CFG,
 					CFG_USB_2_3_SEL_BIT, CFG_USB_2);
@@ -2388,31 +2421,6 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 				goto out;
 			}
 			chip->usb_max_current_ma = 500;
-#ifdef CONFIG_FORCE_FAST_CHARGE
-		} else {
-			// overriding with the 900 mA chip settings on the charger hardware too
-			// but only for 500 ma case, so it's remaining safe with new USB technologies
-			rc = smbchg_sec_masked_write(chip,
-					chip->usb_chgpth_base + CHGPTH_CFG,
-					CFG_USB_2_3_SEL_BIT, CFG_USB_3);
-			pr_err("%s FCHARGE sec_masked_write USB_3 rc %d current_ma %d\n", __func__ , rc, current_ma);
-			if (rc < 0) {
-				pr_err("Couldn't set CHGPTH_CFG rc = %d\n", rc);
-				goto out;
-			}
-			rc = smbchg_masked_write(chip,
-					chip->usb_chgpth_base + CMD_IL,
-					USBIN_MODE_CHG_BIT | USB51_MODE_BIT,
-					USBIN_LIMITED_MODE | USB51_500MA);
-			pr_err("%s FCHARGE sec_masked_write USB51_500MA rc %d current_ma %d\n", __func__ , rc, current_ma);
-			if (rc < 0) {
-				pr_err("Couldn't set CMD_IL rc = %d\n", rc);
-				goto out;
-			}
-			chip->usb_max_current_ma = 900;
-			pr_err("%s FCHARGE overridden max current ma on chip 900 \n", __func__ );
-		}
-#endif
 		}
 		if (current_ma == CURRENT_900_MA) {
 			rc = smbchg_sec_masked_write(chip,
@@ -2931,8 +2939,6 @@ static void smbchg_parallel_usb_enable(struct smbchg_chip *chip,
 			"Couldn't set Vflt on parallel psy rc: %d\n", rc);
 		return;
 	}
-	power_supply_set_voltage_limit(chip->usb_psy,
-			(chip->vfloat_mv + 50) * 1000);
 	/* Set USB ICL */
 	target_icl_ma = get_effective_result_locked(chip->usb_icl_votable);
 	if (target_icl_ma < 0) {
@@ -4039,11 +4045,8 @@ static int smbchg_float_voltage_set(struct smbchg_chip *chip, int vfloat_mv)
 
 	if (rc)
 		dev_err(chip->dev, "Couldn't set float voltage rc = %d\n", rc);
-	else {
+	else
 		chip->vfloat_mv = vfloat_mv;
-		power_supply_set_voltage_limit(chip->usb_psy,
-				chip->vfloat_mv * 1000);
-	}
 
 	return rc;
 }
@@ -4661,7 +4664,11 @@ static void check_battery_type(struct smbchg_chip *chip)
 				POWER_SUPPLY_PROP_BATTERY_TYPE, &prop);
 		en = (strcmp(prop.strval, UNKNOWN_BATT_TYPE) != 0
 				|| chip->charge_unknown_battery)
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			&& (strcmp(prop.strval, ID_OUT_OF_RANGE) != 0)
 #endif
 			&& (strcmp(prop.strval, LOADING_BATT_TYPE) != 0);
@@ -4694,7 +4701,11 @@ static int smbchg_otg_regulator_enable(struct regulator_dev *rdev)
 		return rc;
 	}
 	smbchg_icl_loop_disable_check(chip);
+<<<<<<< HEAD
 #if !defined(CONFIG_HTC_BATT_WA_PCN0012) || defined(CONFIG_MACH_OCE)
+=======
+#if !defined(CONFIG_HTC_BATT_WA_PCN0012) || defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	smbchg_otg_pulse_skip_disable(chip, REASON_OTG_ENABLED, true);
 #else
 	smbchg_otg_pulse_skip_disable(chip, REASON_OTG_ENABLED, false);
@@ -4704,8 +4715,13 @@ static int smbchg_otg_regulator_enable(struct regulator_dev *rdev)
 	if (chip->otg_pinctrl)
 		return rc;
 
+<<<<<<< HEAD
 #if !defined(CONFIG_HTC_BATT_WA_PCN0012) || defined(CONFIG_MACH_OCE)
 	
+=======
+#if !defined(CONFIG_HTC_BATT_WA_PCN0012) || defined(CONFIG_MACH_DUMMY)
+	/* sleep to make sure the pulse skip is actually disabled */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	msleep(20);
 #endif //CONFIG_HTC_BATT_WA_PCN0012
 	rc = smbchg_masked_write(chip, chip->bat_if_base + CMD_CHG_REG,
@@ -4715,7 +4731,11 @@ static int smbchg_otg_regulator_enable(struct regulator_dev *rdev)
 	else
 		chip->otg_enable_time = ktime_get();
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	siw_touch_notify_connect(CONNECT_OTG);
 #endif
 
@@ -4746,7 +4766,11 @@ static int smbchg_otg_regulator_disable(struct regulator_dev *rdev)
 		rc = 0;
 	}
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	siw_touch_notify_connect(CONNECT_NONE);
 #endif
 
@@ -4873,7 +4897,11 @@ struct regulator_ops smbchg_external_otg_reg_ops = {
 	.is_enabled	= smbchg_external_otg_regulator_is_enable,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 enum power_supply_type htc_get_pmic_chg_type(void)
 {
 	enum power_supply_type usb_supply_type;
@@ -4937,7 +4965,11 @@ static int smbchg_tps61099_otg_enable(void)
 		return rc;
 	}
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	siw_touch_notify_connect(CONNECT_OTG);
 #endif
 
@@ -4991,7 +5023,11 @@ static int smbchg_tps61099_otg_disble(void)
 		return rc;
 	}
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	siw_touch_notify_connect(CONNECT_NONE);
 #endif
 
@@ -5550,8 +5586,13 @@ static int smbchg_set_optimal_charging_mode(struct smbchg_chip *chip, int type)
 	bool hvdcp2 = (type == POWER_SUPPLY_TYPE_USB_HVDCP
 			&& smbchg_is_usbin_active_pwr_src(chip));
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
 	
+=======
+#ifdef CONFIG_MACH_DUMMY
+	/* HW suggest to set Fsw as 1.4MHz to prevent display flicker issue. */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	pr_smb(PR_STATUS, "Set Fsw 1.4MHz by raising 0x216F3 BIT0\n");
 
 	rc = smbchg_sec_masked_write(chip, chip->misc_base +
@@ -5826,7 +5867,11 @@ static void smbchg_chk_cable_workable_work(struct work_struct *work)
 			s_re_chk_cnt = 0;
 			return;
 		}
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		g_typec_workable = the_chip->sink_current;
 #else
 		g_typec_workable = workable_charging_cable();
@@ -6066,7 +6111,11 @@ static void pre_sw_aicl(void)
 		return;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (the_chip->sink_current == utcc1p5A) {
 		pr_smb(PR_STATUS, "Type-C 1.5A Charger detected!");
 
@@ -6265,7 +6314,11 @@ static void smbchg_iusb_5v_2a_detect_work(struct work_struct *work)
 	} else {
 		/*5V/2A Adapter is detected*/
 		g_is_5v_2a_detected = true;
+<<<<<<< HEAD
 #if !defined(CONFIG_MACH_OCE) || defined(CONFIG_HTC_BATT_WA_PCN0022)
+=======
+#if !defined(CONFIG_MACH_DUMMY) || defined(CONFIG_HTC_BATT_WA_PCN0022)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		g_is_charger_ability_detected = true;
 #endif /* CONFIG_HTC_BATT_WA_PCN0022 */
 		pr_smb(PR_STATUS, "Upgrade to 2A done, "
@@ -6279,8 +6332,13 @@ static void smbchg_iusb_5v_2a_detect_work(struct work_struct *work)
 			pr_err("Couldn't enable input missing poller rc=%d\n", rc);
 		/*Enable HW AICL to run 2A again*/
 		set_aicl_enable(true);
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && !defined(CONFIG_HTC_BATT_WA_PCN0022)
 		
+=======
+#if defined(CONFIG_MACH_DUMMY) && !defined(CONFIG_HTC_BATT_WA_PCN0022)
+		/* Detection of Type-C 3A charger */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		pr_smb(PR_STATUS, "is_typec_charger: %d, sink_current: %d\n",
 			g_is_typec_charger, the_chip->sink_current);
@@ -6320,7 +6378,11 @@ static void re_enable_qc3_work(struct work_struct *work)
 	the_chip->allow_hvdcp3_detection = true;
 };
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static void smbchg_set_fcc_limit(bool bEnable)
 {
 	if (!the_chip) {
@@ -6481,7 +6543,11 @@ static void handle_usb_removal(struct smbchg_chip *chip)
 	}
 #endif //CONFIG_HTC_BATT_WA_PCN0011
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!g_rerun_apsd_ignore_uv && !chip->hvdcp_3_det_ignore_uv && g_is_fcc_limit) {
 		smbchg_set_fcc_limit(false);
 
@@ -6497,7 +6563,11 @@ static void handle_usb_removal(struct smbchg_chip *chip)
 	pr_smb(PR_STATUS, "triggered\n");
 #endif
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	siw_touch_notify_connect(CONNECT_NONE);
 #endif
 
@@ -6552,7 +6622,11 @@ static void handle_usb_removal(struct smbchg_chip *chip)
 	vote(chip->usb_icl_votable, SW_AICL_ICL_VOTER, false, 0);
 	vote(chip->aicl_deglitch_short_votable,
 		HVDCP_SHORT_DEGLITCH_VOTER, false, 0);
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!chip->tps_otg_enable)
 #endif
 #ifdef CONFIG_HTC_BATT_WA_PCN0013
@@ -6561,8 +6635,13 @@ static void handle_usb_removal(struct smbchg_chip *chip)
 	g_is_charger_ability_detected = false;
 	g_is_hvdcp_detect_done = false;
 	g_is_5v_2a_detected = false;
+<<<<<<< HEAD
 #endif 
 #ifdef CONFIG_MACH_OCE
+=======
+#endif //CONFIG_HTC_BATT_PCN0015
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	g_is_typec_charger = false;
 #endif
 #ifdef CONFIG_HTC_BATT_WA_PCN0008
@@ -6575,7 +6654,11 @@ static void handle_usb_removal(struct smbchg_chip *chip)
 		cancel_delayed_work_sync(&chip->iusb_5v_2a_detect_work);
 	if (delayed_work_pending(&chip->downgrade_iusb_work))
 		cancel_delayed_work_sync(&chip->downgrade_iusb_work);
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (delayed_work_pending(&chip->sink_current_change_work))
 		cancel_delayed_work_sync(&chip->sink_current_change_work);
 #endif
@@ -6630,7 +6713,11 @@ static void handle_usb_insertion(struct smbchg_chip *chip)
 	enum power_supply_type usb_supply_type;
 	int rc;
 	char *usb_type_name = "null";
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	int level;
 #endif
 #ifdef CONFIG_HTC_BATT_PCN0020
@@ -6641,7 +6728,11 @@ static void handle_usb_insertion(struct smbchg_chip *chip)
 				AICL_INIT_BIT, 0);
 #endif //CONFIG_HTC_BATT
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	level = htc_battery_level_adjust();
 	if ((level > DISPLAY_FLICKER_WA_ENABLE_LEVEL) &&
 			!g_is_fcc_limit &&
@@ -6667,7 +6758,11 @@ static void handle_usb_insertion(struct smbchg_chip *chip)
 	pr_smb(PR_STATUS,
 		"inserted type = %d (%s)", usb_supply_type, usb_type_name);
 
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_OCE) && defined(CONFIG_TOUCHSCREEN_SIW)
+=======
+#if defined(CONFIG_MACH_DUMMY) && defined(CONFIG_TOUCHSCREEN_SIW)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (usb_supply_type == POWER_SUPPLY_TYPE_UNKNOWN)
 		siw_touch_notify_connect(CONNECT_NONE);
 	else if (usb_supply_type == POWER_SUPPLY_TYPE_USB)
@@ -6780,7 +6875,11 @@ static int otg_oc_reset(struct smbchg_chip *chip)
 {
 	int rc;
 
+<<<<<<< HEAD
 #if defined(CONFIG_HTC_BATT) && !defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_HTC_BATT) && !defined(CONFIG_MACH_DUMMY)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	int vbus_mv = 0;
 
 	vbus_mv = pmi8994_get_usbin_voltage_now()/1000;
@@ -8172,7 +8271,11 @@ static int smbchg_battery_set_property(struct power_supply *psy,
 			power_supply_changed(&chip->batt_psy);
 		}
 		break;
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	case POWER_SUPPLY_PROP_TYPEC_SINK_CURRENT:
 		pr_smb(PR_STATUS, "Received resistor change (%d)->(%d)\n",
 			(int)chip->sink_current, val->intval);
@@ -8184,7 +8287,11 @@ static int smbchg_battery_set_property(struct power_supply *psy,
 			cancel_delayed_work_sync(&chip->sink_current_change_work);
 		schedule_delayed_work(&chip->sink_current_change_work,
 			SINK_CURRENT_CHANGE_WORKER_TIME_MS);
+<<<<<<< HEAD
 #endif 
+=======
+#endif /* CONFIG_HTC_BATT_WA_PCN0022 */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		break;
 	case POWER_SUPPLY_PROP_TPS_OTG_ENABLE:
 		if(val->intval <= 0)
@@ -8349,7 +8456,11 @@ static int smbchg_battery_get_property(struct power_supply *psy,
 		val->intval = htc_get_surface_temp();
 		break;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	case POWER_SUPPLY_PROP_TYPEC_SINK_CURRENT:
 		val->intval = chip->sink_current;
 		break;
@@ -8503,14 +8614,22 @@ static irqreturn_t batt_cold_handler(int irq, void *_chip)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define TEMP_NORMAL_TO_WARM     480
 #define TEMP_WARM_TO_NORMAL     460
 #else
 #ifdef CONFIG_HTC_BATT_PCN0013
 #define TEMP_NORMAL_TO_WARM	470
 #define TEMP_WARM_TO_NORMAL	450
+<<<<<<< HEAD
 #endif 
+=======
+#endif //CONFIG_HTCBATT_PCN0013
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 static irqreturn_t batt_warm_handler(int irq, void *_chip)
 {
@@ -8757,7 +8876,11 @@ static irqreturn_t chg_term_handler(int irq, void *_chip)
 #ifdef CONFIG_HTC_BATT
 	g_is_batt_full_eoc_stop = true;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	pr_smb(PR_INTERRUPT, "Disable aicl rerun\n");
 	vote(chip->hw_aicl_rerun_disable_votable,
 		HTC_DISPLAY_FLICKER_WA_VOTER, true, 0);
@@ -9180,8 +9303,13 @@ static irqreturn_t src_detect_handler(int irq, void *_chip)
 		chip->aicl_irq_count = 0;
 #ifdef CONFIG_HTC_BATT
 		g_is_batt_full_eoc_stop = false;
+<<<<<<< HEAD
 #endif 
 #ifdef CONFIG_MACH_OCE
+=======
+#endif //CONFIG_HTC_BATT
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		pr_smb(PR_INTERRUPT, "Enable aicl rerun\n");
 		vote(chip->hw_aicl_rerun_disable_votable,
 			HTC_DISPLAY_FLICKER_WA_VOTER, false, 0);
@@ -9195,7 +9323,15 @@ out:
  * otg_oc_handler() - called when the usb otg goes over current
  */
 
+<<<<<<< HEAD
 #if defined(CONFIG_HTC_BATT) && !defined(CONFIG_MACH_OCE)
+=======
+#if defined(CONFIG_HTC_BATT) && !defined(CONFIG_MACH_DUMMY)
+/* Set NUM_OTG_RETRIES to 1 due to too many oc_reset will pull up vbus
+ * to a specific value which can trigger large current,	in order to avoid
+ * this situation, lower down retry times will be helpful.
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define NUM_OTG_RETRIES			1
 #else
 #define NUM_OTG_RETRIES			5
@@ -11355,7 +11491,11 @@ bool is_otg_enabled(void)
 	u8 otg_status = 0;
 	smbchg_read(the_chip, &otg_status, the_chip->bat_if_base + CMD_CHG_REG, 1);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (the_chip->tps_otg_enable)
 		return true;
 #endif
@@ -11372,7 +11512,11 @@ bool usb_otg_pulse_skip_control(bool disable)
                 pr_err("called before init\n");
                 return false;
         }
+<<<<<<< HEAD
 #ifndef CONFIG_MACH_OCE
+=======
+#ifndef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	smbchg_otg_pulse_skip_disable(the_chip, REASON_OTG_ENABLED, disable);
 #else
 	pr_smb(PR_STATUS, "Do not disable otg pulse skip on Ocean#note\n");
@@ -11392,7 +11536,11 @@ int charger_dump_all(void)
 	u8 pmic_revid_rev3 = 0, pmic_revid_rev4 = 0;
 	int cc_uah = 0, rc = 0;
 	int warm_temp = 0, cool_temp = 0;
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	int wake_reason = 0;
 #endif
 
@@ -11426,7 +11574,11 @@ int charger_dump_all(void)
 	rc = get_property_from_fg(the_chip, POWER_SUPPLY_PROP_WARM_TEMP, &warm_temp);
 	rc = get_property_from_fg(the_chip, POWER_SUPPLY_PROP_COOL_TEMP, &cool_temp);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	wake_reason = the_chip->wake_reasons;
 #endif
 
@@ -11439,14 +11591,22 @@ int charger_dump_all(void)
 	pr_smb(PR_STATUS,"[BATT][SMBCHG] 0x100E=%02x,0x1010=%02x,0x10FC=%02x,"
 		"0x1210=%02x,0x1242=%02x,0x130D=%02x,0x1310=%02x,0x1340=%02x,0x13F3=%02x,"
 		"0x13F4=%02x,0x1610=%02x,0x13F2=%02x,0x1307=%02x,0x1608=%02x,0x16F5=%02x,cc=%duAh,"
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		"sink_current=%d,is_typec=%d,wake_reason=%d,fcc_limit=%d,"
 #endif
 		"warm_temp=%d,cool_temp=%d,C_workable=%d,pmic=rev%d.%d\n",
 		chgr_sts,chgr_rt_sts,chgr_cfg2,bat_if_rt_sts,bat_if_cmd,chgpth_input_sts,
 		chgpth_rt_sts,chgpth_cmd,chgpth_aicl_cfg,chgpth_cfg,misc_rt_sts,iusb_reg,aicl_reg,
 		misc_idev_sts,aicl_rerun_reg,cc_uah,
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		the_chip->sink_current,g_is_typec_charger,wake_reason,g_is_fcc_limit,
 #endif
 		warm_temp,cool_temp,g_typec_workable,pmic_revid_rev4,pmic_revid_rev3);
@@ -11910,7 +12070,11 @@ static int smbchg_probe(struct spmi_device *spmi)
 #ifdef CONFIG_HTC_BATT
 	INIT_DELAYED_WORK(&chip->re_enable_qc3_work, re_enable_qc3_work);
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	INIT_DELAYED_WORK(&chip->smbchg_unlimit_fcc_worker, smbchg_unlimit_fcc_worker);
 	INIT_DELAYED_WORK(&chip->sink_current_change_work, smbchg_sink_current_change_worker);
 #endif
@@ -11995,7 +12159,11 @@ static int smbchg_probe(struct spmi_device *spmi)
 		goto out;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	chip->sink_current = -1;
 #endif
 
@@ -12069,8 +12237,13 @@ static int smbchg_probe(struct spmi_device *spmi)
 	dump_regs(chip);
 	create_debugfs_entries(chip);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
 	
+=======
+#ifdef CONFIG_MACH_DUMMY
+	/* register GPIO to control TPS61099 OTG */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	chip->gpio_tps_otg = of_get_named_gpio(chip->spmi->dev.of_node, "htc,tps_otg_control", 0);
 	if (chip->gpio_tps_otg < 0){
 		pr_smb(PR_STATUS, "[TPS61099] GPIO is invalid\n");
@@ -12185,7 +12358,11 @@ static void smbchg_shutdown(struct spmi_device *spmi)
 	if (rc < 0)
 		pr_err("Couldn't vote 500mA ICL\n");
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_OCE
+=======
+#ifdef CONFIG_MACH_DUMMY
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (chip->tps_otg_enable)
 		smbchg_tps61099_otg_disble();
 #endif

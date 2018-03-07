@@ -402,7 +402,10 @@ endchoice
 config SCHED_WALT
         bool "Support window based load tracking"
         depends on SMP
+<<<<<<< HEAD
         depends on FAIR_GROUP_SCHED
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
         help
         This feature will allow the scheduler to maintain a tunable window
 	based set of metrics for tasks and runqueues. These metrics can be
@@ -1334,6 +1337,7 @@ config SCHED_TUNE
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config DYNAMIC_STUNE_BOOST
 	bool "Dynamic SchedTune boosting support"
 	depends on SCHED_TUNE
@@ -1353,6 +1357,8 @@ config DEFAULT_USE_ENERGY_AWARE
 
 	  Say N if unsure.
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 config SYSFS_DEPRECATED
 	bool "Enable deprecated sysfs features to support old userspace tools"
 	depends on SYSFS

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -4630,7 +4634,10 @@ int ipa_tag_process(struct ipa_desc desc[],
 	int res;
 	struct ipa_tag_completion *comp;
 	int ep_idx;
+<<<<<<< HEAD
 	u32 retry_cnt = 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	gfp_t flag = GFP_KERNEL | (ipa_ctx->use_dma_zone ? GFP_DMA : 0);
 
 	/* Not enough room for the required descriptors for the tag process */
@@ -5289,10 +5296,13 @@ int ipa2_bind_api_controller(enum ipa_hw_type ipa_hw_type,
 	api_ctrl->ipa_get_pdev = ipa2_get_pdev;
 	api_ctrl->ipa_ntn_uc_reg_rdyCB = ipa2_ntn_uc_reg_rdyCB;
 	api_ctrl->ipa_ntn_uc_dereg_rdyCB = ipa2_ntn_uc_dereg_rdyCB;
+<<<<<<< HEAD
 	api_ctrl->ipa_conn_wdi3_pipes = ipa2_conn_wdi3_pipes;
 	api_ctrl->ipa_disconn_wdi3_pipes = ipa2_disconn_wdi3_pipes;
 	api_ctrl->ipa_enable_wdi3_pipes = ipa2_enable_wdi3_pipes;
 	api_ctrl->ipa_disable_wdi3_pipes = ipa2_disable_wdi3_pipes;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	return 0;
 }

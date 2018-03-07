@@ -27,12 +27,18 @@
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
 #include <linux/list_lru.h>
 #include "binder_alloc.h"
 #include "binder_trace.h"
 
 struct list_lru binder_alloc_lru;
 
+=======
+#include "binder_alloc.h"
+#include "binder_trace.h"
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static DEFINE_MUTEX(binder_alloc_mmap_lock);
 
 enum {
@@ -51,6 +57,7 @@ module_param_named(debug_mask, binder_alloc_debug_mask,
 			pr_info(x); \
 	} while (0)
 
+<<<<<<< HEAD
 static struct binder_buffer *binder_buffer_next(struct binder_buffer *buffer)
 {
 	return list_entry(buffer->entry.next, struct binder_buffer, entry);
@@ -61,13 +68,22 @@ static struct binder_buffer *binder_buffer_prev(struct binder_buffer *buffer)
 	return list_entry(buffer->entry.prev, struct binder_buffer, entry);
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static size_t binder_alloc_buffer_size(struct binder_alloc *alloc,
 				       struct binder_buffer *buffer)
 {
 	if (list_is_last(&buffer->entry, &alloc->buffers))
+<<<<<<< HEAD
 		return (u8 *)alloc->buffer +
 			alloc->buffer_size - (u8 *)buffer->data;
 	return (u8 *)binder_buffer_next(buffer)->data - (u8 *)buffer->data;
+=======
+		return alloc->buffer +
+		       alloc->buffer_size - (void *)buffer->data;
+	return (size_t)list_entry(buffer->entry.next,
+			  struct binder_buffer, entry) - (size_t)buffer->data;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static void binder_insert_free_buffer(struct binder_alloc *alloc,
@@ -117,9 +133,15 @@ static void binder_insert_allocated_buffer_locked(
 		buffer = rb_entry(parent, struct binder_buffer, rb_node);
 		BUG_ON(buffer->free);
 
+<<<<<<< HEAD
 		if (new_buffer->data < buffer->data)
 			p = &parent->rb_left;
 		else if (new_buffer->data > buffer->data)
+=======
+		if (new_buffer < buffer)
+			p = &parent->rb_left;
+		else if (new_buffer > buffer)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			p = &parent->rb_right;
 		else
 			BUG();
@@ -134,27 +156,51 @@ static struct binder_buffer *binder_alloc_prepare_to_free_locked(
 {
 	struct rb_node *n = alloc->allocated_buffers.rb_node;
 	struct binder_buffer *buffer;
+<<<<<<< HEAD
 	void *kern_ptr;
 
 	kern_ptr = (void *)(user_ptr - alloc->user_buffer_offset);
+=======
+	struct binder_buffer *kern_ptr;
+
+	kern_ptr = (struct binder_buffer *)(user_ptr - alloc->user_buffer_offset
+		- offsetof(struct binder_buffer, data));
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	while (n) {
 		buffer = rb_entry(n, struct binder_buffer, rb_node);
 		BUG_ON(buffer->free);
 
+<<<<<<< HEAD
 		if (kern_ptr < buffer->data)
 			n = n->rb_left;
 		else if (kern_ptr > buffer->data)
+=======
+		if (kern_ptr < buffer)
+			n = n->rb_left;
+		else if (kern_ptr > buffer)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			n = n->rb_right;
 		else {
 			/*
 			 * Guard against user threads attempting to
+<<<<<<< HEAD
 			 * free the buffer when in use by kernel or
 			 * after it's already been freed.
 			 */
 			if (!buffer->allow_user_free)
 				return ERR_PTR(-EPERM);
 			buffer->allow_user_free = 0;
+=======
+			 * free the buffer twice
+			 */
+			if (buffer->free_in_progress) {
+				pr_err("%d:%d FREE_BUFFER u%016llx user freed buffer twice\n",
+				       alloc->pid, current->pid, (u64)user_ptr);
+				return NULL;
+			}
+			buffer->free_in_progress = 1;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			return buffer;
 		}
 	}
@@ -184,6 +230,7 @@ struct binder_buffer *binder_alloc_prepare_to_free(struct binder_alloc *alloc,
 }
 
 static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
+<<<<<<< HEAD
 				    void *start, void *end)
 {
 	void *page_addr;
@@ -192,6 +239,15 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 	struct vm_area_struct *vma = NULL;
 	struct mm_struct *mm = NULL;
 	bool need_mm = false;
+=======
+				    void *start, void *end,
+				    struct vm_area_struct *vma)
+{
+	void *page_addr;
+	unsigned long user_page_addr;
+	struct page **page;
+	struct mm_struct *mm;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
 		     "%d: %s pages %pK-%pK\n", alloc->pid,
@@ -202,6 +258,7 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 
 	trace_binder_update_page_range(alloc, allocate, start, end);
 
+<<<<<<< HEAD
 	if (allocate == 0)
 		goto free_range;
 
@@ -216,13 +273,33 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 	/* Same as mmget_not_zero() in later kernel versions */
 	if (need_mm && atomic_inc_not_zero(&alloc->vma_vm_mm->mm_users))
 		mm = alloc->vma_vm_mm;
+=======
+	if (vma)
+		mm = NULL;
+	else
+		mm = get_task_mm(alloc->tsk);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (mm) {
 		down_write(&mm->mmap_sem);
 		vma = alloc->vma;
+<<<<<<< HEAD
 	}
 
 	if (!vma && need_mm) {
+=======
+		if (vma && mm != alloc->vma_vm_mm) {
+			pr_err("%d: vma mm and task mm mismatch\n",
+				alloc->pid);
+			vma = NULL;
+		}
+	}
+
+	if (allocate == 0)
+		goto free_range;
+
+	if (vma == NULL) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		pr_err("%d: binder_alloc_buf failed to map pages in userspace, no vma\n",
 			alloc->pid);
 		goto err_no_vma;
@@ -230,6 +307,7 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 
 	for (page_addr = start; page_addr < end; page_addr += PAGE_SIZE) {
 		int ret;
+<<<<<<< HEAD
 		bool on_lru;
 		size_t index;
 
@@ -254,16 +332,29 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 					    __GFP_HIGHMEM |
 					    __GFP_ZERO);
 		if (!page->page_ptr) {
+=======
+
+		page = &alloc->pages[(page_addr - alloc->buffer) / PAGE_SIZE];
+
+		BUG_ON(*page);
+		*page = alloc_page(GFP_KERNEL | __GFP_HIGHMEM | __GFP_ZERO);
+		if (*page == NULL) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			pr_err("%d: binder_alloc_buf failed for page at %pK\n",
 				alloc->pid, page_addr);
 			goto err_alloc_page_failed;
 		}
+<<<<<<< HEAD
 		page->alloc = alloc;
 		INIT_LIST_HEAD(&page->lru);
 
 		ret = map_kernel_range_noflush((unsigned long)page_addr,
 					       PAGE_SIZE, PAGE_KERNEL,
 					       &page->page_ptr);
+=======
+		ret = map_kernel_range_noflush((unsigned long)page_addr,
+					PAGE_SIZE, PAGE_KERNEL, page);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		flush_cache_vmap((unsigned long)page_addr,
 				(unsigned long)page_addr + PAGE_SIZE);
 		if (ret != 1) {
@@ -273,17 +364,24 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 		}
 		user_page_addr =
 			(uintptr_t)page_addr + alloc->user_buffer_offset;
+<<<<<<< HEAD
 		ret = vm_insert_page(vma, user_page_addr, page[0].page_ptr);
+=======
+		ret = vm_insert_page(vma, user_page_addr, page[0]);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (ret) {
 			pr_err("%d: binder_alloc_buf failed to map page at %lx in userspace\n",
 			       alloc->pid, user_page_addr);
 			goto err_vm_insert_page_failed;
 		}
+<<<<<<< HEAD
 
 		if (index + 1 > alloc->pages_high)
 			alloc->pages_high = index + 1;
 
 		trace_binder_alloc_page_end(alloc, index);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* vm_insert_page does not seem to increment the refcount */
 	}
 	if (mm) {
@@ -295,6 +393,7 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
 free_range:
 	for (page_addr = end - PAGE_SIZE; page_addr >= start;
 	     page_addr -= PAGE_SIZE) {
+<<<<<<< HEAD
 		bool ret;
 		size_t index;
 
@@ -316,6 +415,18 @@ err_map_kernel_failed:
 		page->page_ptr = NULL;
 err_alloc_page_failed:
 err_page_ptr_cleared:
+=======
+		page = &alloc->pages[(page_addr - alloc->buffer) / PAGE_SIZE];
+		if (vma)
+			zap_page_range(vma, (uintptr_t)page_addr +
+				alloc->user_buffer_offset, PAGE_SIZE, NULL);
+err_vm_insert_page_failed:
+		unmap_kernel_range((unsigned long)page_addr, PAGE_SIZE);
+err_map_kernel_failed:
+		__free_page(*page);
+		*page = NULL;
+err_alloc_page_failed:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		;
 	}
 err_no_vma:
@@ -371,9 +482,12 @@ struct binder_buffer *binder_alloc_new_buf_locked(struct binder_alloc *alloc,
 		return ERR_PTR(-ENOSPC);
 	}
 
+<<<<<<< HEAD
 	/* Pad 0-size buffers so they get assigned unique addresses */
 	size = max(size, sizeof(void *));
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	while (n) {
 		buffer = rb_entry(n, struct binder_buffer, rb_node);
 		BUG_ON(!buffer->free);
@@ -433,6 +547,7 @@ struct binder_buffer *binder_alloc_new_buf_locked(struct binder_alloc *alloc,
 
 	has_page_addr =
 		(void *)(((uintptr_t)buffer->data + buffer_size) & PAGE_MASK);
+<<<<<<< HEAD
 	WARN_ON(n && buffer_size != size);
 	end_page_addr =
 		(void *)PAGE_ALIGN((uintptr_t)buffer->data + size);
@@ -453,15 +568,42 @@ struct binder_buffer *binder_alloc_new_buf_locked(struct binder_alloc *alloc,
 			goto err_alloc_buf_struct_failed;
 		}
 		new_buffer->data = (u8 *)buffer->data + size;
+=======
+	if (n == NULL) {
+		if (size + sizeof(struct binder_buffer) + 4 >= buffer_size)
+			buffer_size = size; /* no room for other buffers */
+		else
+			buffer_size = size + sizeof(struct binder_buffer);
+	}
+	end_page_addr =
+		(void *)PAGE_ALIGN((uintptr_t)buffer->data + buffer_size);
+	if (end_page_addr > has_page_addr)
+		end_page_addr = has_page_addr;
+	ret = binder_update_page_range(alloc, 1,
+	    (void *)PAGE_ALIGN((uintptr_t)buffer->data), end_page_addr, NULL);
+	if (ret)
+		return ERR_PTR(ret);
+
+	rb_erase(best_fit, &alloc->free_buffers);
+	buffer->free = 0;
+	buffer->free_in_progress = 0;
+	binder_insert_allocated_buffer_locked(alloc, buffer);
+	if (buffer_size != size) {
+		struct binder_buffer *new_buffer = (void *)buffer->data + size;
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		list_add(&new_buffer->entry, &buffer->entry);
 		new_buffer->free = 1;
 		binder_insert_free_buffer(alloc, new_buffer);
 	}
+<<<<<<< HEAD
 
 	rb_erase(best_fit, &alloc->free_buffers);
 	buffer->free = 0;
 	buffer->allow_user_free = 0;
 	binder_insert_allocated_buffer_locked(alloc, buffer);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
 		     "%d: binder_alloc_buf size %zd got %pK\n",
 		      alloc->pid, size, buffer);
@@ -476,12 +618,15 @@ struct binder_buffer *binder_alloc_new_buf_locked(struct binder_alloc *alloc,
 			      alloc->pid, size, alloc->free_async_space);
 	}
 	return buffer;
+<<<<<<< HEAD
 
 err_alloc_buf_struct_failed:
 	binder_update_page_range(alloc, 0,
 				 (void *)PAGE_ALIGN((uintptr_t)buffer->data),
 				 end_page_addr);
 	return ERR_PTR(-ENOMEM);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /**
@@ -516,18 +661,28 @@ struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
 
 static void *buffer_start_page(struct binder_buffer *buffer)
 {
+<<<<<<< HEAD
 	return (void *)((uintptr_t)buffer->data & PAGE_MASK);
 }
 
 static void *prev_buffer_end_page(struct binder_buffer *buffer)
 {
 	return (void *)(((uintptr_t)(buffer->data) - 1) & PAGE_MASK);
+=======
+	return (void *)((uintptr_t)buffer & PAGE_MASK);
+}
+
+static void *buffer_end_page(struct binder_buffer *buffer)
+{
+	return (void *)(((uintptr_t)(buffer + 1) - 1) & PAGE_MASK);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static void binder_delete_free_buffer(struct binder_alloc *alloc,
 				      struct binder_buffer *buffer)
 {
 	struct binder_buffer *prev, *next = NULL;
+<<<<<<< HEAD
 	bool to_free = true;
 	BUG_ON(alloc->buffers.next == &buffer->entry);
 	prev = binder_buffer_prev(buffer);
@@ -568,6 +723,47 @@ static void binder_delete_free_buffer(struct binder_alloc *alloc,
 	}
 	list_del(&buffer->entry);
 	kfree(buffer);
+=======
+	int free_page_end = 1;
+	int free_page_start = 1;
+
+	BUG_ON(alloc->buffers.next == &buffer->entry);
+	prev = list_entry(buffer->entry.prev, struct binder_buffer, entry);
+	BUG_ON(!prev->free);
+	if (buffer_end_page(prev) == buffer_start_page(buffer)) {
+		free_page_start = 0;
+		if (buffer_end_page(prev) == buffer_end_page(buffer))
+			free_page_end = 0;
+		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+			     "%d: merge free, buffer %pK share page with %pK\n",
+			      alloc->pid, buffer, prev);
+	}
+
+	if (!list_is_last(&buffer->entry, &alloc->buffers)) {
+		next = list_entry(buffer->entry.next,
+				  struct binder_buffer, entry);
+		if (buffer_start_page(next) == buffer_end_page(buffer)) {
+			free_page_end = 0;
+			if (buffer_start_page(next) ==
+			    buffer_start_page(buffer))
+				free_page_start = 0;
+			binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+				     "%d: merge free, buffer %pK share page with %pK\n",
+				      alloc->pid, buffer, prev);
+		}
+	}
+	list_del(&buffer->entry);
+	if (free_page_start || free_page_end) {
+		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+			     "%d: merge free, buffer %pK do not share page%s%s with %pK or %pK\n",
+			     alloc->pid, buffer, free_page_start ? "" : " end",
+			     free_page_end ? "" : " start", prev, next);
+		binder_update_page_range(alloc, 0, free_page_start ?
+			buffer_start_page(buffer) : buffer_end_page(buffer),
+			(free_page_end ? buffer_end_page(buffer) :
+			buffer_start_page(buffer)) + PAGE_SIZE, NULL);
+	}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static void binder_free_buf_locked(struct binder_alloc *alloc,
@@ -588,8 +784,13 @@ static void binder_free_buf_locked(struct binder_alloc *alloc,
 	BUG_ON(buffer->free);
 	BUG_ON(size > buffer_size);
 	BUG_ON(buffer->transaction != NULL);
+<<<<<<< HEAD
 	BUG_ON(buffer->data < alloc->buffer);
 	BUG_ON(buffer->data > alloc->buffer + alloc->buffer_size);
+=======
+	BUG_ON((void *)buffer < alloc->buffer);
+	BUG_ON((void *)buffer > alloc->buffer + alloc->buffer_size);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (buffer->async_transaction) {
 		alloc->free_async_space += size + sizeof(struct binder_buffer);
@@ -601,12 +802,22 @@ static void binder_free_buf_locked(struct binder_alloc *alloc,
 
 	binder_update_page_range(alloc, 0,
 		(void *)PAGE_ALIGN((uintptr_t)buffer->data),
+<<<<<<< HEAD
 		(void *)(((uintptr_t)buffer->data + buffer_size) & PAGE_MASK));
+=======
+		(void *)(((uintptr_t)buffer->data + buffer_size) & PAGE_MASK),
+		NULL);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	rb_erase(&buffer->rb_node, &alloc->allocated_buffers);
 	buffer->free = 1;
 	if (!list_is_last(&buffer->entry, &alloc->buffers)) {
+<<<<<<< HEAD
 		struct binder_buffer *next = binder_buffer_next(buffer);
+=======
+		struct binder_buffer *next = list_entry(buffer->entry.next,
+						struct binder_buffer, entry);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		if (next->free) {
 			rb_erase(&next->rb_node, &alloc->free_buffers);
@@ -614,7 +825,12 @@ static void binder_free_buf_locked(struct binder_alloc *alloc,
 		}
 	}
 	if (alloc->buffers.next != &buffer->entry) {
+<<<<<<< HEAD
 		struct binder_buffer *prev = binder_buffer_prev(buffer);
+=======
+		struct binder_buffer *prev = list_entry(buffer->entry.prev,
+						struct binder_buffer, entry);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		if (prev->free) {
 			binder_delete_free_buffer(alloc, buffer);
@@ -700,6 +916,7 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
 	}
 	alloc->buffer_size = vma->vm_end - vma->vm_start;
 
+<<<<<<< HEAD
 	buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
 	if (!buffer) {
 		ret = -ENOMEM;
@@ -708,6 +925,16 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
 	}
 
 	buffer->data = alloc->buffer;
+=======
+	if (binder_update_page_range(alloc, 1, alloc->buffer,
+				     alloc->buffer + PAGE_SIZE, vma)) {
+		ret = -ENOMEM;
+		failure_string = "alloc small buf";
+		goto err_alloc_small_buf_failed;
+	}
+	buffer = alloc->buffer;
+	INIT_LIST_HEAD(&alloc->buffers);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	list_add(&buffer->entry, &alloc->buffers);
 	buffer->free = 1;
 	binder_insert_free_buffer(alloc, buffer);
@@ -715,12 +942,19 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
 	barrier();
 	alloc->vma = vma;
 	alloc->vma_vm_mm = vma->vm_mm;
+<<<<<<< HEAD
 	/* Same as mmgrab() in later kernel versions */
 	atomic_inc(&alloc->vma_vm_mm->mm_count);
 
 	return 0;
 
 err_alloc_buf_struct_failed:
+=======
+
+	return 0;
+
+err_alloc_small_buf_failed:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	kfree(alloc->pages);
 	alloc->pages = NULL;
 err_alloc_pages_failed:
@@ -740,13 +974,21 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 {
 	struct rb_node *n;
 	int buffers, page_count;
+<<<<<<< HEAD
 	struct binder_buffer *buffer;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	BUG_ON(alloc->vma);
 
 	buffers = 0;
 	mutex_lock(&alloc->mutex);
 	while ((n = rb_first(&alloc->allocated_buffers))) {
+<<<<<<< HEAD
+=======
+		struct binder_buffer *buffer;
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		buffer = rb_entry(n, struct binder_buffer, rb_node);
 
 		/* Transaction should already have been freed */
@@ -756,6 +998,7 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 		buffers++;
 	}
 
+<<<<<<< HEAD
 	while (!list_empty(&alloc->buffers)) {
 		buffer = list_first_entry(&alloc->buffers,
 					  struct binder_buffer, entry);
@@ -766,12 +1009,15 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 		kfree(buffer);
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	page_count = 0;
 	if (alloc->pages) {
 		int i;
 
 		for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
 			void *page_addr;
+<<<<<<< HEAD
 			bool on_lru;
 
 			if (!alloc->pages[i].page_ptr)
@@ -786,14 +1032,29 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 				     on_lru ? "on lru" : "active");
 			unmap_kernel_range((unsigned long)page_addr, PAGE_SIZE);
 			__free_page(alloc->pages[i].page_ptr);
+=======
+
+			if (!alloc->pages[i])
+				continue;
+
+			page_addr = alloc->buffer + i * PAGE_SIZE;
+			binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+				     "%s: %d: page %d at %pK not freed\n",
+				     __func__, alloc->pid, i, page_addr);
+			unmap_kernel_range((unsigned long)page_addr, PAGE_SIZE);
+			__free_page(alloc->pages[i]);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			page_count++;
 		}
 		kfree(alloc->pages);
 		vfree(alloc->buffer);
 	}
 	mutex_unlock(&alloc->mutex);
+<<<<<<< HEAD
 	if (alloc->vma_vm_mm)
 		mmdrop(alloc->vma_vm_mm);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	binder_alloc_debug(BINDER_DEBUG_OPEN_CLOSE,
 		     "%s: %d buffers %d, pages %d\n",
@@ -831,6 +1092,7 @@ void binder_alloc_print_allocated(struct seq_file *m,
 }
 
 /**
+<<<<<<< HEAD
  * binder_alloc_print_pages() - print page usage
  * @m:     seq_file for output via seq_printf()
  * @alloc: binder_alloc for this proc
@@ -860,6 +1122,8 @@ void binder_alloc_print_pages(struct seq_file *m,
 }
 
 /**
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * binder_alloc_get_allocated_count() - return count of buffers
  * @alloc: binder_alloc for this proc
  *
@@ -889,6 +1153,7 @@ int binder_alloc_get_allocated_count(struct binder_alloc *alloc)
 void binder_alloc_vma_close(struct binder_alloc *alloc)
 {
 	WRITE_ONCE(alloc->vma, NULL);
+<<<<<<< HEAD
 }
 
 /**
@@ -994,6 +1259,12 @@ static struct shrinker binder_shrinker = {
 };
 
 /**
+=======
+	WRITE_ONCE(alloc->vma_vm_mm, NULL);
+}
+
+/**
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * binder_alloc_init() - called by binder_open() for per-proc initialization
  * @alloc: binder_alloc for this proc
  *
@@ -1002,6 +1273,7 @@ static struct shrinker binder_shrinker = {
  */
 void binder_alloc_init(struct binder_alloc *alloc)
 {
+<<<<<<< HEAD
 	alloc->pid = current->group_leader->pid;
 	mutex_init(&alloc->mutex);
 	INIT_LIST_HEAD(&alloc->buffers);
@@ -1012,3 +1284,10 @@ void binder_alloc_shrinker_init(void)
 	list_lru_init(&binder_alloc_lru);
 	register_shrinker(&binder_shrinker);
 }
+=======
+	alloc->tsk = current->group_leader;
+	alloc->pid = current->group_leader->pid;
+	mutex_init(&alloc->mutex);
+}
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)

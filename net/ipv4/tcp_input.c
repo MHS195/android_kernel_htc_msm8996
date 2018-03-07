@@ -5533,7 +5533,11 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
 			 * to stand against the temptation 8)     --ANK
 			 */
 			inet_csk_schedule_ack(sk);
+<<<<<<< HEAD
 			tcp_enter_quickack_mode(sk, TCP_MAX_QUICKACKS);
+=======
+			tcp_enter_quickack_mode(sk);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			inet_csk_reset_xmit_timer(sk, ICSK_TIME_DACK,
 						  TCP_DELACK_MAX, TCP_RTO_MAX);
 

@@ -699,11 +699,16 @@ static inline struct Qdisc *qdisc_replace(struct Qdisc *sch, struct Qdisc *new,
 	old = *pold;
 	*pold = new;
 	if (old != NULL) {
+<<<<<<< HEAD
 		unsigned int qlen = old->q.qlen;
 		unsigned int backlog = old->qstats.backlog;
 
 		qdisc_reset(old);
 		qdisc_tree_reduce_backlog(old, qlen, backlog);
+=======
+		qdisc_tree_reduce_backlog(old, old->q.qlen, old->qstats.backlog);
+		qdisc_reset(old);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 	sch_tree_unlock(sch);
 

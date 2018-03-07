@@ -3042,6 +3042,7 @@ static void si_apply_state_adjust_rules(struct radeon_device *rdev,
 			max_sclk = 75000;
 			max_mclk = 80000;
 		}
+<<<<<<< HEAD
 	} else if (rdev->family == CHIP_OLAND) {
 		if ((rdev->pdev->revision == 0xC7) ||
 		    (rdev->pdev->revision == 0x80) ||
@@ -3052,6 +3053,8 @@ static void si_apply_state_adjust_rules(struct radeon_device *rdev,
 		    (rdev->pdev->device == 0x6605)) {
 			max_sclk = 75000;
 		}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 	/* Apply dpm quirks */
 	while (p && p->chip_device != 0) {

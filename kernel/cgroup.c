@@ -2346,6 +2346,7 @@ int subsys_cgroup_allow_attach(struct cgroup_subsys_state *css, struct cgroup_ta
 	return 0;
 }
 
+<<<<<<< HEAD
 /* NOT USED - But Leave in - EAS removed allow_attach before, then partially brough it back.
    So just keep it around. + it exists in vanilla Marlin. 
  
@@ -2370,6 +2371,8 @@ static int cgroup_allow_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)
 
 */
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /*
  * Find the task_struct of the task to attach by vpid and pass it along to the
  * function to attach either it or all tasks in its threadgroup. Will lock

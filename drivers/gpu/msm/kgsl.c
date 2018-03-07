@@ -4059,7 +4059,11 @@ static void kgsl_core_exit(void)
 static int __init kgsl_core_init(void)
 {
 	int result = 0;
+<<<<<<< HEAD
 	struct sched_param param = { .sched_priority = 6 };
+=======
+	struct sched_param param = { .sched_priority = 2 };
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* alloc major and minor device numbers */
 	result = alloc_chrdev_region(&kgsl_driver.major, 0, KGSL_DEVICE_MAX,

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -378,6 +382,7 @@ static void ipa2_send_msg_free(void *buff, u32 len, u32 type)
 	kfree(buff);
 }
 
+<<<<<<< HEAD
 static int wlan_msg_process(struct ipa_msg_meta *meta, void *buff)
 {
 	struct ipa_push_msg *msg_dup;
@@ -480,6 +485,8 @@ static int wlan_msg_process(struct ipa_msg_meta *meta, void *buff)
 	return 0;
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /**
  * ipa2_send_msg() - Send "message" from kernel client to IPA driver
  * @meta: [in] message meta-data

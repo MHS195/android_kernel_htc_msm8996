@@ -545,9 +545,12 @@ extern struct cpufreq_governor cpufreq_gov_interactive;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCHED)
 extern struct cpufreq_governor cpufreq_gov_sched;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_sched)
+<<<<<<< HEAD
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL)
 extern struct cpufreq_governor cpufreq_gov_schedutil;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_schedutil)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 
 static inline void cpufreq_policy_apply_limits(struct cpufreq_policy *policy)
@@ -715,6 +718,7 @@ int cpufreq_generic_init(struct cpufreq_policy *policy,
 
 #ifdef CONFIG_CPU_FREQ_STAT
 
+<<<<<<< HEAD
 void acct_update_power(struct task_struct *p, cputime_t cputime);
 void cpufreq_task_stats_init(struct task_struct *p);
 void cpufreq_task_stats_alloc(struct task_struct *p);
@@ -738,6 +742,8 @@ static inline void cpufreq_task_stats_remove_uids(uid_t uid_start,
 	uid_t uid_end) {}
 #endif
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 struct sched_domain;
 unsigned long cpufreq_scale_freq_capacity(struct sched_domain *sd, int cpu);
 unsigned long cpufreq_scale_max_freq_capacity(int cpu);

@@ -316,7 +316,11 @@ static int xenbus_write_transaction(unsigned msg_type,
 			rc = -ENOMEM;
 			goto out;
 		}
+<<<<<<< HEAD
 	} else if (u->u.msg.tx_id != 0) {
+=======
+	} else if (msg_type == XS_TRANSACTION_END) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		list_for_each_entry(trans, &u->transactions, list)
 			if (trans->handle.id == u->u.msg.tx_id)
 				break;

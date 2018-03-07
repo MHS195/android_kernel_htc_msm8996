@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1076,7 +1080,10 @@ static int __ipa_add_flt_rule(struct ipa_flt_tbl *tbl, enum ipa_ip_type ip,
 	}
 	*rule_hdl = id;
 	entry->id = id;
+<<<<<<< HEAD
 	entry->ipacm_installed = user;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	IPADBG_LOW("add flt rule rule_cnt=%d\n", tbl->rule_cnt);
 
 	return 0;
@@ -1520,14 +1527,22 @@ void ipa_install_dflt_flt_rules(u32 ipa_ep_idx)
 	tbl = &ipa_ctx->flt_tbl[ipa_ep_idx][IPA_IP_v4];
 	rule.action = IPA_PASS_TO_EXCEPTION;
 	__ipa_add_flt_rule(tbl, IPA_IP_v4, &rule, true,
+<<<<<<< HEAD
 			&ep->dflt_flt4_rule_hdl, false);
+=======
+			&ep->dflt_flt4_rule_hdl);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa_ctx->ctrl->ipa_commit_flt(IPA_IP_v4);
 	tbl->sticky_rear = true;
 
 	tbl = &ipa_ctx->flt_tbl[ipa_ep_idx][IPA_IP_v6];
 	rule.action = IPA_PASS_TO_EXCEPTION;
 	__ipa_add_flt_rule(tbl, IPA_IP_v6, &rule, true,
+<<<<<<< HEAD
 			&ep->dflt_flt6_rule_hdl, false);
+=======
+			&ep->dflt_flt6_rule_hdl);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa_ctx->ctrl->ipa_commit_flt(IPA_IP_v6);
 	tbl->sticky_rear = true;
 	mutex_unlock(&ipa_ctx->lock);

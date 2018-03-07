@@ -52,6 +52,10 @@ int ip6_find_1stfragopt(struct sk_buff *skb, u8 **nexthdr)
 
 	while (offset <= packet_len) {
 		struct ipv6_opt_hdr *exthdr;
+<<<<<<< HEAD
+=======
+		unsigned int len;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		switch (**nexthdr) {
 
@@ -77,9 +81,16 @@ int ip6_find_1stfragopt(struct sk_buff *skb, u8 **nexthdr)
 
 		exthdr = (struct ipv6_opt_hdr *)(skb_network_header(skb) +
 						 offset);
+<<<<<<< HEAD
 		offset += ipv6_optlen(exthdr);
 		if (offset > IPV6_MAXPLEN)
 			return -EINVAL;
+=======
+		len = ipv6_optlen(exthdr);
+		if (len + offset >= IPV6_MAXPLEN)
+			return -EINVAL;
+		offset += len;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		*nexthdr = &exthdr->nexthdr;
 	}
 

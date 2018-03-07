@@ -354,7 +354,11 @@ static int __ipa_add_hdr_proc_ctx(struct ipa_hdr_proc_ctx_add *proc_ctx,
 	}
 	if (hdr_entry->cookie != IPA_HDR_COOKIE) {
 		IPAERR_RL("Invalid header cookie %u\n", hdr_entry->cookie);
+<<<<<<< HEAD
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EINVAL;
 	}
 	IPADBG("Associated header is name=%s is_hdr_proc_ctx=%d\n",
@@ -374,7 +378,10 @@ static int __ipa_add_hdr_proc_ctx(struct ipa_hdr_proc_ctx_add *proc_ctx,
 	if (add_ref_hdr)
 		hdr_entry->ref_cnt++;
 	entry->cookie = IPA_PROC_HDR_COOKIE;
+<<<<<<< HEAD
 	entry->ipacm_installed = user_only;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	needed_len = ipahal_get_proc_ctx_needed_len(proc_ctx->type);
 
@@ -385,7 +392,11 @@ static int __ipa_add_hdr_proc_ctx(struct ipa_hdr_proc_ctx_add *proc_ctx,
 		bin = IPA_HDR_PROC_CTX_BIN1;
 	} else {
 		IPAERR_RL("unexpected needed len %d\n", needed_len);
+<<<<<<< HEAD
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto bad_len;
 	}
 
@@ -432,8 +443,13 @@ static int __ipa_add_hdr_proc_ctx(struct ipa_hdr_proc_ctx_add *proc_ctx,
 
 	id = ipa3_id_alloc(entry);
 	if (id < 0) {
+<<<<<<< HEAD
 		IPAERR_RL("failed to alloc id\n");
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		IPAERR("failed to alloc id\n");
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto ipa_insert_failed;
 	}
 	entry->id = id;
@@ -493,7 +509,10 @@ static int __ipa_add_hdr(struct ipa_hdr_add *hdr, bool user)
 	entry->is_eth2_ofst_valid = hdr->is_eth2_ofst_valid;
 	entry->eth2_ofst = hdr->eth2_ofst;
 	entry->cookie = IPA_HDR_COOKIE;
+<<<<<<< HEAD
 	entry->ipacm_installed = user;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (hdr->hdr_len <= ipa_hdr_bin_sz[IPA_HDR_BIN0])
 		bin = IPA_HDR_BIN0;
@@ -545,7 +564,10 @@ static int __ipa_add_hdr(struct ipa_hdr_add *hdr, bool user)
 			list_add(&offset->link,
 					&htbl->head_offset_list[bin]);
 			entry->offset_entry = offset;
+<<<<<<< HEAD
 			offset->ipacm_installed = user;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 	} else {
 		entry->is_hdr_proc_ctx = false;
@@ -572,8 +594,13 @@ static int __ipa_add_hdr(struct ipa_hdr_add *hdr, bool user)
 
 	id = ipa3_id_alloc(entry);
 	if (id < 0) {
+<<<<<<< HEAD
 		IPAERR_RL("failed to alloc id\n");
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		IPAERR("failed to alloc id\n");
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto ipa_insert_failed;
 	}
 	entry->id = id;
@@ -691,6 +718,17 @@ int __ipa3_del_hdr(u32 hdr_hdl, bool by_user)
 		IPADBG("del hdr of len=%d hdr_cnt=%d ofst=%d\n",
 			entry->hdr_len, htbl->hdr_cnt,
 			entry->offset_entry->offset);
+<<<<<<< HEAD
+=======
+
+	if (by_user && entry->user_deleted) {
+		IPAERR_RL("proc_ctx already deleted by user\n");
+		return -EINVAL;
+	}
+
+	if (by_user)
+		entry->user_deleted = true;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (by_user && entry->user_deleted) {
 		IPAERR_RL("proc_ctx already deleted by user\n");
@@ -774,7 +812,11 @@ int ipa3_add_hdr_usr(struct ipa_ioc_add_hdr *hdrs, bool user_only)
 	IPADBG("adding %d headers to IPA driver internal data struct\n",
 			hdrs->num_hdrs);
 	for (i = 0; i < hdrs->num_hdrs; i++) {
+<<<<<<< HEAD
 		if (__ipa_add_hdr(&hdrs->hdr[i], user_only)) {
+=======
+		if (__ipa_add_hdr(&hdrs->hdr[i])) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			IPAERR_RL("failed to add hdr %d\n", i);
 			hdrs->hdr[i].status = -1;
 		} else {
@@ -876,8 +918,12 @@ int ipa3_add_hdr_proc_ctx(struct ipa_ioc_add_hdr_proc_ctx *proc_ctxs,
 	IPADBG("adding %d header processing contextes to IPA driver\n",
 			proc_ctxs->num_proc_ctxs);
 	for (i = 0; i < proc_ctxs->num_proc_ctxs; i++) {
+<<<<<<< HEAD
 		if (__ipa_add_hdr_proc_ctx(&proc_ctxs->proc_ctx[i],
 				true, user_only)) {
+=======
+		if (__ipa_add_hdr_proc_ctx(&proc_ctxs->proc_ctx[i], true)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			IPAERR_RL("failed to add hdr pric ctx %d\n", i);
 			proc_ctxs->proc_ctx[i].status = -1;
 		} else {

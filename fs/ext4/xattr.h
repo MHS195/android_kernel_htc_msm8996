@@ -101,6 +101,7 @@ extern const struct xattr_handler ext4_xattr_security_handler;
 
 #define EXT4_XATTR_NAME_ENCRYPTION_CONTEXT "c"
 
+<<<<<<< HEAD
 /*
  * The EXT4_STATE_NO_EXPAND is overloaded and used for two purposes.
  * The first is to signal that there the inline xattrs and data are
@@ -133,6 +134,8 @@ static inline void ext4_write_unlock_xattr(struct inode *inode, int *save)
 	up_write(&EXT4_I(inode)->xattr_sem);
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern ssize_t ext4_listxattr(struct dentry *, char *, size_t);
 
 extern int ext4_xattr_get(struct inode *, int, const char *, void *, size_t);

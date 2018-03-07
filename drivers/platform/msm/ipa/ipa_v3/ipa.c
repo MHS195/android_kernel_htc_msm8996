@@ -1078,6 +1078,49 @@ static long ipa3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			break;
 		}
 		break;
+
+	case IPA_IOC_ADD_RT_RULE_EXT:
+		if (copy_from_user(header,
+				(u8 *)arg,
+				sizeof(struct ipa_ioc_add_rt_rule_ext))) {
+			retval = -EFAULT;
+			break;
+		}
+		pre_entry =
+			((struct ipa_ioc_add_rt_rule_ext *)header)->num_rules;
+		pyld_sz =
+		   sizeof(struct ipa_ioc_add_rt_rule_ext) +
+		   pre_entry * sizeof(struct ipa_rt_rule_add_ext);
+		param = kzalloc(pyld_sz, GFP_KERNEL);
+		if (!param) {
+			retval = -ENOMEM;
+			break;
+		}
+		if (copy_from_user(param, (u8 *)arg, pyld_sz)) {
+			retval = -EFAULT;
+			break;
+		}
+		/* add check in case user-space module compromised */
+		if (unlikely(
+			((struct ipa_ioc_add_rt_rule_ext *)param)->num_rules
+			!= pre_entry)) {
+			IPAERR_RL("current %d pre %d\n",
+				((struct ipa_ioc_add_rt_rule_ext *)param)->
+				num_rules,
+				pre_entry);
+			retval = -EINVAL;
+			break;
+		}
+		if (ipa3_add_rt_rule_ext(
+			(struct ipa_ioc_add_rt_rule_ext *)param)) {
+			retval = -EFAULT;
+			break;
+		}
+		if (copy_to_user((u8 *)arg, param, pyld_sz)) {
+			retval = -EFAULT;
+			break;
+		}
+		break;
 	case IPA_IOC_ADD_RT_RULE_AFTER:
 		if (copy_from_user(header, (u8 *)arg,
 			sizeof(struct ipa_ioc_add_rt_rule_after))) {
@@ -1852,6 +1895,7 @@ static long ipa3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		break;
 
+<<<<<<< HEAD
 	case IPA_IOC_CLEANUP:
 		/*Route and filter rules will also be clean*/
 		IPADBG("Got IPA_IOC_CLEANUP\n");
@@ -1868,6 +1912,9 @@ static long ipa3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		break;
 
 	default:
+=======
+	default:        /* redundant, as cmd was checked against MAXNR */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		IPA_ACTIVE_CLIENTS_DEC_SIMPLE();
 		return -ENOTTY;
 	}
@@ -1878,6 +1925,7 @@ static long ipa3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_setup_dflt_rt_tables() - Setup default routing tables
  *
  * Return codes:
@@ -1885,6 +1933,15 @@ static long ipa3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
  * -ENOMEM: failed to allocate memory
  * -EPERM: failed to add the tables
  */
+=======
+* ipa3_setup_dflt_rt_tables() - Setup default routing tables
+*
+* Return codes:
+* 0: success
+* -ENOMEM: failed to allocate memory
+* -EPERM: failed to add the tables
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_setup_dflt_rt_tables(void)
 {
 	struct ipa_ioc_add_rt_rule *rt_rule;
@@ -2050,6 +2107,7 @@ static int ipa3_init_smem_region(int memory_region_size,
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_init_q6_smem() - Initialize Q6 general memory and
  *                      header memory regions in IPA.
  *
@@ -2058,6 +2116,16 @@ static int ipa3_init_smem_region(int memory_region_size,
  * -ENOMEM: failed to allocate dma memory
  * -EFAULT: failed to send IPA command to initialize the memory
  */
+=======
+* ipa3_init_q6_smem() - Initialize Q6 general memory and
+*                      header memory regions in IPA.
+*
+* Return codes:
+* 0: success
+* -ENOMEM: failed to allocate dma memory
+* -EFAULT: failed to send IPA command to initialize the memory
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_init_q6_smem(void)
 {
 	int rc;
@@ -2146,12 +2214,15 @@ static void ipa3_q6_avoid_holb(void)
 			if (ep_idx == -1)
 				continue;
 
+<<<<<<< HEAD
 			/* from IPA 4.0 pipe suspend is not supported */
 			if (ipa3_ctx->ipa_hw_type < IPA_HW_v4_0)
 				ipahal_write_reg_n_fields(
 				IPA_ENDP_INIT_CTRL_n,
 				ep_idx, &ep_suspend);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			/*
 			 * ipa3_cfg_ep_holb is not used here because we are
 			 * setting HOLB on Q6 pipes, and from APPS perspective
@@ -2552,6 +2623,44 @@ static int ipa3_q6_set_ex_path_to_apps(void)
 			reg_write.offset =
 				ipahal_get_reg_n_ofst(IPA_ENDP_STATUS_n,
 					ep_idx);
+<<<<<<< HEAD
+			reg_write.value = 0;
+			reg_write.value_mask = ~0;
+=======
+			ipahal_get_status_ep_valmask(
+				ipa3_get_ep_mapping(IPA_CLIENT_APPS_LAN_CONS),
+				&valmask);
+			reg_write.value = valmask.val;
+			reg_write.value_mask = valmask.mask;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
+			cmd_pyld = ipahal_construct_imm_cmd(
+				IPA_IMM_CMD_REGISTER_WRITE, &reg_write, false);
+			if (!cmd_pyld) {
+				IPAERR("fail construct register_write cmd\n");
+				ipa_assert();
+				return -EFAULT;
+			}
+
+			desc[num_descs].opcode = ipahal_imm_cmd_get_opcode(
+				IPA_IMM_CMD_REGISTER_WRITE);
+			desc[num_descs].type = IPA_IMM_CMD_DESC;
+			desc[num_descs].callback = ipa3_destroy_imm;
+			desc[num_descs].user1 = cmd_pyld;
+			desc[num_descs].pyld = cmd_pyld->data;
+			desc[num_descs].len = cmd_pyld->len;
+			num_descs++;
+		}
+
+		/* disable statuses for modem producers */
+		if (IPA_CLIENT_IS_Q6_PROD(client_idx)) {
+			ipa_assert_on(num_descs >= ipa3_ctx->ipa_num_pipes);
+
+			reg_write.skip_pipeline_clear = false;
+			reg_write.pipeline_clear_options =
+				IPAHAL_HPS_CLEAR;
+			reg_write.offset =
+				ipahal_get_reg_n_ofst(IPA_ENDP_STATUS_n,
+					ep_idx);
 			reg_write.value = 0;
 			reg_write.value_mask = ~0;
 			cmd_pyld = ipahal_construct_imm_cmd(
@@ -2594,12 +2703,21 @@ static int ipa3_q6_set_ex_path_to_apps(void)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_q6_pre_shutdown_cleanup() - A cleanup for all Q6 related configuration
  *                    in IPA HW. This is performed in case of SSR.
  *
  * This is a mandatory procedure, in case one of the steps fails, the
  * AP needs to restart.
  */
+=======
+* ipa3_q6_pre_shutdown_cleanup() - A cleanup for all Q6 related configuration
+*                    in IPA HW. This is performed in case of SSR.
+*
+* This is a mandatory procedure, in case one of the steps fails, the
+* AP needs to restart.
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_q6_pre_shutdown_cleanup(void)
 {
 	IPADBG_LOW("ENTER\n");
@@ -2620,8 +2738,13 @@ void ipa3_q6_pre_shutdown_cleanup(void)
 		BUG();
 	}
 	/* Remove delay from Q6 PRODs to avoid pending descriptors
+<<<<<<< HEAD
 	 * on pipe reset procedure
 	 */
+=======
+	  * on pipe reset procedure
+	  */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa3_q6_pipe_delay(false);
 	ipa3_set_reset_client_prod_pipe_delay(true,
 		IPA_CLIENT_USB_PROD);
@@ -3650,11 +3773,19 @@ static unsigned int ipa3_get_bus_vote(void)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_enable_clks() - Turn on IPA clocks
  *
  * Return codes:
  * None
  */
+=======
+* ipa3_enable_clks() - Turn on IPA clocks
+*
+* Return codes:
+* None
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_enable_clks(void)
 {
 	IPADBG("enabling IPA clocks and bus voting\n");
@@ -3686,11 +3817,19 @@ void _ipa_disable_clks_v3_0(void)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_disable_clks() - Turn off IPA clocks
  *
  * Return codes:
  * None
  */
+=======
+* ipa3_disable_clks() - Turn off IPA clocks
+*
+* Return codes:
+* None
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_disable_clks(void)
 {
 	IPADBG("disabling IPA clocks and bus voting\n");
@@ -3729,6 +3868,7 @@ static void ipa3_start_tag_process(struct work_struct *work)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_active_clients_log_mod() - Log a modification in the active clients
  * reference count
  *
@@ -3751,6 +3891,30 @@ static void ipa3_start_tag_process(struct work_struct *work)
  * - Remove and deallocate unneeded data structure
  * - Log the call in the circular history buffer (unless it is a simple call)
  */
+=======
+* ipa3_active_clients_log_mod() - Log a modification in the active clients
+* reference count
+*
+* This method logs any modification in the active clients reference count:
+* It logs the modification in the circular history buffer
+* It logs the modification in the hash table - looking for an entry,
+* creating one if needed and deleting one if needed.
+*
+* @id: ipa3_active client logging info struct to hold the log information
+* @inc: a boolean variable to indicate whether the modification is an increase
+* or decrease
+* @int_ctx: a boolean variable to indicate whether this call is being made from
+* an interrupt context and therefore should allocate GFP_ATOMIC memory
+*
+* Method process:
+* - Hash the unique identifier string
+* - Find the hash in the table
+*    1)If found, increase or decrease the reference count
+*    2)If not found, allocate a new hash table entry struct and initialize it
+* - Remove and deallocate unneeded data structure
+* - Log the call in the circular history buffer (unless it is a simple call)
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_active_clients_log_mod(struct ipa_active_client_logging_info *id,
 		bool inc, bool int_ctx)
 {
@@ -3820,12 +3984,21 @@ void ipa3_active_clients_log_inc(struct ipa_active_client_logging_info *id,
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_inc_client_enable_clks() - Increase active clients counter, and
  * enable ipa clocks if necessary
  *
  * Return codes:
  * None
  */
+=======
+* ipa3_inc_client_enable_clks() - Increase active clients counter, and
+* enable ipa clocks if necessary
+*
+* Return codes:
+* None
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_inc_client_enable_clks(struct ipa_active_client_logging_info *id)
 {
 	ipa3_active_clients_lock();
@@ -3838,6 +4011,7 @@ void ipa3_inc_client_enable_clks(struct ipa_active_client_logging_info *id)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_inc_client_enable_clks_no_block() - Only increment the number of active
  * clients if no asynchronous actions should be done. Asynchronous actions are
  * locking a mutex and waking up IPA HW.
@@ -3845,6 +4019,15 @@ void ipa3_inc_client_enable_clks(struct ipa_active_client_logging_info *id)
  * Return codes: 0 for success
  *		-EPERM if an asynchronous action should have been done
  */
+=======
+* ipa3_inc_client_enable_clks_no_block() - Only increment the number of active
+* clients if no asynchronous actions should be done. Asynchronous actions are
+* locking a mutex and waking up IPA HW.
+*
+* Return codes: 0 for success
+*		-EPERM if an asynchronous action should have been done
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_inc_client_enable_clks_no_block(struct ipa_active_client_logging_info
 		*id)
 {
@@ -3906,12 +4089,21 @@ void ipa3_dec_client_disable_clks(struct ipa_active_client_logging_info *id)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_inc_acquire_wakelock() - Increase active clients counter, and
  * acquire wakelock if necessary
  *
  * Return codes:
  * None
  */
+=======
+* ipa3_inc_acquire_wakelock() - Increase active clients counter, and
+* acquire wakelock if necessary
+*
+* Return codes:
+* None
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_inc_acquire_wakelock(void)
 {
 	unsigned long flags;
@@ -4039,12 +4231,21 @@ static void ipa3_sps_process_irq_schedule_rel(void)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_suspend_handler() - Handles the suspend interrupt:
  * wakes up the suspended peripheral by requesting its consumer
  * @interrupt:		Interrupt type
  * @private_data:	The client's private data
  * @interrupt_data:	Interrupt specific information data
  */
+=======
+* ipa3_suspend_handler() - Handles the suspend interrupt:
+* wakes up the suspended peripheral by requesting its consumer
+* @interrupt:		Interrupt type
+* @private_data:	The client's private data
+* @interrupt_data:	Interrupt specific information data
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 void ipa3_suspend_handler(enum ipa_irq_type interrupt,
 				void *private_data,
 				void *interrupt_data)
@@ -4468,15 +4669,22 @@ static int ipa3_post_init(const struct ipa3_plat_drv_res *resource_p,
 
 	/*
 	 * IPAv3.5 and above requires to disable prefetch for USB in order
+<<<<<<< HEAD
 	 * to allow MBIM to work.
+=======
+	 * to allow MBIM to work, currently MBIM is not needed in MHI mode.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	 */
 	if ((ipa3_ctx->ipa_hw_type >= IPA_HW_v3_5) &&
 		(!ipa3_ctx->ipa_config_is_mhi))
 		ipa3_disable_prefetch(IPA_CLIENT_USB_CONS);
+<<<<<<< HEAD
 
 	if ((ipa3_ctx->ipa_hw_type >= IPA_HW_v3_5) &&
 		(ipa3_ctx->ipa_config_is_mhi))
 		ipa3_disable_prefetch(IPA_CLIENT_MHI_CONS);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (ipa3_ctx->transport_prototype == IPA_TRANSPORT_TYPE_GSI) {
 		memset(&gsi_props, 0, sizeof(gsi_props));
@@ -4676,9 +4884,12 @@ static ssize_t ipa3_write(struct file *file, const char __user *buf,
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
 	if (count > 0)
 		dbg_buff[count] = '\0';
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Prevent consequent calls from trying to load the FW again. */
 	if (ipa3_is_ready())
 		return count;
@@ -4889,7 +5100,11 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 
 	ipa3_ctx->logbuf = ipc_log_context_create(IPA_IPC_LOG_PAGES, "ipa", 0);
 	if (ipa3_ctx->logbuf == NULL)
+<<<<<<< HEAD
 		IPADBG("failed to create IPC log, continue...\n");
+=======
+		IPAERR("failed to create IPC log, continue...\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	ipa3_ctx->pdev = ipa_dev;
 	ipa3_ctx->uc_pdev = ipa_dev;
@@ -4916,7 +5131,10 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	ipa3_ctx->apply_rg10_wa = resource_p->apply_rg10_wa;
 	ipa3_ctx->gsi_ch20_wa = resource_p->gsi_ch20_wa;
 	ipa3_ctx->ipa3_active_clients_logging.log_rdy = false;
+<<<<<<< HEAD
 	ipa3_ctx->ipa_config_is_mhi = resource_p->ipa_mhi_dynamic_config;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (resource_p->ipa_tz_unlock_reg) {
 		ipa3_ctx->ipa_tz_unlock_reg_num =
 			resource_p->ipa_tz_unlock_reg_num;
@@ -5212,8 +5430,11 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	mutex_init(&ipa3_ctx->lock);
 	mutex_init(&ipa3_ctx->nat_mem.lock);
 	mutex_init(&ipa3_ctx->q6_proxy_clk_vote_mutex);
+<<<<<<< HEAD
 	mutex_init(&ipa3_ctx->ipa_cne_evt_lock);
 	ipa3_ctx->q6_proxy_clk_vote_cnt = 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	idr_init(&ipa3_ctx->ipa_idr);
 	spin_lock_init(&ipa3_ctx->idr_lock);
@@ -5303,7 +5524,11 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	if (result) {
 		IPAERR("Failed to alloc pkt_init payload\n");
 		result = -ENODEV;
+<<<<<<< HEAD
 		goto fail_allok_pkt_init;
+=======
+		goto fail_create_apps_resource;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	if (ipa3_ctx->ipa_hw_type >= IPA_HW_v3_5)
@@ -5314,6 +5539,7 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	init_completion(&ipa3_ctx->init_completion_obj);
 	init_completion(&ipa3_ctx->uc_loaded_completion_obj);
 
+<<<<<<< HEAD
 	result = ipa3_dma_setup();
 	if (result) {
 		IPAERR("Failed to setup IPA DMA\n");
@@ -5321,6 +5547,8 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 		goto fail_ipa_dma_setup;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/*
 	 * For GSI, we can't register the GSI driver yet, as it expects
 	 * the GSI FW to be up and running before the registration.
@@ -5346,7 +5574,11 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 		result = ipa3_post_init(resource_p, ipa_dev);
 		if (result) {
 			IPAERR("ipa3_post_init failed\n");
+<<<<<<< HEAD
 			goto fail_gsi_pre_fw_load_init;
+=======
+			goto fail_ipa_post_init;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 	}
 
@@ -5366,6 +5598,7 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 
 	return 0;
 
+<<<<<<< HEAD
 
 
 fail_cdev_add:
@@ -5373,6 +5606,15 @@ fail_gsi_pre_fw_load_init:
 	ipa3_dma_shutdown();
 fail_ipa_dma_setup:
 fail_allok_pkt_init:
+=======
+fail_cdev_add:
+fail_ipa_post_init:
+	if (ipa3_bus_scale_table) {
+		msm_bus_cl_clear_pdata(ipa3_bus_scale_table);
+		ipa3_bus_scale_table = NULL;
+	}
+fail_ipa_init_interrupts:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ipa_rm_delete_resource(IPA_RM_RESOURCE_APPS_CONS);
 fail_create_apps_resource:
 	ipa_rm_exit();
@@ -5427,6 +5669,11 @@ fail_init_active_client:
 fail_clk:
 	if (ipa3_ctx->ipa3_hw_mode != IPA_HW_MODE_VIRTUAL)
 		msm_bus_scale_unregister_client(ipa3_ctx->ipa_bus_hdl);
+<<<<<<< HEAD
+=======
+fail_ipahal:
+	ipa3_bus_scale_table = NULL;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 fail_bus_reg:
 	if (ipa3_bus_scale_table) {
 		msm_bus_cl_clear_pdata(ipa3_bus_scale_table);
@@ -6260,7 +6507,11 @@ int ipa3_plat_drv_probe(struct platform_device *pdev_p,
  *
  * Returns -EAGAIN to runtime_pm framework in case IPA is in use by AP.
  * This will postpone the suspend operation until IPA is no longer used by AP.
+<<<<<<< HEAD
  */
+=======
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_ap_suspend(struct device *dev)
 {
 	int i;
@@ -6286,6 +6537,7 @@ int ipa3_ap_suspend(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * ipa3_ap_resume() - resume callback for runtime_pm
  * @dev: pointer to device
  *
@@ -6294,6 +6546,16 @@ int ipa3_ap_suspend(struct device *dev)
  *
  * Always returns 0 since resume should always succeed.
  */
+=======
+* ipa3_ap_resume() - resume callback for runtime_pm
+* @dev: pointer to device
+*
+* This callback will be invoked by the runtime_pm framework when an AP resume
+* operation is invoked.
+*
+* Always returns 0 since resume should always succeed.
+*/
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_ap_resume(struct device *dev)
 {
 	return 0;

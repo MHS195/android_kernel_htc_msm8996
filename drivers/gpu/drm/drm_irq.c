@@ -1901,6 +1901,7 @@ bool drm_handle_vblank(struct drm_device *dev, unsigned int pipe)
 
 	wake_up(&vblank->queue);
 	drm_handle_vblank_events(dev, pipe);
+<<<<<<< HEAD
 
 	/* With instant-off, we defer disabling the interrupt until after
 	 * we finish processing the following vblank. The disable has to
@@ -1911,6 +1912,8 @@ bool drm_handle_vblank(struct drm_device *dev, unsigned int pipe)
 	    drm_vblank_offdelay > 0 &&
 	    !atomic_read(&vblank->refcount))
 		vblank_disable_fn((unsigned long)vblank);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	spin_unlock_irqrestore(&dev->event_lock, irqflags);
 

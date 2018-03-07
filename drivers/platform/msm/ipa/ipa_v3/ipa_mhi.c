@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2015-2018 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2015-2017 The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -198,7 +202,10 @@ static int ipa_mhi_start_gsi_channel(enum ipa_client_type client,
 	union __packed gsi_channel_scratch ch_scratch;
 	struct ipa3_ep_context *ep;
 	const struct ipa_gsi_ep_config *ep_cfg;
+<<<<<<< HEAD
 	struct ipa_ep_cfg_ctrl ep_cfg_ctrl;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	IPA_MHI_FUNC_ENTRY();
 

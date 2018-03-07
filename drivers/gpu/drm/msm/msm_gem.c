@@ -167,22 +167,23 @@ static struct page **get_pages(struct drm_gem_object *obj)
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
 
 	if (!msm_obj->pages) {
-		struct drm_device *dev = obj->dev;
 		struct page **p;
 		int npages = obj->size >> PAGE_SHIFT;
 
-		if (iommu_present(&platform_bus_type))
-			p = drm_gem_get_pages(obj);
-		else
+		if (use_pages(obj)) {
+			if (!msm_drm_alloc_buf(obj))
+				p = msm_obj->pages;
+		} else {
 			p = get_pages_vram(obj, npages);
+		}
 
 		if (IS_ERR(p)) {
-			dev_err(dev->dev, "could not get pages: %ld\n",
-					PTR_ERR(p));
+			DRM_ERROR("could not get pages: %ld\n", PTR_ERR(p));
 			return p;
 		}
 
 		msm_obj->pages = p;
+<<<<<<< HEAD
 
 		msm_obj->sgt = drm_prime_pages_to_sg(p, npages);
 		if (IS_ERR(msm_obj->sgt)) {
@@ -199,6 +200,8 @@ static struct page **get_pages(struct drm_gem_object *obj)
 		if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
 			dma_map_sg(dev->dev, msm_obj->sgt->sgl,
 					msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	return msm_obj->pages;
@@ -209,6 +212,7 @@ static void put_pages(struct drm_gem_object *obj)
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
 
 	if (msm_obj->pages) {
+<<<<<<< HEAD
 		if (msm_obj->sgt) {
 			/* For non-cached buffers, ensure the new
 			 * pages are clean because display controller,
@@ -225,6 +229,10 @@ static void put_pages(struct drm_gem_object *obj)
 
 		if (iommu_present(&platform_bus_type))
 			drm_gem_put_pages(obj, msm_obj->pages, true, false);
+=======
+		if (use_pages(obj))
+			msm_drm_free_buf(obj);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		else {
 			drm_mm_remove_node(msm_obj->vram_node);
 			drm_free_large(msm_obj->pages);

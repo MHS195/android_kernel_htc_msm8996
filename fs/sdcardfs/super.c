@@ -144,7 +144,11 @@ static int sdcardfs_remount_fs2(struct vfsmount *mnt, struct super_block *sb,
 		pr_err("sdcardfs: remount flags 0x%x unsupported\n", *flags);
 		err = -EINVAL;
 	}
+<<<<<<< HEAD
 	pr_info("Remount options were %s for vfsmnt %pK.\n", options, mnt);
+=======
+	pr_info("Remount options were %s for vfsmnt %p.\n", options, mnt);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	err = parse_options_remount(sb, options, *flags & ~MS_SILENT, mnt->data);
 
 
@@ -215,9 +219,12 @@ static struct inode *sdcardfs_alloc_inode(struct super_block *sb)
 
 	i->data = d;
 	kref_init(&d->refcount);
+<<<<<<< HEAD
 	i->top_data = d;
 	spin_lock_init(&i->top_lock);
 	kref_get(&d->refcount);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	i->vfs_inode.i_version = 1;
 	return &i->vfs_inode;
@@ -305,8 +312,11 @@ static int sdcardfs_show_options(struct vfsmount *mnt, struct seq_file *m,
 		seq_printf(m, ",mask=%u", vfsopts->mask);
 	if (opts->fs_user_id)
 		seq_printf(m, ",userid=%u", opts->fs_user_id);
+<<<<<<< HEAD
 	if (opts->gid_derivation)
 		seq_puts(m, ",derive_gid");
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (opts->reserved_mb != 0)
 		seq_printf(m, ",reserved=%uMB", opts->reserved_mb);
 	if (opts->nocache)

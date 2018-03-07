@@ -2129,6 +2129,7 @@ static int ext4_check_descriptors(struct super_block *sb,
 			ext4_msg(sb, KERN_ERR, "ext4_check_descriptors: "
 				 "Block bitmap for group %u overlaps "
 				 "superblock", i);
+<<<<<<< HEAD
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
 		}
@@ -2139,6 +2140,8 @@ static int ext4_check_descriptors(struct super_block *sb,
 				 "block group descriptors", i);
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		if (block_bitmap < first_block || block_bitmap > last_block) {
 			ext4_msg(sb, KERN_ERR, "ext4_check_descriptors: "
@@ -2151,6 +2154,7 @@ static int ext4_check_descriptors(struct super_block *sb,
 			ext4_msg(sb, KERN_ERR, "ext4_check_descriptors: "
 				 "Inode bitmap for group %u overlaps "
 				 "superblock", i);
+<<<<<<< HEAD
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
 		}
@@ -2161,6 +2165,8 @@ static int ext4_check_descriptors(struct super_block *sb,
 				 "block group descriptors", i);
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		if (inode_bitmap < first_block || inode_bitmap > last_block) {
 			ext4_msg(sb, KERN_ERR, "ext4_check_descriptors: "
@@ -2173,6 +2179,7 @@ static int ext4_check_descriptors(struct super_block *sb,
 			ext4_msg(sb, KERN_ERR, "ext4_check_descriptors: "
 				 "Inode table for group %u overlaps "
 				 "superblock", i);
+<<<<<<< HEAD
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
 		}
@@ -2183,6 +2190,8 @@ static int ext4_check_descriptors(struct super_block *sb,
 				 "block group descriptors", i);
 			if (!(sb->s_flags & MS_RDONLY))
 				return 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		if (inode_table < first_block ||
 		    inode_table + sbi->s_itb_per_group - 1 > last_block) {
@@ -3778,6 +3787,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 			 le32_to_cpu(es->s_log_block_size));
 		goto failed_mount;
 	}
+<<<<<<< HEAD
 	if (le32_to_cpu(es->s_log_cluster_size) >
 	    (EXT4_MAX_CLUSTER_LOG_SIZE - EXT4_MIN_BLOCK_LOG_SIZE)) {
 		ext4_msg(sb, KERN_ERR,
@@ -3785,6 +3795,8 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 			 le32_to_cpu(es->s_log_cluster_size));
 		goto failed_mount;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (EXT4_HAS_INCOMPAT_FEATURE(sb, EXT4_FEATURE_INCOMPAT_ENCRYPT) &&
 	    es->s_encryption_level) {
@@ -3925,6 +3937,13 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 			ext4_msg(sb, KERN_ERR,
 				 "cluster size (%d) smaller than "
 				 "block size (%d)", clustersize, blocksize);
+			goto failed_mount;
+		}
+		if (le32_to_cpu(es->s_log_cluster_size) >
+		    (EXT4_MAX_CLUSTER_LOG_SIZE - EXT4_MIN_BLOCK_LOG_SIZE)) {
+			ext4_msg(sb, KERN_ERR,
+				 "Invalid log cluster size: %u",
+				 le32_to_cpu(es->s_log_cluster_size));
 			goto failed_mount;
 		}
 		sbi->s_cluster_bits = le32_to_cpu(es->s_log_cluster_size) -
@@ -4074,7 +4093,10 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 			goto failed_mount2;
 		}
 	}
+<<<<<<< HEAD
 	sbi->s_gdb_count = db_count;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!ext4_check_descriptors(sb, logical_sb_block, &first_not_zeroed)) {
 		ext4_msg(sb, KERN_ERR, "group descriptors corrupted!");
 		goto failed_mount2;
@@ -5470,6 +5492,8 @@ static int ext4_quota_enable(struct super_block *sb, int type, int format_id,
 	if (err)
 		lockdep_set_quota_inode(qf_inode, I_DATA_SEM_NORMAL);
 	iput(qf_inode);
+	if (err)
+		lockdep_set_quota_inode(qf_inode, I_DATA_SEM_NORMAL);
 
 	return err;
 }

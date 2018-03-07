@@ -1329,12 +1329,19 @@ int do_huge_pmd_numa_page(struct mm_struct *mm, struct vm_area_struct *vma,
 
 	/* Migration could have started since the pmd_trans_migrating check */
 	if (!page_locked) {
+<<<<<<< HEAD
 		page_nid = -1;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (!get_page_unless_zero(page))
 			goto out_unlock;
 		spin_unlock(ptl);
 		wait_on_page_locked(page);
 		put_page(page);
+<<<<<<< HEAD
+=======
+		page_nid = -1;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto out;
 	}
 

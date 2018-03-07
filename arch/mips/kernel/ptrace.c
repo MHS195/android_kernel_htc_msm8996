@@ -503,9 +503,22 @@ static int fpr_set_msa(struct task_struct *target,
 	u64 fpr_val;
 	int err;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
 	for (i = 0; i < NUM_FPU_REGS && *count > 0; i++) {
 		err = user_regset_copyin(pos, count, kbuf, ubuf,
+=======
+	/* XXX fcr31  */
+
+	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
+		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+					  &target->thread.fpu,
+					  0, sizeof(elf_fpregset_t));
+
+	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
+	for (i = 0; i < NUM_FPU_REGS && count >= sizeof(elf_fpreg_t); i++) {
+		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 					 &fpr_val, i * sizeof(elf_fpreg_t),
 					 (i + 1) * sizeof(elf_fpreg_t));
 		if (err)

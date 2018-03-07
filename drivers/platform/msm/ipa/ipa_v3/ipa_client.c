@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1430,7 +1434,10 @@ int ipa3_set_usb_max_packet_size(
 	return 0;
 }
 
+<<<<<<< HEAD
 /* This function called as part of usb pipe resume */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_xdci_connect(u32 clnt_hdl)
 {
 	int result;
@@ -1470,8 +1477,11 @@ exit:
 	return result;
 }
 
+<<<<<<< HEAD
 
 /* This function called as part of usb pipe connect */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_xdci_start(u32 clnt_hdl, u8 xferrscidx, bool xferrscidx_valid)
 {
 	struct ipa3_ep_context *ep;

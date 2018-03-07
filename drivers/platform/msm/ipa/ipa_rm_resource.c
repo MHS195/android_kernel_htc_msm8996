@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -149,9 +153,13 @@ int ipa_rm_resource_consumer_request_work(struct ipa_rm_resource_cons *consumer,
 		consumer->resource.needed_bw -= prod_needed_bw;
 		if (dec_client_on_err)
 			consumer->usage_count--;
+<<<<<<< HEAD
 		result = driver_result;
 	} else
 		result = driver_result;
+=======
+	}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	return result;
 }

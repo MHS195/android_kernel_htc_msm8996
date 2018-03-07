@@ -26,7 +26,10 @@
 #include <linux/seq_file.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <linux/cpufreq.h>
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #define UID_HASH_BITS	10
 DECLARE_HASHTABLE(hash_table, UID_HASH_BITS);
@@ -179,8 +182,12 @@ static ssize_t uid_remove_write(struct file *file,
 	struct hlist_node *tmp;
 	char uids[128];
 	char *start_uid, *end_uid = NULL;
+<<<<<<< HEAD
 	long int start = 0, end = 0;
 	uid_t uid_start, uid_end;
+=======
+	long int uid_start = 0, uid_end = 0;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (count >= sizeof(uids))
 		count = sizeof(uids) - 1;
@@ -195,6 +202,7 @@ static ssize_t uid_remove_write(struct file *file,
 	if (!start_uid || !end_uid)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (kstrtol(start_uid, 10, &start) != 0 ||
 		kstrtol(end_uid, 10, &end) != 0) {
 		return -EINVAL;
@@ -216,11 +224,21 @@ static ssize_t uid_remove_write(struct file *file,
 	 */
 	cpufreq_task_stats_remove_uids(uid_start, uid_end);
 
+=======
+	if (kstrtol(start_uid, 10, &uid_start) != 0 ||
+		kstrtol(end_uid, 10, &uid_end) != 0) {
+		return -EINVAL;
+	}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	rt_mutex_lock(&uid_lock);
 
 	for (; uid_start <= uid_end; uid_start++) {
 		hash_for_each_possible_safe(hash_table, uid_entry, tmp,
+<<<<<<< HEAD
 							hash, uid_start) {
+=======
+							hash, (uid_t)uid_start) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			if (uid_start == uid_entry->uid) {
 				hash_del(&uid_entry->hash);
 				kfree(uid_entry);
@@ -229,7 +247,10 @@ static ssize_t uid_remove_write(struct file *file,
 	}
 
 	rt_mutex_unlock(&uid_lock);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	return count;
 }
 
@@ -278,6 +299,7 @@ static void compute_uid_io_bucket_stats(struct io_stats *io_bucket,
 					struct io_stats *io_last,
 					struct io_stats *io_dead)
 {
+<<<<<<< HEAD
 	s64 delta;
 
 	delta = io_curr->read_bytes + io_dead->read_bytes -
@@ -301,6 +323,15 @@ static void compute_uid_io_bucket_stats(struct io_stats *io_bucket,
 	delta = io_curr->fsync + io_dead->fsync - io_last->fsync;
 	if (delta > 0)
 		io_bucket->fsync += delta;
+=======
+	io_bucket->read_bytes += io_curr->read_bytes + io_dead->read_bytes -
+		io_last->read_bytes;
+	io_bucket->write_bytes += io_curr->write_bytes + io_dead->write_bytes -
+		io_last->write_bytes;
+	io_bucket->rchar += io_curr->rchar + io_dead->rchar - io_last->rchar;
+	io_bucket->wchar += io_curr->wchar + io_dead->wchar - io_last->wchar;
+	io_bucket->fsync += io_curr->fsync + io_dead->fsync - io_last->fsync;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	io_last->read_bytes = io_curr->read_bytes;
 	io_last->write_bytes = io_curr->write_bytes;

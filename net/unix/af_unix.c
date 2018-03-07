@@ -1073,6 +1073,19 @@ static int unix_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	atomic_set(&addr->refcnt, 1);
 
 	if (sun_path[0]) {
+<<<<<<< HEAD
+=======
+		struct path path;
+		umode_t mode = S_IFSOCK |
+		       (SOCK_INODE(sock)->i_mode & ~current_umask());
+		err = unix_mknod(sun_path, mode, &path);
+		if (err) {
+			if (err == -EEXIST)
+				err = -EADDRINUSE;
+			unix_release_addr(addr);
+			goto out_up;
+		}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		addr->hash = UNIX_HASH_SIZE;
 		hash = d_backing_inode(path.dentry)->i_ino & (UNIX_HASH_SIZE-1);
 		spin_lock(&unix_table_lock);

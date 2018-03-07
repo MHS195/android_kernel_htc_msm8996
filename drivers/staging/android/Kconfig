@@ -44,6 +44,7 @@ config ANDROID_BINDER_DEVICES
 	  created. Each binder device has its own context manager, and is
 	  therefore logically separated from the other devices.
 
+<<<<<<< HEAD
 config ANDROID_BINDER_IPC_SELFTEST
         bool "Android Binder IPC Driver Selftest"
         depends on ANDROID_BINDER_IPC
@@ -54,6 +55,8 @@ config ANDROID_BINDER_IPC_SELFTEST
           exhaustively with combinations of various buffer sizes and
           alignments.
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 config ASHMEM
 	bool "Enable the Anonymous Shared Memory Subsystem"
 	default n

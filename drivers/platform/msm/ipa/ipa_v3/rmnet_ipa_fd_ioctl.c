@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -56,9 +60,12 @@
 #define WAN_IOCTL_SET_LAN_CLIENT_INFO32 _IOWR(WAN_IOC_MAGIC, \
 			WAN_IOCTL_SET_LAN_CLIENT_INFO, \
 			compat_uptr_t)
+<<<<<<< HEAD
 #define WAN_IOC_QUERY_TETHER_STATS_ALL32 _IOWR(WAN_IOC_MAGIC, \
 		WAN_IOCTL_QUERY_TETHER_STATS_ALL, \
 		compat_uptr_t)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 
 static unsigned int dev_num = 1;

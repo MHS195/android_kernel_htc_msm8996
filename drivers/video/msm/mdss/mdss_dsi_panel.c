@@ -2638,10 +2638,13 @@ static int mdss_panel_parse_display_timings(struct device_node *np,
 	if (!timings_np) {
 		struct dsi_panel_timing *pt;
 
+<<<<<<< HEAD
 		pt = kzalloc(sizeof(*pt), GFP_KERNEL);
 		if (!pt)
 			return -ENOMEM;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/*
 		 * display timings node is not available, fallback to reading
 		 * timings directly from root node instead

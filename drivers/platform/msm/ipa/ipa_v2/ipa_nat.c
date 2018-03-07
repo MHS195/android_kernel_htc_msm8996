@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -340,11 +344,14 @@ int ipa2_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	u32 offset = 0;
 	size_t tmp;
 	gfp_t flag = GFP_KERNEL | (ipa_ctx->use_dma_zone ? GFP_DMA : 0);
+<<<<<<< HEAD
 
 	if (!ipa_ctx->nat_mem.is_dev_init) {
 		IPAERR_RL("Nat table not initialized\n");
 		return -EPERM;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	IPADBG("\n");
 	if (init->table_entries == 0) {
@@ -378,7 +385,10 @@ int ipa2_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->expn_rules_offset >
 		UINT_MAX - (TBL_ENTRY_SIZE * init->expn_table_entries)) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Expn Table Entry offset is not
@@ -398,7 +408,10 @@ int ipa2_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->index_offset >
 		UINT_MAX - (INDX_TBL_ENTRY_SIZE * (init->table_entries + 1))) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Indx Table Entry offset is not
@@ -418,7 +431,10 @@ int ipa2_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->index_expn_offset >
 		(UINT_MAX - (INDX_TBL_ENTRY_SIZE * init->expn_table_entries))) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Expn Table entry offset is not
@@ -601,11 +617,14 @@ int ipa2_nat_dma_cmd(struct ipa_ioc_nat_dma_cmd *dma)
 	u16 size = 0, cnt = 0;
 	int ret = 0;
 	gfp_t flag = GFP_KERNEL | (ipa_ctx->use_dma_zone ? GFP_DMA : 0);
+<<<<<<< HEAD
 
 	if (!ipa_ctx->nat_mem.is_dev_init) {
 		IPAERR_RL("Nat table not initialized\n");
 		return -EPERM;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	IPADBG("\n");
 	if (dma->entries <= 0) {
@@ -792,6 +811,7 @@ int ipa2_nat_del_cmd(struct ipa_ioc_v4_nat_del *del)
 	u32 base_addr = IPA_NAT_PHYS_MEM_OFFSET;
 	int result;
 	gfp_t flag = GFP_KERNEL | (ipa_ctx->use_dma_zone ? GFP_DMA : 0);
+<<<<<<< HEAD
 
 	if (!ipa_ctx->nat_mem.is_dev_init) {
 		IPAERR_RL("Nat table not initialized\n");
@@ -802,6 +822,8 @@ int ipa2_nat_del_cmd(struct ipa_ioc_v4_nat_del *del)
 		IPAERR_RL("Public IP addr not assigned and trying to delete\n");
 		return -EPERM;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	IPADBG("\n");
 	if (ipa_ctx->nat_mem.is_tmp_mem) {

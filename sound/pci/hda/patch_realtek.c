@@ -4683,7 +4683,10 @@ enum {
 	ALC286_FIXUP_HP_GPIO_LED,
 	ALC280_FIXUP_HP_GPIO2_MIC_HOTKEY,
 	ALC280_FIXUP_HP_DOCK_PINS,
+<<<<<<< HEAD
 	ALC269_FIXUP_HP_DOCK_GPIO_MIC1_LED,
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ALC280_FIXUP_HP_9480M,
 	ALC288_FIXUP_DELL_HEADSET_MODE,
 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
@@ -5217,6 +5220,7 @@ static const struct hda_fixup alc269_fixups[] = {
 		.chained = true,
 		.chain_id = ALC280_FIXUP_HP_GPIO4
 	},
+<<<<<<< HEAD
 	[ALC269_FIXUP_HP_DOCK_GPIO_MIC1_LED] = {
 		.type = HDA_FIXUP_PINS,
 		.v.pins = (const struct hda_pintbl[]) {
@@ -5227,6 +5231,8 @@ static const struct hda_fixup alc269_fixups[] = {
 		.chained = true,
 		.chain_id = ALC269_FIXUP_HP_GPIO_MIC1_LED
 	},
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	[ALC280_FIXUP_HP_9480M] = {
 		.type = HDA_FIXUP_FUNC,
 		.v.func = alc280_fixup_hp_9480m,
@@ -6493,7 +6499,10 @@ enum {
 	ALC668_FIXUP_DELL_DISABLE_AAMIX,
 	ALC668_FIXUP_DELL_XPS13,
 	ALC662_FIXUP_ASUS_Nx50,
+<<<<<<< HEAD
 	ALC668_FIXUP_ASUS_Nx51_HEADSET_MODE,
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	ALC668_FIXUP_ASUS_Nx51,
 };
 
@@ -6741,6 +6750,7 @@ static const struct hda_fixup alc662_fixups[] = {
 		.chained = true,
 		.chain_id = ALC662_FIXUP_BASS_1A
 	},
+<<<<<<< HEAD
 	[ALC668_FIXUP_ASUS_Nx51_HEADSET_MODE] = {
 		.type = HDA_FIXUP_FUNC,
 		.v.func = alc_fixup_headset_mode_alc668,
@@ -6756,6 +6766,16 @@ static const struct hda_fixup alc662_fixups[] = {
 		},
 		.chained = true,
 		.chain_id = ALC668_FIXUP_ASUS_Nx51_HEADSET_MODE,
+=======
+	[ALC668_FIXUP_ASUS_Nx51] = {
+		.type = HDA_FIXUP_PINS,
+		.v.pins = (const struct hda_pintbl[]) {
+			{0x1a, 0x90170151}, /* bass speaker */
+			{}
+		},
+		.chained = true,
+		.chain_id = ALC662_FIXUP_BASS_CHMAP,
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	},
 };
 

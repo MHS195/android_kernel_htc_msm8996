@@ -881,6 +881,23 @@ static int adreno_probe(struct platform_device *pdev)
 	/* Initialize coresight for the target */
 	adreno_coresight_init(adreno_dev);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_INPUT
+	if (!device->pwrctrl.input_disable) {
+		adreno_input_handler.private = device;
+		/*
+		 * It isn't fatal if we cannot register the input handler.  Sad,
+		 * perhaps, but not fatal
+		 */
+		if (input_register_handler(&adreno_input_handler)) {
+			adreno_input_handler.private = NULL;
+			KGSL_DRV_ERR(device,
+				"Unable to register the input handler\n");
+		}
+	}
+#endif
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 out:
 	if (status) {
 		adreno_ringbuffer_close(adreno_dev);
@@ -930,6 +947,13 @@ static int adreno_remove(struct platform_device *pdev)
 	/* The memory is fading */
 	_adreno_free_memories(adreno_dev);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_INPUT
+	if (adreno_input_handler.private)
+		input_unregister_handler(&adreno_input_handler);
+#endif
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	adreno_sysfs_close(adreno_dev);
 
 	adreno_coresight_remove(adreno_dev);

@@ -247,8 +247,11 @@ unsigned int *xt_alloc_entry_offsets(unsigned int size);
 bool xt_find_jump_offset(const unsigned int *offsets,
 			 unsigned int target, unsigned int size);
 
+<<<<<<< HEAD
 int xt_check_proc_name(const char *name, unsigned int size);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int xt_check_match(struct xt_mtchk_param *, unsigned int size, u_int8_t proto,
 		   bool inv_proto);
 int xt_check_target(struct xt_tgchk_param *, unsigned int size, u_int8_t proto,

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1016,8 +1020,13 @@ static struct ipa3_rt_tbl *__ipa_add_rt_tbl(enum ipa_ip_type ip,
 
 		id = ipa3_id_alloc(entry);
 		if (id < 0) {
+<<<<<<< HEAD
 			IPAERR_RL("failed to add to tree\n");
 			WARN_ON_RATELIMIT_IPA(1);
+=======
+			IPAERR("failed to add to tree\n");
+			WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			goto ipa_insert_failed;
 		}
 		entry->id = id;
@@ -1056,7 +1065,11 @@ static int __ipa_del_rt_tbl(struct ipa3_rt_tbl *entry)
 	else if (entry->set == &ipa3_ctx->rt_tbl_set[IPA_IP_v6])
 		ip = IPA_IP_v6;
 	else {
+<<<<<<< HEAD
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 
@@ -1110,7 +1123,11 @@ static int __ipa_rt_validate_hndls(const struct ipa_rt_rule *rule,
 	if (rule->hdr_hdl) {
 		*hdr = ipa3_id_find(rule->hdr_hdl);
 		if ((*hdr == NULL) || ((*hdr)->cookie != IPA_HDR_COOKIE)) {
+<<<<<<< HEAD
 			IPAERR_RL("rt rule does not point to valid hdr\n");
+=======
+			IPAERR("rt rule does not point to valid hdr\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			return -EPERM;
 		}
 	} else if (rule->hdr_proc_ctx_hdl) {
@@ -1130,7 +1147,11 @@ static int __ipa_create_rt_entry(struct ipa3_rt_entry **entry,
 		const struct ipa_rt_rule *rule,
 		struct ipa3_rt_tbl *tbl, struct ipa3_hdr_entry *hdr,
 		struct ipa3_hdr_proc_ctx_entry *proc_ctx,
+<<<<<<< HEAD
 		u16 rule_id, bool user)
+=======
+		u16 rule_id)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	int id;
 
@@ -1151,8 +1172,13 @@ static int __ipa_create_rt_entry(struct ipa3_rt_entry **entry,
 	} else {
 		id = ipa3_alloc_rule_id(&tbl->rule_ids);
 		if (id < 0) {
+<<<<<<< HEAD
 			IPAERR_RL("failed to allocate rule id\n");
 			WARN_ON_RATELIMIT_IPA(1);
+=======
+			IPAERR("failed to allocate rule id\n");
+			WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			goto alloc_rule_id_fail;
 		}
 	}
@@ -1203,7 +1229,11 @@ ipa_insert_failed:
 
 static int __ipa_add_rt_rule(enum ipa_ip_type ip, const char *name,
 		const struct ipa_rt_rule *rule, u8 at_rear, u32 *rule_hdl,
+<<<<<<< HEAD
 		u16 rule_id, bool user)
+=======
+		u16 rule_id)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	struct ipa3_rt_tbl *tbl;
 	struct ipa3_rt_entry *entry;
@@ -1227,13 +1257,23 @@ static int __ipa_add_rt_rule(enum ipa_ip_type ip, const char *name,
 	 * table
 	 */
 	if (!strcmp(tbl->name, IPA_DFLT_RT_TBL_NAME) &&
+<<<<<<< HEAD
 	    (tbl->rule_cnt > 0)) {
 		IPAERR_RL("cannot add rules to default rt table\n");
+=======
+	    (tbl->rule_cnt > 0) && (at_rear != 0)) {
+		IPAERR_RL("cannot add rule at end of tbl rule_cnt=%d at_rear=%d"
+				, tbl->rule_cnt, at_rear);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto error;
 	}
 
 	if (__ipa_create_rt_entry(&entry, rule, tbl, hdr, proc_ctx,
+<<<<<<< HEAD
 		rule_id, user))
+=======
+		rule_id))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto error;
 
 	if (at_rear)
@@ -1264,7 +1304,11 @@ static int __ipa_add_rt_rule_after(struct ipa3_rt_tbl *tbl,
 	if (__ipa_rt_validate_hndls(rule, &hdr, &proc_ctx))
 		goto error;
 
+<<<<<<< HEAD
 	if (__ipa_create_rt_entry(&entry, rule, tbl, hdr, proc_ctx, 0, true))
+=======
+	if (__ipa_create_rt_entry(&entry, rule, tbl, hdr, proc_ctx, 0))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto error;
 
 	list_add(&entry->link, &((*add_after_entry)->link));
@@ -1361,6 +1405,51 @@ int ipa3_add_rt_rule_ext(struct ipa_ioc_add_rt_rule_ext *rules)
 	int ret;
 
 	if (rules == NULL || rules->num_rules == 0 || rules->ip >= IPA_IP_MAX) {
+		IPAERR_RL("bad parm\n");
+		return -EINVAL;
+	}
+
+	mutex_lock(&ipa3_ctx->lock);
+	for (i = 0; i < rules->num_rules; i++) {
+		if (__ipa_add_rt_rule(rules->ip, rules->rt_tbl_name,
+					&rules->rules[i].rule,
+					rules->rules[i].at_rear,
+					&rules->rules[i].rt_rule_hdl,
+					0)) {
+			IPAERR_RL("failed to add rt rule %d\n", i);
+			rules->rules[i].status = IPA_RT_STATUS_OF_ADD_FAILED;
+		} else {
+			rules->rules[i].status = 0;
+		}
+	}
+
+	if (rules->commit)
+		if (ipa3_ctx->ctrl->ipa3_commit_rt(rules->ip)) {
+			ret = -EPERM;
+			goto bail;
+		}
+
+	ret = 0;
+bail:
+	mutex_unlock(&ipa3_ctx->lock);
+	return ret;
+}
+
+/**
+ * ipa3_add_rt_rule_ext() - Add the specified routing rules to SW with rule id
+ * and optionally commit to IPA HW
+ * @rules:	[inout] set of routing rules to add
+ *
+ * Returns:	0 on success, negative on failure
+ *
+ * Note:	Should not be called from atomic context
+ */
+int ipa3_add_rt_rule_ext(struct ipa_ioc_add_rt_rule_ext *rules)
+{
+	int i;
+	int ret;
+
+	if (rules == NULL || rules->num_rules == 0 || rules->ip >= IPA_IP_MAX) {
 		IPAERR("bad parm\n");
 		return -EINVAL;
 	}
@@ -1371,9 +1460,14 @@ int ipa3_add_rt_rule_ext(struct ipa_ioc_add_rt_rule_ext *rules)
 					&rules->rules[i].rule,
 					rules->rules[i].at_rear,
 					&rules->rules[i].rt_rule_hdl,
+<<<<<<< HEAD
 					rules->rules[i].rule_id, true)) {
 			IPAERR_RL("failed to add rt rule %d\n", i);
 
+=======
+					rules->rules[i].rule_id)) {
+			IPAERR_RL("failed to add rt rule %d\n", i);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			rules->rules[i].status = IPA_RT_STATUS_OF_ADD_FAILED;
 		} else {
 			rules->rules[i].status = 0;
@@ -1455,8 +1549,14 @@ int ipa3_add_rt_rule_after(struct ipa_ioc_add_rt_rule_after *rules)
 	 * table
 	 */
 	if (!strcmp(tbl->name, IPA_DFLT_RT_TBL_NAME) &&
+<<<<<<< HEAD
 		(tbl->rule_cnt > 0)) {
 		IPAERR_RL("cannot add rules to default rt table\n");
+=======
+			(&entry->link == tbl->head_rt_rule_list.prev)) {
+		IPAERR_RL("cannot add rule at end of tbl rule_cnt=%d\n",
+			tbl->rule_cnt);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		ret = -EINVAL;
 		goto bail;
 	}
@@ -1685,7 +1785,11 @@ int ipa3_reset_rt(enum ipa_ip_type ip, bool user_only)
 	 * issue a reset on the filtering module of same IP type since
 	 * filtering rules point to routing tables
 	 */
+<<<<<<< HEAD
 	if (ipa3_reset_flt(ip, user_only))
+=======
+	if (ipa3_reset_flt(ip))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		IPAERR_RL("fail to reset flt ip=%d\n", ip);
 
 	set = &ipa3_ctx->rt_tbl_set[ip];
@@ -1881,7 +1985,11 @@ int ipa3_put_rt_tbl(u32 rt_tbl_hdl)
 	else if (entry->set == &ipa3_ctx->rt_tbl_set[IPA_IP_v6])
 		ip = IPA_IP_v6;
 	else {
+<<<<<<< HEAD
 		WARN_ON_RATELIMIT_IPA(1);
+=======
+		WARN_ON(1);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		result = -EINVAL;
 		goto ret;
 	}

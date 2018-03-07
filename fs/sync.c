@@ -214,9 +214,12 @@ int vfs_fsync_range(struct file *file, loff_t start, loff_t end, int datasync)
 	int err;
 	ktime_t fsync_t, fsync_diff;
 	char pathname[256], *path;
+<<<<<<< HEAD
 
 	if (!fsync_enabled)
 		return 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (!file->f_op->fsync)
 		return -EINVAL;

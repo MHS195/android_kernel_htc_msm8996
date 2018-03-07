@@ -220,7 +220,11 @@ next_op:
 		hdr = 2;
 
 		/* Extract a tag from the data */
+<<<<<<< HEAD
 		if (unlikely(datalen - dp < 2))
+=======
+		if (unlikely(dp >= datalen - 1))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			goto data_overrun_error;
 		tag = data[dp++];
 		if (unlikely((tag & 0x1f) == ASN1_LONG_TAG))

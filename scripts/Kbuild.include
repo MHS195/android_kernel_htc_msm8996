@@ -294,5 +294,8 @@ why =                                                                        \
 
 echo-why = $(call escsq, $(strip $(why)))
 endif
+<<<<<<< HEAD
 
 $(shell cd "$(srctree)" && ./scripts/fetch-latest-wireguard.sh)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)

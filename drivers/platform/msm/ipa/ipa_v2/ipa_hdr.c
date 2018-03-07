@@ -581,7 +581,10 @@ static int __ipa_add_hdr_proc_ctx(struct ipa_hdr_proc_ctx_add *proc_ctx,
 	if (add_ref_hdr)
 		hdr_entry->ref_cnt++;
 	entry->cookie = IPA_PROC_HDR_COOKIE;
+<<<<<<< HEAD
 	entry->ipacm_installed = user_only;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	needed_len = (proc_ctx->type == IPA_HDR_PROC_NONE) ?
 			sizeof(struct ipa_hdr_proc_ctx_add_hdr_seq) :
@@ -703,7 +706,10 @@ static int __ipa_add_hdr(struct ipa_hdr_add *hdr, bool user)
 	entry->is_eth2_ofst_valid = hdr->is_eth2_ofst_valid;
 	entry->eth2_ofst = hdr->eth2_ofst;
 	entry->cookie = IPA_HDR_COOKIE;
+<<<<<<< HEAD
 	entry->ipacm_installed = user;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (hdr->hdr_len <= ipa_hdr_bin_sz[IPA_HDR_BIN0])
 		bin = IPA_HDR_BIN0;
@@ -764,7 +770,10 @@ static int __ipa_add_hdr(struct ipa_hdr_add *hdr, bool user)
 			list_add(&offset->link,
 					&htbl->head_offset_list[bin]);
 			entry->offset_entry = offset;
+<<<<<<< HEAD
 			offset->ipacm_installed = user;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 	} else {
 		entry->is_hdr_proc_ctx = false;
@@ -998,7 +1007,11 @@ int ipa2_add_hdr_usr(struct ipa_ioc_add_hdr *hdrs, bool user_only)
 	IPADBG("adding %d headers to IPA driver internal data struct\n",
 			hdrs->num_hdrs);
 	for (i = 0; i < hdrs->num_hdrs; i++) {
+<<<<<<< HEAD
 		if (__ipa_add_hdr(&hdrs->hdr[i], user_only)) {
+=======
+		if (__ipa_add_hdr(&hdrs->hdr[i])) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			IPAERR_RL("failed to add hdr %d\n", i);
 			hdrs->hdr[i].status = -1;
 		} else {
@@ -1111,8 +1124,12 @@ int ipa2_add_hdr_proc_ctx(struct ipa_ioc_add_hdr_proc_ctx *proc_ctxs,
 	IPADBG("adding %d header processing contextes to IPA driver\n",
 			proc_ctxs->num_proc_ctxs);
 	for (i = 0; i < proc_ctxs->num_proc_ctxs; i++) {
+<<<<<<< HEAD
 		if (__ipa_add_hdr_proc_ctx(&proc_ctxs->proc_ctx[i],
 				true, user_only)) {
+=======
+		if (__ipa_add_hdr_proc_ctx(&proc_ctxs->proc_ctx[i], true)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			IPAERR_RL("failed to add hdr pric ctx %d\n", i);
 			proc_ctxs->proc_ctx[i].status = -1;
 		} else {

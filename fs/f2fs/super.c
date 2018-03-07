@@ -1506,9 +1506,12 @@ int sanity_check_ckpt(struct f2fs_sb_info *sbi)
 	struct f2fs_checkpoint *ckpt = F2FS_CKPT(sbi);
 	unsigned int main_segs, blocks_per_seg;
 	unsigned int ovp_segments, reserved_segments;
+<<<<<<< HEAD
 	unsigned int sit_segs, nat_segs;
 	unsigned int sit_bitmap_size, nat_bitmap_size;
 	unsigned int log_blocks_per_seg;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	int i;
 
 	total = le32_to_cpu(raw_super->segment_count);
@@ -1549,6 +1552,7 @@ int sanity_check_ckpt(struct f2fs_sb_info *sbi)
 		return 1;
 	}
 
+<<<<<<< HEAD
 	sit_bitmap_size = le32_to_cpu(ckpt->sit_ver_bitmap_bytesize);
 	nat_bitmap_size = le32_to_cpu(ckpt->nat_ver_bitmap_bytesize);
 	log_blocks_per_seg = le32_to_cpu(raw_super->log_blocks_per_seg);
@@ -1561,6 +1565,8 @@ int sanity_check_ckpt(struct f2fs_sb_info *sbi)
 		return 1;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (unlikely(f2fs_cp_error(sbi))) {
 		f2fs_msg(sbi->sb, KERN_ERR, "A bug case: need to run fsck");
 		return 1;

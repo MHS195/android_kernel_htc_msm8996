@@ -319,9 +319,13 @@ int ocfs2_acl_chmod(struct inode *inode, struct buffer_head *bh)
 	if (!(osb->s_mount_opt & OCFS2_MOUNT_POSIX_ACL))
 		return 0;
 
+<<<<<<< HEAD
 	down_read(&OCFS2_I(inode)->ip_xattr_sem);
 	acl = ocfs2_get_acl_nolock(inode, ACL_TYPE_ACCESS, bh);
 	up_read(&OCFS2_I(inode)->ip_xattr_sem);
+=======
+	acl = ocfs2_get_acl_nolock(inode, ACL_TYPE_ACCESS, bh);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (IS_ERR(acl) || !acl)
 		return PTR_ERR(acl);
 	ret = __posix_acl_chmod(&acl, GFP_KERNEL, inode->i_mode);
@@ -352,10 +356,15 @@ int ocfs2_init_acl(handle_t *handle,
 
 	if (!S_ISLNK(inode->i_mode)) {
 		if (osb->s_mount_opt & OCFS2_MOUNT_POSIX_ACL) {
+<<<<<<< HEAD
 			down_read(&OCFS2_I(dir)->ip_xattr_sem);
 			acl = ocfs2_get_acl_nolock(dir, ACL_TYPE_DEFAULT,
 						   dir_bh);
 			up_read(&OCFS2_I(dir)->ip_xattr_sem);
+=======
+			acl = ocfs2_get_acl_nolock(dir, ACL_TYPE_DEFAULT,
+						   dir_bh);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			if (IS_ERR(acl))
 				return PTR_ERR(acl);
 		}

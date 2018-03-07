@@ -1074,7 +1074,11 @@ struct nfc_dev *nfc_allocate_device(struct nfc_ops *ops,
 err_free_dev:
 	kfree(dev);
 
+<<<<<<< HEAD
 	return NULL;
+=======
+	return ERR_PTR(rc);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 EXPORT_SYMBOL(nfc_allocate_device);
 

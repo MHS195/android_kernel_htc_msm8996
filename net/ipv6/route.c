@@ -2853,11 +2853,15 @@ static int ip6_route_dev_notify(struct notifier_block *this,
 		net->ipv6.ip6_blk_hole_entry->dst.dev = dev;
 		net->ipv6.ip6_blk_hole_entry->rt6i_idev = in6_dev_get(dev);
 #endif
+<<<<<<< HEAD
 	 } else if (event == NETDEV_UNREGISTER &&
 		    dev->reg_state != NETREG_UNREGISTERED) {
 		/* NETDEV_UNREGISTER could be fired for multiple times by
 		 * netdev_wait_allrefs(). Make sure we only call this once.
 		 */
+=======
+	 } else if (event == NETDEV_UNREGISTER) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		in6_dev_put(net->ipv6.ip6_null_entry->rt6i_idev);
 #ifdef CONFIG_IPV6_MULTIPLE_TABLES
 		in6_dev_put(net->ipv6.ip6_prohibit_entry->rt6i_idev);

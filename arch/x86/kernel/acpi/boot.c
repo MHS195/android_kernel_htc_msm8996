@@ -316,6 +316,17 @@ static void __init mp_override_legacy_irq(u8 bus_irq, u8 polarity, u8 trigger,
 {
 	/*
 	 * Check bus_irq boundary.
+<<<<<<< HEAD
+=======
+	 */
+	if (bus_irq >= NR_IRQS_LEGACY) {
+		pr_warn("Invalid bus_irq %u for legacy override\n", bus_irq);
+		return;
+	}
+
+	/*
+	 * Convert 'gsi' to 'ioapic.pin'.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	 */
 	if (bus_irq >= NR_IRQS_LEGACY) {
 		pr_warn("Invalid bus_irq %u for legacy override\n", bus_irq);

@@ -70,7 +70,10 @@
 #include <linux/uaccess.h>
 #include <linux/pid_namespace.h>
 #include <linux/security.h>
+<<<<<<< HEAD
 #include <linux/proc_fs.h>
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #include <linux/spinlock.h>
 
 #include "binder.h"
@@ -358,7 +361,10 @@ struct binder_error {
  * @min_priority:         minimum scheduling priority
  *                        (invariant after initialized)
  * @inherit_rt:           inherit RT scheduling policy from caller
+<<<<<<< HEAD
  * @txn_security_ctx:     require sender's security context
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *                        (invariant after initialized)
  * @async_todo:           list of async work items
  *                        (protected by @proc->inner_lock)
@@ -398,7 +404,10 @@ struct binder_node {
 		u8 sched_policy:2;
 		u8 inherit_rt:1;
 		u8 accept_fds:1;
+<<<<<<< HEAD
 		u8 txn_security_ctx:1;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		u8 min_priority;
 	};
 	bool has_async_transaction;
@@ -506,8 +515,12 @@ struct binder_priority {
  * @tsk                   task_struct for group_leader of process
  *                        (invariant after initialized)
  * @files                 files_struct for process
+<<<<<<< HEAD
  *                        (protected by @files_lock)
  * @files_lock            mutex to protect @files
+=======
+ *                        (invariant after initialized)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * @deferred_work_node:   element for binder_deferred_list
  *                        (protected by binder_deferred_lock)
  * @deferred_work:        bitmap of deferred work to perform
@@ -517,6 +530,11 @@ struct binder_priority {
  *                        (protected by @inner_lock)
  * @todo:                 list of work for this process
  *                        (protected by @inner_lock)
+<<<<<<< HEAD
+=======
+ * @wait:                 wait queue head to wait for proc work
+ *                        (invariant after initialized)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * @stats:                per-process binder statistics
  *                        (atomics, no lock needed)
  * @delivered_death:      list of delivered death notification
@@ -600,8 +618,11 @@ enum {
  *                        (protected by @proc->inner_lock)
  * @todo:                 list of work to do for this thread
  *                        (protected by @proc->inner_lock)
+<<<<<<< HEAD
  * @process_todo:         whether work in @todo should be processed
  *                        (protected by @proc->inner_lock)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * @return_error:         transaction errors reported by this thread
  *                        (only accessed by this thread)
  * @reply_error:          transaction errors reported by target thread
@@ -628,7 +649,10 @@ struct binder_thread {
 	bool looper_need_return; /* can be written by other thread */
 	struct binder_transaction *transaction_stack;
 	struct list_head todo;
+<<<<<<< HEAD
 	bool process_todo;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct binder_error return_error;
 	struct binder_error reply_error;
 	wait_queue_head_t wait;
@@ -656,7 +680,10 @@ struct binder_transaction {
 	struct binder_priority	saved_priority;
 	bool    set_priority_called;
 	kuid_t	sender_euid;
+<<<<<<< HEAD
 	binder_uintptr_t security_ctx;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/**
 	 * @lock:  protects @from, @to_proc, and @to_thread
 	 *
@@ -817,6 +844,7 @@ static bool binder_worklist_empty(struct binder_proc *proc,
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * binder_enqueue_work_ilocked() - Add an item to the work list
  * @work:         struct binder_work to add to list
@@ -827,6 +855,8 @@ static bool binder_worklist_empty(struct binder_proc *proc,
  *
  * Requires the proc->inner_lock to be held.
  */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static void
 binder_enqueue_work_ilocked(struct binder_work *work,
 			   struct list_head *target_list)
@@ -837,6 +867,7 @@ binder_enqueue_work_ilocked(struct binder_work *work,
 }
 
 /**
+<<<<<<< HEAD
  * binder_enqueue_deferred_thread_work_ilocked() - Add deferred thread work
  * @thread:       thread to queue work to
  * @work:         struct binder_work to add to list
@@ -887,6 +918,24 @@ binder_enqueue_thread_work(struct binder_thread *thread,
 	binder_inner_proc_lock(thread->proc);
 	binder_enqueue_thread_work_ilocked(thread, work);
 	binder_inner_proc_unlock(thread->proc);
+=======
+ * binder_enqueue_work() - Add an item to the work list
+ * @proc:         binder_proc associated with list
+ * @work:         struct binder_work to add to list
+ * @target_list:  list to add work to
+ *
+ * Adds the work to the specified list. Asserts that work
+ * is not already on a list.
+ */
+static void
+binder_enqueue_work(struct binder_proc *proc,
+		    struct binder_work *work,
+		    struct list_head *target_list)
+{
+	binder_inner_proc_lock(proc);
+	binder_enqueue_work_ilocked(work, target_list);
+	binder_inner_proc_unlock(proc);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static void
@@ -953,7 +1002,6 @@ static int task_get_unused_fd_flags(struct binder_proc *proc, int flags)
 {
 	unsigned long rlim_cur;
 	unsigned long irqs;
-	int ret;
 
 	mutex_lock(&proc->files_lock);
 	if (proc->files == NULL) {
@@ -967,10 +1015,14 @@ static int task_get_unused_fd_flags(struct binder_proc *proc, int flags)
 	rlim_cur = task_rlimit(proc->tsk, RLIMIT_NOFILE);
 	unlock_task_sighand(proc->tsk, &irqs);
 
+<<<<<<< HEAD
 	ret = __alloc_fd(proc->files, 0, rlim_cur, flags);
 err:
 	mutex_unlock(&proc->files_lock);
 	return ret;
+=======
+	return __alloc_fd(files, 0, rlim_cur, flags);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /*
@@ -979,10 +1031,15 @@ err:
 static void task_fd_install(
 	struct binder_proc *proc, unsigned int fd, struct file *file)
 {
+<<<<<<< HEAD
 	mutex_lock(&proc->files_lock);
 	if (proc->files)
 		__fd_install(proc->files, fd, file);
 	mutex_unlock(&proc->files_lock);
+=======
+	if (proc->files)
+		__fd_install(proc->files, fd, file);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /*
@@ -1012,7 +1069,11 @@ err:
 static bool binder_has_work_ilocked(struct binder_thread *thread,
 				    bool do_proc_work)
 {
+<<<<<<< HEAD
 	return thread->process_todo ||
+=======
+	return !binder_worklist_empty_ilocked(&thread->todo) ||
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		thread->looper_need_return ||
 		(do_proc_work &&
 		 !binder_worklist_empty_ilocked(&thread->proc->todo));
@@ -1212,10 +1273,13 @@ static void binder_do_set_priority(struct task_struct *task,
 			      task->pid, desired.prio,
 			      to_kernel_prio(policy, priority));
 
+<<<<<<< HEAD
 	trace_binder_set_priority(task->tgid, task->pid, task->normal_prio,
 				  to_kernel_prio(policy, priority),
 				  desired.prio);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Set the actual priority */
 	if (task->policy != policy || is_rt_policy(policy)) {
 		struct sched_param params;
@@ -1247,7 +1311,11 @@ static void binder_transaction_priority(struct task_struct *task,
 					struct binder_priority node_prio,
 					bool inherit_rt)
 {
+<<<<<<< HEAD
 	struct binder_priority desired_prio = t->priority;
+=======
+	struct binder_priority desired_prio;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (t->set_priority_called)
 		return;
@@ -1259,6 +1327,12 @@ static void binder_transaction_priority(struct task_struct *task,
 	if (!inherit_rt && is_rt_policy(desired_prio.sched_policy)) {
 		desired_prio.prio = NICE_TO_PRIO(0);
 		desired_prio.sched_policy = SCHED_NORMAL;
+<<<<<<< HEAD
+=======
+	} else {
+		desired_prio.prio = t->priority.prio;
+		desired_prio.sched_policy = t->priority.sched_policy;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	if (node_prio.prio < t->priority.prio ||
@@ -1361,12 +1435,19 @@ static struct binder_node *binder_init_node_ilocked(
 	node->cookie = cookie;
 	node->work.type = BINDER_WORK_NODE;
 	priority = flags & FLAT_BINDER_FLAG_PRIORITY_MASK;
+<<<<<<< HEAD
 	node->sched_policy = (flags & FLAT_BINDER_FLAG_SCHED_POLICY_MASK) >>
+=======
+	node->sched_policy = (flags & FLAT_BINDER_FLAG_PRIORITY_MASK) >>
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT;
 	node->min_priority = to_kernel_prio(node->sched_policy, priority);
 	node->accept_fds = !!(flags & FLAT_BINDER_FLAG_ACCEPTS_FDS);
 	node->inherit_rt = !!(flags & FLAT_BINDER_FLAG_INHERIT_RT);
+<<<<<<< HEAD
 	node->txn_security_ctx = !!(flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	spin_lock_init(&node->lock);
 	INIT_LIST_HEAD(&node->work.entry);
 	INIT_LIST_HEAD(&node->async_todo);
@@ -1430,6 +1511,7 @@ static int binder_inc_node_nilocked(struct binder_node *node, int strong,
 			node->local_strong_refs++;
 		if (!node->has_strong_ref && target_list) {
 			binder_dequeue_work_ilocked(&node->work);
+<<<<<<< HEAD
 			/*
 			 * Note: this function is the only place where we queue
 			 * directly to a thread->todo without using the
@@ -1441,6 +1523,8 @@ static int binder_inc_node_nilocked(struct binder_node *node, int strong,
 			 * BR_REPLY or BR_ERROR; in case of oneway
 			 * transactions, a BR_TRANSACTION_COMPLETE.
 			 */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			binder_enqueue_work_ilocked(&node->work, target_list);
 		}
 	} else {
@@ -1452,9 +1536,12 @@ static int binder_inc_node_nilocked(struct binder_node *node, int strong,
 					node->debug_id);
 				return -EINVAL;
 			}
+<<<<<<< HEAD
 			/*
 			 * See comment above
 			 */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			binder_enqueue_work_ilocked(&node->work, target_list);
 		}
 	}
@@ -2144,9 +2231,15 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 			binder_pop_transaction_ilocked(target_thread, t);
 			if (target_thread->reply_error.cmd == BR_OK) {
 				target_thread->reply_error.cmd = error_code;
+<<<<<<< HEAD
 				binder_enqueue_thread_work_ilocked(
 					target_thread,
 					&target_thread->reply_error.work);
+=======
+				binder_enqueue_work_ilocked(
+					&target_thread->reply_error.work,
+					&target_thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				wake_up_interruptible(&target_thread->wait);
 			} else {
 				WARN(1, "Unexpected reply error: %u\n",
@@ -2177,6 +2270,7 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 }
 
 /**
+<<<<<<< HEAD
  * binder_cleanup_transaction() - cleans up undelivered transaction
  * @t:		transaction that needs to be cleaned up
  * @reason:	reason the transaction wasn't delivered
@@ -2197,6 +2291,8 @@ static void binder_cleanup_transaction(struct binder_transaction *t,
 }
 
 /**
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  * binder_validate_object() - checks for a valid metadata object in a buffer.
  * @buffer:	binder_buffer that we're parsing.
  * @offset:	offset in the buffer at which to validate an object.
@@ -2466,7 +2562,11 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
 				       debug_id, (u64)fda->num_fds);
 				continue;
 			}
+<<<<<<< HEAD
 			fd_array = (u32 *)(parent_buffer + (uintptr_t)fda->parent_offset);
+=======
+			fd_array = (u32 *)(parent_buffer + fda->parent_offset);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			for (fd_index = 0; fd_index < fda->num_fds; fd_index++)
 				task_close_fd(proc, fd_array[fd_index]);
 		} break;
@@ -2575,6 +2675,10 @@ static int binder_translate_handle(struct flat_binder_object *fp,
 			     (u64)node->ptr);
 		binder_node_unlock(node);
 	} else {
+<<<<<<< HEAD
+=======
+		int ret;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		struct binder_ref_data dest_rdata;
 
 		binder_node_unlock(node);
@@ -2690,7 +2794,11 @@ static int binder_translate_fd_array(struct binder_fd_array_object *fda,
 	 */
 	parent_buffer = parent->buffer -
 		binder_alloc_get_user_buffer_offset(&target_proc->alloc);
+<<<<<<< HEAD
 	fd_array = (u32 *)(parent_buffer + (uintptr_t)fda->parent_offset);
+=======
+	fd_array = (u32 *)(parent_buffer + fda->parent_offset);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!IS_ALIGNED((unsigned long)fd_array, sizeof(u32))) {
 		binder_user_error("%d:%d parent offset not aligned correctly.\n",
 				  proc->pid, thread->pid);
@@ -2756,7 +2864,11 @@ static int binder_fixup_parent(struct binder_transaction *t,
 				  proc->pid, thread->pid);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	parent_buffer = (u8 *)((uintptr_t)parent->buffer -
+=======
+	parent_buffer = (u8 *)(parent->buffer -
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			binder_alloc_get_user_buffer_offset(
 				&target_proc->alloc));
 	*(binder_uintptr_t *)(parent_buffer + bp->parent_offset) = bp->buffer;
@@ -2785,10 +2897,18 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 				    struct binder_proc *proc,
 				    struct binder_thread *thread)
 {
+<<<<<<< HEAD
 	struct binder_node *node = t->buffer->target_node;
 	struct binder_priority node_prio;
 	bool oneway = !!(t->flags & TF_ONE_WAY);
 	bool pending_async = false;
+=======
+	struct list_head *target_list = NULL;
+	struct binder_node *node = t->buffer->target_node;
+	struct binder_priority node_prio;
+	bool oneway = !!(t->flags & TF_ONE_WAY);
+	bool wakeup = true;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	BUG_ON(!node);
 	binder_node_lock(node);
@@ -2798,7 +2918,12 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	if (oneway) {
 		BUG_ON(thread);
 		if (node->has_async_transaction) {
+<<<<<<< HEAD
 			pending_async = true;
+=======
+			target_list = &node->async_todo;
+			wakeup = false;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		} else {
 			node->has_async_transaction = 1;
 		}
@@ -2812,6 +2937,7 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (!thread && !pending_async)
 		thread = binder_select_thread_ilocked(proc);
 
@@ -2826,6 +2952,24 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	}
 
 	if (!pending_async)
+=======
+	if (!thread && !target_list)
+		thread = binder_select_thread_ilocked(proc);
+
+	if (thread) {
+		target_list = &thread->todo;
+		binder_transaction_priority(thread->task, t, node_prio,
+					    node->inherit_rt);
+	} else if (!target_list) {
+		target_list = &proc->todo;
+	} else {
+		BUG_ON(target_list != &node->async_todo);
+	}
+
+	binder_enqueue_work_ilocked(&t->work, target_list);
+
+	if (wakeup)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		binder_wakeup_thread_ilocked(proc, thread, !oneway /* sync */);
 
 	binder_inner_proc_unlock(proc);
@@ -2834,6 +2978,7 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	return true;
 }
 
+<<<<<<< HEAD
 /**
  * binder_get_node_refs_for_txn() - Get required refs on node for txn
  * @node:         struct binder_node for which to get refs
@@ -2876,6 +3021,8 @@ static struct binder_node *binder_get_node_refs_for_txn(
 	return target_node;
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static void binder_transaction(struct binder_proc *proc,
 			       struct binder_thread *thread,
 			       struct binder_transaction_data *tr, int reply,
@@ -2899,8 +3046,11 @@ static void binder_transaction(struct binder_proc *proc,
 	binder_size_t last_fixup_min_off = 0;
 	struct binder_context *context = proc->context;
 	int t_debug_id = atomic_inc_return(&binder_last_id);
+<<<<<<< HEAD
 	char *secctx = NULL;
 	u32 secctx_sz = 0;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	e = binder_transaction_log_add(&binder_transaction_log);
 	e->debug_id = t_debug_id;
@@ -2980,13 +3130,22 @@ static void binder_transaction(struct binder_proc *proc,
 			ref = binder_get_ref_olocked(proc, tr->target.handle,
 						     true);
 			if (ref) {
+<<<<<<< HEAD
 				target_node = binder_get_node_refs_for_txn(
 						ref->node, &target_proc,
 						&return_error);
 			} else {
+=======
+				binder_inc_node(ref->node, 1, 0, NULL);
+				target_node = ref->node;
+			}
+			binder_proc_unlock(proc);
+			if (target_node == NULL) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				binder_user_error("%d:%d got transaction to invalid handle\n",
 						  proc->pid, thread->pid);
 				return_error = BR_FAILED_REPLY;
+<<<<<<< HEAD
 			}
 			binder_proc_unlock(proc);
 		} else {
@@ -3003,10 +3162,13 @@ static void binder_transaction(struct binder_proc *proc,
 				binder_user_error("%d:%d got transaction to context manager from process owning it\n",
 						  proc->pid, thread->pid);
 				return_error = BR_FAILED_REPLY;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				return_error_param = -EINVAL;
 				return_error_line = __LINE__;
 				goto err_invalid_target_handle;
 			}
+<<<<<<< HEAD
 		}
 		if (!target_node) {
 			/*
@@ -3017,6 +3179,33 @@ static void binder_transaction(struct binder_proc *proc,
 			goto err_dead_binder;
 		}
 		e->to_node = target_node->debug_id;
+=======
+		} else {
+			mutex_lock(&context->context_mgr_node_lock);
+			target_node = context->binder_context_mgr_node;
+			if (target_node == NULL) {
+				return_error = BR_DEAD_REPLY;
+				mutex_unlock(&context->context_mgr_node_lock);
+				return_error_line = __LINE__;
+				goto err_no_context_mgr_node;
+			}
+			binder_inc_node(target_node, 1, 0, NULL);
+			mutex_unlock(&context->context_mgr_node_lock);
+		}
+		e->to_node = target_node->debug_id;
+		binder_node_lock(target_node);
+		target_proc = target_node->proc;
+		if (target_proc == NULL) {
+			binder_node_unlock(target_node);
+			return_error = BR_DEAD_REPLY;
+			return_error_line = __LINE__;
+			goto err_dead_binder;
+		}
+		binder_inner_proc_lock(target_proc);
+		target_proc->tmp_ref++;
+		binder_inner_proc_unlock(target_proc);
+		binder_node_unlock(target_node);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (security_binder_transaction(proc->tsk,
 						target_proc->tsk) < 0) {
 			return_error = BR_FAILED_REPLY;
@@ -3123,6 +3312,7 @@ static void binder_transaction(struct binder_proc *proc,
 		/* Otherwise, fall back to the default priority */
 		t->priority = target_proc->default_priority;
 	}
+<<<<<<< HEAD
 
 	if (target_node && target_node->txn_security_ctx) {
 		u32 secid;
@@ -3137,6 +3327,8 @@ static void binder_transaction(struct binder_proc *proc,
 		}
 		extra_buffers_size += ALIGN(secctx_sz, sizeof(u64));
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	trace_binder_transaction(reply, t, target_node);
 
@@ -3363,10 +3555,17 @@ static void binder_transaction(struct binder_proc *proc,
 		}
 	}
 	tcomplete->type = BINDER_WORK_TRANSACTION_COMPLETE;
+<<<<<<< HEAD
 	t->work.type = BINDER_WORK_TRANSACTION;
 
 	if (reply) {
 		binder_enqueue_thread_work(thread, tcomplete);
+=======
+	binder_enqueue_work(proc, tcomplete, &thread->todo);
+	t->work.type = BINDER_WORK_TRANSACTION;
+
+	if (reply) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		binder_inner_proc_lock(target_proc);
 		if (target_thread->is_dead) {
 			binder_inner_proc_unlock(target_proc);
@@ -3374,7 +3573,11 @@ static void binder_transaction(struct binder_proc *proc,
 		}
 		BUG_ON(t->buffer->async_transaction != 0);
 		binder_pop_transaction_ilocked(target_thread, in_reply_to);
+<<<<<<< HEAD
 		binder_enqueue_thread_work_ilocked(target_thread, &t->work);
+=======
+		binder_enqueue_work_ilocked(&t->work, &target_thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		binder_inner_proc_unlock(target_proc);
 		wake_up_interruptible_sync(&target_thread->wait);
 		binder_restore_priority(current, in_reply_to->saved_priority);
@@ -3382,6 +3585,7 @@ static void binder_transaction(struct binder_proc *proc,
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
 		binder_inner_proc_lock(proc);
+<<<<<<< HEAD
 		/*
 		 * Defer the TRANSACTION_COMPLETE, so we don't return to
 		 * userspace immediately; this allows the target process to
@@ -3390,6 +3594,8 @@ static void binder_transaction(struct binder_proc *proc,
 		 * the target replies (or there is an error).
 		 */
 		binder_enqueue_deferred_thread_work_ilocked(thread, tcomplete);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		t->need_reply = 1;
 		t->from_parent = thread->transaction_stack;
 		thread->transaction_stack = t;
@@ -3403,15 +3609,21 @@ static void binder_transaction(struct binder_proc *proc,
 	} else {
 		BUG_ON(target_node == NULL);
 		BUG_ON(t->buffer->async_transaction != 1);
+<<<<<<< HEAD
 		binder_enqueue_thread_work(thread, tcomplete);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (!binder_proc_transaction(t, target_proc, NULL))
 			goto err_dead_proc_or_thread;
 	}
 	if (target_thread)
 		binder_thread_dec_tmpref(target_thread);
 	binder_proc_dec_tmpref(target_proc);
+<<<<<<< HEAD
 	if (target_node)
 		binder_dec_node_tmpref(target_node);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/*
 	 * write barrier to synchronize with initialization
 	 * of log entry
@@ -3431,8 +3643,11 @@ err_bad_parent:
 err_copy_data_failed:
 	trace_binder_transaction_failed_buffer_release(t->buffer);
 	binder_transaction_buffer_release(target_proc, t->buffer, offp);
+<<<<<<< HEAD
 	if (target_node)
 		binder_dec_node_tmpref(target_node);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	target_node = NULL;
 	t->buffer->transaction = NULL;
 	binder_alloc_free_buf(&target_proc->alloc, t->buffer);
@@ -3450,14 +3665,23 @@ err_bad_call_stack:
 err_empty_call_stack:
 err_dead_binder:
 err_invalid_target_handle:
+<<<<<<< HEAD
+=======
+err_no_context_mgr_node:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (target_thread)
 		binder_thread_dec_tmpref(target_thread);
 	if (target_proc)
 		binder_proc_dec_tmpref(target_proc);
+<<<<<<< HEAD
 	if (target_node) {
 		binder_dec_node(target_node, 1, 0);
 		binder_dec_node_tmpref(target_node);
 	}
+=======
+	if (target_node)
+		binder_dec_node(target_node, 1, 0);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
 		     "%d:%d transaction failed %d/%d, size %lld-%lld line %d\n",
@@ -3486,11 +3710,23 @@ err_invalid_target_handle:
 	if (in_reply_to) {
 		binder_restore_priority(current, in_reply_to->saved_priority);
 		thread->return_error.cmd = BR_TRANSACTION_COMPLETE;
+<<<<<<< HEAD
 		binder_enqueue_thread_work(thread, &thread->return_error.work);
 		binder_send_failed_reply(in_reply_to, return_error);
 	} else {
 		thread->return_error.cmd = return_error;
 		binder_enqueue_thread_work(thread, &thread->return_error.work);
+=======
+		binder_enqueue_work(thread->proc,
+				    &thread->return_error.work,
+				    &thread->todo);
+		binder_send_failed_reply(in_reply_to, return_error);
+	} else {
+		thread->return_error.cmd = return_error;
+		binder_enqueue_work(thread->proc,
+				    &thread->return_error.work,
+				    &thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 }
 
@@ -3665,6 +3901,7 @@ static int binder_thread_write(struct binder_proc *proc,
 
 			buffer = binder_alloc_prepare_to_free(&proc->alloc,
 							      data_ptr);
+<<<<<<< HEAD
 			if (IS_ERR_OR_NULL(buffer)) {
 				if (PTR_ERR(buffer) == -EPERM) {
 					binder_user_error(
@@ -3677,6 +3914,16 @@ static int binder_thread_write(struct binder_proc *proc,
 						proc->pid, thread->pid,
 						(u64)data_ptr);
 				}
+=======
+			if (buffer == NULL) {
+				binder_user_error("%d:%d BC_FREE_BUFFER u%016llx no match\n",
+					proc->pid, thread->pid, (u64)data_ptr);
+				break;
+			}
+			if (!buffer->allow_user_free) {
+				binder_user_error("%d:%d BC_FREE_BUFFER u%016llx matched unreturned buffer\n",
+					proc->pid, thread->pid, (u64)data_ptr);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				break;
 			}
 			binder_debug(BINDER_DEBUG_FREE_BUFFER,
@@ -3798,9 +4045,16 @@ static int binder_thread_write(struct binder_proc *proc,
 					WARN_ON(thread->return_error.cmd !=
 						BR_OK);
 					thread->return_error.cmd = BR_ERROR;
+<<<<<<< HEAD
 					binder_enqueue_thread_work(
 						thread,
 						&thread->return_error.work);
+=======
+					binder_enqueue_work(
+						thread->proc,
+						&thread->return_error.work,
+						&thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 					binder_debug(
 						BINDER_DEBUG_FAILED_TRANSACTION,
 						"%d:%d BC_REQUEST_DEATH_NOTIFICATION failed\n",
@@ -3880,9 +4134,15 @@ static int binder_thread_write(struct binder_proc *proc,
 					if (thread->looper &
 					    (BINDER_LOOPER_STATE_REGISTERED |
 					     BINDER_LOOPER_STATE_ENTERED))
+<<<<<<< HEAD
 						binder_enqueue_thread_work_ilocked(
 								thread,
 								&death->work);
+=======
+						binder_enqueue_work_ilocked(
+								&death->work,
+								&thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 					else {
 						binder_enqueue_work_ilocked(
 								&death->work,
@@ -3937,8 +4197,13 @@ static int binder_thread_write(struct binder_proc *proc,
 				if (thread->looper &
 					(BINDER_LOOPER_STATE_REGISTERED |
 					 BINDER_LOOPER_STATE_ENTERED))
+<<<<<<< HEAD
 					binder_enqueue_thread_work_ilocked(
 						thread, &death->work);
+=======
+					binder_enqueue_work_ilocked(
+						&death->work, &thread->todo);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 				else {
 					binder_enqueue_work_ilocked(
 							&death->work,
@@ -4086,13 +4351,20 @@ retry:
 
 	while (1) {
 		uint32_t cmd;
+<<<<<<< HEAD
 		struct binder_transaction_data_secctx tr;
 		struct binder_transaction_data *trd = &tr.transaction_data;
+=======
+		struct binder_transaction_data tr;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		struct binder_work *w = NULL;
 		struct list_head *list = NULL;
 		struct binder_transaction *t = NULL;
 		struct binder_thread *t_from;
+<<<<<<< HEAD
 		size_t trsize = sizeof(*trd);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		binder_inner_proc_lock(proc);
 		if (!binder_worklist_empty_ilocked(&thread->todo))
@@ -4114,8 +4386,11 @@ retry:
 			break;
 		}
 		w = binder_dequeue_work_head_ilocked(list);
+<<<<<<< HEAD
 		if (binder_worklist_empty_ilocked(&thread->todo))
 			thread->process_todo = false;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		switch (w->type) {
 		case BINDER_WORK_TRANSACTION: {
@@ -4287,8 +4562,13 @@ retry:
 			struct binder_node *target_node = t->buffer->target_node;
 			struct binder_priority node_prio;
 
+<<<<<<< HEAD
 			trd->target.ptr = target_node->ptr;
 			trd->cookie =  target_node->cookie;
+=======
+			tr.target.ptr = target_node->ptr;
+			tr.cookie =  target_node->cookie;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			node_prio.sched_policy = target_node->sched_policy;
 			node_prio.prio = target_node->min_priority;
 			binder_transaction_priority(current, t, node_prio,
@@ -4314,6 +4594,7 @@ retry:
 			trd->sender_pid = 0;
 		}
 
+<<<<<<< HEAD
 		trd->data_size = t->buffer->data_size;
 		trd->offsets_size = t->buffer->offsets_size;
 		trd->data.ptr.buffer = (binder_uintptr_t)
@@ -4348,6 +4629,29 @@ retry:
 			return -EFAULT;
 		}
 		ptr += trsize;
+=======
+		tr.data_size = t->buffer->data_size;
+		tr.offsets_size = t->buffer->offsets_size;
+		tr.data.ptr.buffer = (binder_uintptr_t)
+			((uintptr_t)t->buffer->data +
+			binder_alloc_get_user_buffer_offset(&proc->alloc));
+		tr.data.ptr.offsets = tr.data.ptr.buffer +
+					ALIGN(t->buffer->data_size,
+					    sizeof(void *));
+
+		if (put_user(cmd, (uint32_t __user *)ptr)) {
+			if (t_from)
+				binder_thread_dec_tmpref(t_from);
+			return -EFAULT;
+		}
+		ptr += sizeof(uint32_t);
+		if (copy_to_user(ptr, &tr, sizeof(tr))) {
+			if (t_from)
+				binder_thread_dec_tmpref(t_from);
+			return -EFAULT;
+		}
+		ptr += sizeof(tr);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 		trace_binder_transaction_received(t);
 		binder_stat_br(proc, thread, cmd);
@@ -4355,8 +4659,12 @@ retry:
 			     "%d:%d %s %d %d:%d, cmd %d size %zd-%zd ptr %016llx-%016llx\n",
 			     proc->pid, thread->pid,
 			     (cmd == BR_TRANSACTION) ? "BR_TRANSACTION" :
+<<<<<<< HEAD
 				(cmd == BR_TRANSACTION_SEC_CTX) ?
 				     "BR_TRANSACTION_SEC_CTX" : "BR_REPLY",
+=======
+			     "BR_REPLY",
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			     t->debug_id, t_from ? t_from->proc->pid : 0,
 			     t_from ? t_from->pid : 0, cmd,
 			     t->buffer->data_size, t->buffer->offsets_size,
@@ -4366,7 +4674,11 @@ retry:
 		if (t_from)
 			binder_thread_dec_tmpref(t_from);
 		t->buffer->allow_user_free = 1;
+<<<<<<< HEAD
 		if (cmd != BR_REPLY && !(t->flags & TF_ONE_WAY)) {
+=======
+		if (cmd == BR_TRANSACTION && !(t->flags & TF_ONE_WAY)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			binder_inner_proc_lock(thread->proc);
 			t->to_parent = thread->transaction_stack;
 			t->to_thread = thread;
@@ -4416,9 +4728,29 @@ static void binder_release_work(struct binder_proc *proc,
 			struct binder_transaction *t;
 
 			t = container_of(w, struct binder_transaction, work);
+<<<<<<< HEAD
 
 			binder_cleanup_transaction(t, "process died.",
 						   BR_DEAD_REPLY);
+		} break;
+		case BINDER_WORK_RETURN_ERROR: {
+			struct binder_error *e = container_of(
+					w, struct binder_error, work);
+
+			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+				"undelivered TRANSACTION_ERROR: %u\n",
+				e->cmd);
+=======
+			if (t->buffer->target_node &&
+			    !(t->flags & TF_ONE_WAY)) {
+				binder_send_failed_reply(t, BR_DEAD_REPLY);
+			} else {
+				binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+					"undelivered transaction %d\n",
+					t->debug_id);
+				binder_free_transaction(t);
+			}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		} break;
 		case BINDER_WORK_RETURN_ERROR: {
 			struct binder_error *e = container_of(
@@ -4590,6 +4922,7 @@ static int binder_thread_release(struct binder_proc *proc,
 		if (t)
 			spin_lock(&t->lock);
 	}
+<<<<<<< HEAD
 
 	/*
 	 * If this thread used poll, make sure we remove the waitqueue
@@ -4613,6 +4946,10 @@ static int binder_thread_release(struct binder_proc *proc,
 	if (thread->looper & BINDER_LOOPER_STATE_POLL)
 		synchronize_rcu();
 
+=======
+	binder_inner_proc_unlock(thread->proc);
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (send_reply)
 		binder_send_failed_reply(send_reply, BR_DEAD_REPLY);
 	binder_release_work(proc, &thread->todo);
@@ -4739,7 +5076,11 @@ static int binder_ioctl_set_ctx_mgr(struct file *filp,
 	} else {
 		context->binder_context_mgr_uid = curr_euid;
 	}
+<<<<<<< HEAD
 	new_node = binder_new_node(proc, fbo);
+=======
+	new_node = binder_new_node(proc, NULL);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (!new_node) {
 		ret = -ENOMEM;
 		goto out;
@@ -4791,8 +5132,11 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
 	/*pr_info("binder_ioctl: %d:%d %x %lx\n",
 			proc->pid, current->pid, cmd, arg);*/
+<<<<<<< HEAD
 
 	binder_selftest_alloc(&proc->alloc);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	trace_binder_ioctl(cmd, arg);
 
@@ -4825,6 +5169,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		binder_inner_proc_unlock(proc);
 		break;
 	}
+<<<<<<< HEAD
 	case BINDER_SET_CONTEXT_MGR_EXT: {
 		struct flat_binder_object fbo;
 
@@ -4837,6 +5182,8 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			goto err;
 		break;
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	case BINDER_SET_CONTEXT_MGR:
 		ret = binder_ioctl_set_ctx_mgr(filp, NULL);
 		if (ret)
@@ -4961,9 +5308,13 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 	ret = binder_alloc_mmap_handler(&proc->alloc, vma);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	mutex_lock(&proc->files_lock);
 	proc->files = get_files_struct(current);
 	mutex_unlock(&proc->files_lock);
+=======
+	proc->files = get_files_struct(current);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	return 0;
 
 err_bad_arg:
@@ -4987,7 +5338,10 @@ static int binder_open(struct inode *nodp, struct file *filp)
 	spin_lock_init(&proc->outer_lock);
 	get_task_struct(current->group_leader);
 	proc->tsk = current->group_leader;
+<<<<<<< HEAD
 	mutex_init(&proc->files_lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	INIT_LIST_HEAD(&proc->todo);
 	if (binder_supported_policy(current->policy)) {
 		proc->default_priority.sched_policy = current->policy;
@@ -5819,6 +6173,7 @@ BINDER_DEBUG_ENTRY(stats);
 BINDER_DEBUG_ENTRY(transactions);
 BINDER_DEBUG_ENTRY(transaction_log);
 
+<<<<<<< HEAD
 static int proc_state_open(struct inode *inode, struct file *file)
 {
       return single_open(file, binder_state_show, NULL);
@@ -5864,6 +6219,8 @@ static int binder_proc_init(void)
       return 0;
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static int __init init_binder_device(const char *name)
 {
 	int ret;
@@ -5899,8 +6256,11 @@ static int __init binder_init(void)
 	struct binder_device *device;
 	struct hlist_node *tmp;
 
+<<<<<<< HEAD
 	binder_alloc_shrinker_init();
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	atomic_set(&binder_transaction_log.cur, ~0U);
 	atomic_set(&binder_transaction_log_failed.cur, ~0U);
 	binder_deferred_workqueue = create_singlethread_workqueue("binder");
@@ -5940,8 +6300,11 @@ static int __init binder_init(void)
 				    &binder_transaction_log_fops);
 	}
 
+<<<<<<< HEAD
     binder_proc_init();
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/*
 	 * Copy the module_parameter string, because we don't want to
 	 * tokenize it in-place.

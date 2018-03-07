@@ -151,6 +151,12 @@ struct ipa3_usb_teth_prot_conn_params {
 	struct ipa_usb_teth_prot_params params;
 };
 
+struct ipa3_usb_teth_prot_conn_params {
+	u32 usb_to_ipa_clnt_hdl;
+	u32 ipa_to_usb_clnt_hdl;
+	struct ipa_usb_teth_prot_params params;
+};
+
 /**
  * Transport type - could be either data tethering or DPL
  * Each transport has it's own RM resources and statuses
@@ -317,7 +323,12 @@ static bool ipa3_usb_set_state(enum ipa3_usb_state new_state, bool err_permit,
 			state_legal = true;
 		break;
 	case IPA_USB_STOPPED:
+<<<<<<< HEAD
 		if (state == IPA_USB_CONNECTED ||
+=======
+		if (state == IPA_USB_SUSPEND_IN_PROGRESS ||
+			state == IPA_USB_CONNECTED ||
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			state == IPA_USB_SUSPENDED ||
 			state == IPA_USB_SUSPENDED_NO_RWAKEUP)
 			state_legal = true;
@@ -417,6 +428,10 @@ static bool ipa3_usb_check_legal_op(enum ipa3_usb_op op,
 		break;
 	case IPA_USB_OP_DISCONNECT:
 		if  (state == IPA_USB_CONNECTED ||
+<<<<<<< HEAD
+=======
+			state == IPA_USB_SUSPEND_IN_PROGRESS ||
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			state == IPA_USB_SUSPENDED ||
 			state == IPA_USB_SUSPENDED_NO_RWAKEUP)
 			is_legal = true;
@@ -447,6 +462,10 @@ static bool ipa3_usb_check_legal_op(enum ipa3_usb_op op,
 		break;
 	case IPA_USB_OP_RESUME:
 		if (state == IPA_USB_SUSPENDED ||
+<<<<<<< HEAD
+=======
+			state == IPA_USB_SUSPEND_IN_PROGRESS ||
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			state == IPA_USB_SUSPENDED_NO_RWAKEUP)
 			is_legal = true;
 		break;
@@ -2117,7 +2136,10 @@ static int ipa_usb_xdci_dismiss_channels(u32 ul_clnt_hdl, u32 dl_clnt_hdl,
 	}
 
 	if (!IPA3_USB_IS_TTYPE_DPL(ttype)) {
+<<<<<<< HEAD
 		ipa3_xdci_ep_delay_rm(ul_clnt_hdl); /* Remove ep_delay if set */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* Reset UL channel */
 		result = ipa3_reset_gsi_channel(ul_clnt_hdl);
 		if (result) {
@@ -2133,8 +2155,11 @@ static int ipa_usb_xdci_dismiss_channels(u32 ul_clnt_hdl, u32 dl_clnt_hdl,
 		}
 	}
 
+<<<<<<< HEAD
 	ipa3_deregister_lock_unlock_callback(ul_clnt_hdl);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Change state to STOPPED */
 	if (!ipa3_usb_set_state(IPA_USB_STOPPED, false, ttype))
 		IPA_USB_ERR("failed to change state to stopped\n");

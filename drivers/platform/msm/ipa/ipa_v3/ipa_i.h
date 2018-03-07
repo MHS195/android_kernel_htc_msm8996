@@ -100,7 +100,11 @@
 
 #define IPAERR_RL(fmt, args...) \
 	do { \
+<<<<<<< HEAD
 		pr_err_ratelimited_ipa(DRV_NAME " %s:%d " fmt, __func__,\
+=======
+		pr_err_ratelimited(DRV_NAME " %s:%d " fmt, __func__,\
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		__LINE__, ## args);\
 		if (ipa3_ctx) { \
 			IPA_IPC_LOGGING(ipa3_ctx->logbuf, \
@@ -491,7 +495,10 @@ struct ipa3_rt_entry {
 	u16 prio;
 	u16 rule_id;
 	u16 rule_id_valid;
+<<<<<<< HEAD
 	bool ipacm_installed;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 /**
@@ -1126,11 +1133,14 @@ struct ipa_dma_task_info {
 	struct ipahal_imm_cmd_pyld *cmd_pyld;
 };
 
+<<<<<<< HEAD
 struct ipa_cne_evt {
 	struct ipa_wan_msg wan_msg;
 	struct ipa_msg_meta msg_meta;
 };
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /**
  * struct ipa3_context - IPA context
  * @class: pointer to the struct class
@@ -1320,7 +1330,10 @@ struct ipa3_context {
 	u32 curr_ipa_clk_rate;
 	bool q6_proxy_clk_vote_valid;
 	struct mutex q6_proxy_clk_vote_mutex;
+<<<<<<< HEAD
 	u32 q6_proxy_clk_vote_cnt;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	u32 ipa_num_pipes;
 	dma_addr_t pkt_init_imm[IPA3_MAX_NUM_PIPES];
 
@@ -1361,9 +1374,12 @@ struct ipa3_context {
 	u32 ipa_tz_unlock_reg_num;
 	struct ipa_tz_unlock_reg_info *ipa_tz_unlock_reg;
 	struct ipa_dma_task_info dma_task_info;
+<<<<<<< HEAD
 	struct ipa_cne_evt ipa_cne_evt_req_cache[IPA_MAX_NUM_REQ_CACHE];
 	int num_ipa_cne_evt_req;
 	struct mutex ipa_cne_evt_lock;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 /**
@@ -1403,7 +1419,10 @@ struct ipa3_plat_drv_res {
 	bool apply_rg10_wa;
 	bool gsi_ch20_wa;
 	bool tethered_flow_control;
+<<<<<<< HEAD
 	bool ipa_mhi_dynamic_config;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	u32 ipa_tz_unlock_reg_num;
 	struct ipa_tz_unlock_reg_info *ipa_tz_unlock_reg;
 };
@@ -1638,9 +1657,12 @@ int ipa3_del_hdr_proc_ctx_by_user(struct ipa_ioc_del_hdr_proc_ctx *hdls,
  */
 int ipa3_add_rt_rule(struct ipa_ioc_add_rt_rule *rules);
 
+<<<<<<< HEAD
 int ipa3_add_rt_rule_usr(struct ipa_ioc_add_rt_rule *rules,
 	bool user_only);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 int ipa3_add_rt_rule_ext(struct ipa_ioc_add_rt_rule_ext *rules);
 
 int ipa3_add_rt_rule_after(struct ipa_ioc_add_rt_rule_after *rules);

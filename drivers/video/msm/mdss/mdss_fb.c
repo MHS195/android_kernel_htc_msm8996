@@ -58,6 +58,13 @@
 #include "mdss_mdp.h"
 #ifdef TARGET_HW_MDSS_MDP3
 #include "mdp3_ctrl.h"
+<<<<<<< HEAD
+=======
+#endif
+
+#ifdef CONFIG_UCI
+#include <linux/uci/uci.h>
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif
 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
@@ -89,6 +96,12 @@
 static struct fb_info *fbi_list[MAX_FBI_LIST];
 static int fbi_list_index;
 
+<<<<<<< HEAD
+=======
+#define CONFIG_BACKLIGHT_DIMMER
+
+#ifdef CONFIG_BACKLIGHT_DIMMER
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define MDSS_BRIGHT_TO_BL_DIM(out, v) do {\
 			out = (v*v+46000*v-3000000)/50000;\
 			} while (0)
@@ -295,7 +308,11 @@ static int mdss_fb_notify_update(struct msm_fb_data_type *mfd,
  * brightness_to_bl = true, The val was brigthness and return bl level.
  * brightness_to_bl = false, The val was bl and return brightness level.
  */
+<<<<<<< HEAD
 int mdss_backlight_trans(struct msm_fb_data_type *mfd, int val, struct htc_backlight1_table *table, int brightness_to_bl)
+=======
+int mdss_backlight_trans(int val, struct htc_backlight1_table *table, int brightness_to_bl)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	unsigned int result;
 	int index = 0, size = 0;
@@ -306,7 +323,10 @@ int mdss_backlight_trans(struct msm_fb_data_type *mfd, int val, struct htc_backl
 	if(!table || !table->size || !table->brt_data || !table->bl_data)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	mutex_lock(&mfd->bl_lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	size = table->size;
 	if (brightness_to_bl) {
 		val_table = table->brt_data;
@@ -366,12 +386,22 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 	if (value > mfd->panel_info->brightness_max)
 		value = mfd->panel_info->brightness_max;
 
+<<<<<<< HEAD
 	bl_lvl = mdss_backlight_trans(mfd, value, &mfd->panel_info->brt_bl_table[0], true);
+=======
+	bl_lvl = mdss_backlight_trans(value, &mfd->panel_info->brt_bl_table[0], true);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (backlight_dimmer)
 		MDSS_BRIGHT_TO_BL_DIM(bl_lvl, bl_lvl);
 
 	bl_lvl = MAX(backlight_min, bl_lvl);
+
+	/* Change to burst backlight */
+	if (htc_is_burst_bl_on(mfd, value)) {
+		bl_lvl = mfd->panel_info->burst_bl_value;
+		pr_info("Change to burst bl =%d\n", bl_lvl);
+	}
 
 	/* Change to burst backlight */
 	if (htc_is_burst_bl_on(mfd, value)) {
@@ -417,7 +447,11 @@ static void mdss_fb_set_bl_brightness_hybrid(struct led_classdev *led_cdev,
 	sub_only = !strcmp(led_cdev->name, "sub-backlight");
 
 	if (!sub_only) {
+<<<<<<< HEAD
 		bl_lvl = mdss_backlight_trans(mfd, value, &mfd->panel_info->brt_bl_table[0], true);
+=======
+		bl_lvl = mdss_backlight_trans(value, &mfd->panel_info->brt_bl_table[0], true);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #ifdef CONFIG_BACKLIGHT_DIMMER
 		last_brightness = value;
@@ -433,7 +467,10 @@ static void mdss_fb_set_bl_brightness_hybrid(struct led_classdev *led_cdev,
 		}
 #endif
 		
+<<<<<<< HEAD
 		/* Change to burst backlight, only for main */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (htc_is_burst_bl_on(mfd, value)) {
 			bl_lvl = mfd->panel_info->burst_bl_value;
 			pr_info("Change to burst bl =%d\n", bl_lvl);
@@ -451,7 +488,11 @@ static void mdss_fb_set_bl_brightness_hybrid(struct led_classdev *led_cdev,
 		mfd->bl2_min = (bl_lvl * 32 + 86) / 87; /* Magic! */
 
 		if (mfd->bl_sync) {
+<<<<<<< HEAD
 			sub_bl_lvl = mdss_backlight_trans(mfd, value, &mfd->panel_info->brt_bl_table[1], true);
+=======
+			sub_bl_lvl = mdss_backlight_trans(value, &mfd->panel_info->brt_bl_table[1], true);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #ifdef CONFIG_BACKLIGHT_DIMMER
 #ifdef CONFIG_UCI
 			if (backlight_dimmer||backlight_dimmer_uci)
@@ -471,7 +512,11 @@ static void mdss_fb_set_bl_brightness_hybrid(struct led_classdev *led_cdev,
 
 		mfd->last_bri1 = value;  /* Keep for calibration */
 	} else {
+<<<<<<< HEAD
 		sub_bl_lvl = mdss_backlight_trans(mfd, value, &mfd->panel_info->brt_bl_table[1], true);
+=======
+		sub_bl_lvl = mdss_backlight_trans(value, &mfd->panel_info->brt_bl_table[1], true);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		if (sub_bl_lvl < 0)
 			sub_bl_lvl = 0;
 	}
@@ -486,6 +531,10 @@ static void mdss_fb_set_bl_brightness_hybrid(struct led_classdev *led_cdev,
 	}
 }
 
+<<<<<<< HEAD
+=======
+#if 1
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static ssize_t backlight_min_show(struct kobject *kobj,
 		struct kobj_attribute *attr, char *buf)
 {
@@ -550,7 +599,10 @@ static struct led_classdev sub_backlight_led = {
 	.max_brightness = MDSS_MAX_BL_BRIGHTNESS,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_BACKLIGHT_DIMMER
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #ifdef CONFIG_UCI
 extern int input_is_screen_on(void);
 

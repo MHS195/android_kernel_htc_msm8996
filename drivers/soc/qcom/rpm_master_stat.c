@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014, 2016 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2014, 2016-2017 The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -50,6 +50,8 @@
 
 #define GET_FIELD(a) ((strnstr(#a, ".", 80) + 1))
 
+static DEFINE_MUTEX(msm_rpm_master_stats_mutex);
+
 struct msm_rpm_master_stats {
 	uint32_t active_cores;
 	uint32_t numshutdowns;
@@ -81,9 +83,11 @@ int msm_rpm_master_stats_file_close(struct inode *inode,
 {
 	struct msm_rpm_master_stats_private_data *private = file->private_data;
 
+	mutex_lock(&msm_rpm_master_stats_mutex);
 	if (private->reg_base)
 		iounmap(private->reg_base);
 	kfree(file->private_data);
+	mutex_unlock(&msm_rpm_master_stats_mutex);
 
 	return 0;
 }
@@ -95,14 +99,17 @@ static int msm_rpm_master_copy_stats(
 	struct msm_rpm_master_stats_platform_data *pdata;
 	int count, j = 0;
 	char *buf;
-	static DEFINE_MUTEX(msm_rpm_master_stats_mutex);
-
-	mutex_lock(&msm_rpm_master_stats_mutex);
+	unsigned long active_cores;
 
 	/* Iterate possible number of masters */
+<<<<<<< HEAD
 	if (prvdata->master_cnt > prvdata->num_masters - 1) {
 		prvdata->master_cnt = 0;
 		mutex_unlock(&msm_rpm_master_stats_mutex);
+=======
+	if (master_cnt > prvdata->num_masters - 1) {
+		master_cnt = 0;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return 0;
 	}
 
@@ -246,16 +253,19 @@ static int msm_rpm_master_copy_stats(
 			record.active_cores);
 	}
 
-	j = find_first_bit((unsigned long *)&record.active_cores,
-							BITS_PER_LONG);
+	active_cores = record.active_cores;
+	j = find_first_bit(&active_cores, BITS_PER_LONG);
 	while (j < BITS_PER_LONG) {
 		SNPRINTF(buf, count, "\t\tcore%d\n", j);
-		j = find_next_bit((unsigned long *)&record.active_cores,
-				BITS_PER_LONG, j + 1);
+		j = find_next_bit(&active_cores, BITS_PER_LONG, j + 1);
 	}
 
+<<<<<<< HEAD
 	prvdata->master_cnt++;
 	mutex_unlock(&msm_rpm_master_stats_mutex);
+=======
+	master_cnt++;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	return RPM_MASTERS_BUF_LEN - count;
 }
 
@@ -264,25 +274,36 @@ static ssize_t msm_rpm_master_stats_file_read(struct file *file,
 {
 	struct msm_rpm_master_stats_private_data *prvdata;
 	struct msm_rpm_master_stats_platform_data *pdata;
+	ssize_t ret;
 
+	mutex_lock(&msm_rpm_master_stats_mutex);
 	prvdata = file->private_data;
-	if (!prvdata)
-		return -EINVAL;
+	if (!prvdata) {
+		ret = -EINVAL;
+		goto exit;
+	}
 
 	pdata = prvdata->platform_data;
-	if (!pdata)
-		return -EINVAL;
+	if (!pdata) {
+		ret = -EINVAL;
+		goto exit;
+	}
 
-	if (!bufu || count == 0)
-		return -EINVAL;
+	if (!bufu || count == 0) {
+		ret = -EINVAL;
+		goto exit;
+	}
 
 	if ((*ppos <= pdata->phys_size)) {
 		prvdata->len = msm_rpm_master_copy_stats(prvdata);
 		*ppos = 0;
 	}
 
-	return simple_read_from_buffer(bufu, count, ppos,
+	ret = simple_read_from_buffer(bufu, count, ppos,
 			prvdata->buf, prvdata->len);
+exit:
+	mutex_unlock(&msm_rpm_master_stats_mutex);
+	return ret;
 }
 
 static int msm_rpm_master_stats_file_open(struct inode *inode,
@@ -290,15 +311,20 @@ static int msm_rpm_master_stats_file_open(struct inode *inode,
 {
 	struct msm_rpm_master_stats_private_data *prvdata;
 	struct msm_rpm_master_stats_platform_data *pdata;
+	int ret = 0;
 
+	mutex_lock(&msm_rpm_master_stats_mutex);
 	pdata = inode->i_private;
 
 	file->private_data =
 		kzalloc(sizeof(struct msm_rpm_master_stats_private_data),
 			GFP_KERNEL);
 
-	if (!file->private_data)
-		return -ENOMEM;
+	if (!file->private_data) {
+		ret = -ENOMEM;
+		goto exit;
+	}
+
 	prvdata = file->private_data;
 
 	prvdata->reg_base = ioremap(pdata->phys_addr_base,
@@ -309,15 +335,22 @@ static int msm_rpm_master_stats_file_open(struct inode *inode,
 		pr_err("%s: ERROR could not ioremap start=%pa, len=%u\n",
 			__func__, &pdata->phys_addr_base,
 			pdata->phys_size);
-		return -EBUSY;
+		ret = -EBUSY;
+		goto exit;
 	}
 
 	prvdata->len = 0;
 	prvdata->num_masters = pdata->num_masters;
 	prvdata->master_names = pdata->masters;
 	prvdata->platform_data = pdata;
+<<<<<<< HEAD
 	prvdata->master_cnt = 0;
 	return 0;
+=======
+exit:
+	mutex_unlock(&msm_rpm_master_stats_mutex);
+	return ret;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static const struct file_operations msm_rpm_master_stats_fops = {

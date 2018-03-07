@@ -54,9 +54,12 @@
 #include <linux/writeback.h>
 #include <linux/shm.h>
 #include <linux/kcov.h>
+<<<<<<< HEAD
 #include <linux/cpufreq.h>
 
 #include "sched/tune.h"
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #include <asm/uaccess.h>
 #include <asm/unistd.h>
@@ -458,6 +461,16 @@ static void exit_mm(struct task_struct *tsk)
 	BUG_ON(mm != tsk->active_mm);
 	/* more a memory barrier than a real lock */
 	task_lock(tsk);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MSM_APP_SETTINGS
+	preempt_disable();
+	if (tsk->mm && unlikely(tsk->mm->app_setting))
+		clear_app_setting_bit(APP_SETTING_BIT);
+
+	if (tsk->mm && unlikely(is_compat_thread(task_thread_info(tsk))))
+		clear_app_setting_bit_for_32bit_apps();
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	tsk->mm = NULL;
 	up_read(&mm->mmap_sem);
 	enter_lazy_tlb(mm, current);
@@ -678,11 +691,20 @@ static void check_stack_usage(void)
 static inline void check_stack_usage(void) {}
 #endif
 
+#ifdef CONFIG_HTC_FD_MONITOR
+extern int clean_fd_list(const int cur_pid, const int callfrom);
+#endif
+
 void do_exit(long code)
 {
 	struct task_struct *tsk = current;
 	int group_dead;
 	TASKS_RCU(int tasks_rcu_i);
+
+#ifdef CONFIG_HTC_FD_MONITOR
+	if(!(tsk->flags & PF_KTHREAD) && tsk->tgid == tsk->pid)
+		clean_fd_list(tsk->tgid, 0);
+#endif
 
 	profile_task_exit(tsk);
 	kcov_task_exit(tsk);

@@ -1970,6 +1970,10 @@ static int mdss_dsi_unblank(struct mdss_panel_data *pdata)
 	if ((pdata->panel_info.type == MIPI_CMD_PANEL) &&
 		mipi->vsync_enable && mipi->hw_vsync_mode)
 		mdss_dsi_set_tear_on(ctrl_pdata);
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	ctrl_pdata->ctrl_state |= CTRL_STATE_PANEL_INIT;
 
@@ -2037,7 +2041,11 @@ static int mdss_dsi_blank(struct mdss_panel_data *pdata, int power_state)
 	}
 
 	if ((pdata->panel_info.type == MIPI_CMD_PANEL) &&
+<<<<<<< HEAD
 		mipi->vsync_enable && mipi->hw_vsync_mode)
+=======
+		mipi->vsync_enable && mipi->hw_vsync_mode) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		mdss_dsi_set_tear_off(ctrl_pdata);
 
 	if (ctrl_pdata->ctrl_state & CTRL_STATE_PANEL_INIT) {

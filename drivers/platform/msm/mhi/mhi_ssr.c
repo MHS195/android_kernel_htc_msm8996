@@ -11,8 +11,13 @@
  */
 
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include "mhi_sys.h"
 #include "mhi.h"
+=======
+#include <mhi_sys.h>
+#include <mhi.h>
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #include <soc/qcom/subsystem_restart.h>
 #include <soc/qcom/subsystem_notif.h>
 #include <linux/esoc_client.h>

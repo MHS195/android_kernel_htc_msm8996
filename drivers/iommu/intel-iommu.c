@@ -1759,8 +1759,11 @@ static int domain_init(struct dmar_domain *domain, int guest_width)
 
 static void domain_exit(struct dmar_domain *domain)
 {
+<<<<<<< HEAD
 	struct dmar_drhd_unit *drhd;
 	struct intel_iommu *iommu;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct page *freelist = NULL;
 
 	/* Domain 0 is reserved, so dont process it */

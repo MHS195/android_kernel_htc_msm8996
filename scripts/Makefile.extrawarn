@@ -27,7 +27,10 @@ warning-1 += -Wold-style-definition
 warning-1 += $(call cc-option, -Wmissing-include-dirs)
 warning-1 += $(call cc-option, -Wunused-but-set-variable)
 warning-1 += $(call cc-option, -Wunused-const-variable)
+<<<<<<< HEAD
 warning-1 += $(call cc-option, -Wpacked-not-aligned)
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 warning-1 += $(call cc-disable-warning, missing-field-initializers)
 
 warning-2 := -Waggregate-return

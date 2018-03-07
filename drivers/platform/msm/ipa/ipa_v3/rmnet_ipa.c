@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -2641,6 +2645,7 @@ static void rmnet_ipa_get_network_stats_and_update(void)
 		IPAWANERR("ipa_send_msg failed: %d\n", rc);
 		kfree(resp);
 		return;
+<<<<<<< HEAD
 	}
 }
 
@@ -2661,6 +2666,8 @@ static void rmnet_ipa_send_quota_reach_ind(void)
 	if (rc) {
 		IPAWANERR("ipa_send_msg failed: %d\n", rc);
 		return;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 }
 
@@ -2810,6 +2817,7 @@ int rmnet_ipa3_query_tethering_stats(struct wan_ioctl_query_tether_stats *data,
 	int pipe_len, rc;
 
 	if (data != NULL) {
+<<<<<<< HEAD
 		/* prevent string buffer overflows */
 		data->upstreamIface[IFNAMSIZ-1] = '\0';
 		data->tetherIface[IFNAMSIZ-1] = '\0';
@@ -2817,6 +2825,10 @@ int rmnet_ipa3_query_tethering_stats(struct wan_ioctl_query_tether_stats *data,
 		/* only reset can have data == NULL */
 		IPAWANERR("query without allocate tether_stats strucutre\n");
 		return -EINVAL;
+=======
+		data->upstreamIface[IFNAMSIZ-1] = '\0';
+		data->tetherIface[IFNAMSIZ-1] = '\0';
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	req = kzalloc(sizeof(struct ipa_get_data_stats_req_msg_v01),

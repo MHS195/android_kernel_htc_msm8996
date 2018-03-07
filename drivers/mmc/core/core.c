@@ -85,7 +85,11 @@ static const unsigned freqs[] = { 400000, 300000, 200000, 100000 };
  * performance cost, and for other reasons may not always be desired.
  * So we allow it it to be disabled.
  */
+<<<<<<< HEAD
 bool use_spi_crc = 0;
+=======
+bool use_spi_crc = 1;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 module_param(use_spi_crc, bool, 0);
 
 static int stats_interval = MMC_STATS_INTERVAL;
@@ -4506,6 +4510,7 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 		if (!err)
 			break;
 
+<<<<<<< HEAD
 		if (!mmc_card_is_removable(host)) {
 			dev_warn(mmc_dev(host),
 				 "pre_suspend failed for non-removable host: "
@@ -4514,6 +4519,8 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 			break;
 		}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* Calling bus_ops->remove() with a claimed host can deadlock */
 		host->bus_ops->remove(host);
 		mmc_claim_host(host);

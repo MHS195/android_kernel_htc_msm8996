@@ -61,6 +61,7 @@ struct sched_param {
 
 #include <asm/processor.h>
 
+<<<<<<< HEAD
 int  su_instances(void);
 bool su_running(void);
 bool su_visible(void);
@@ -69,6 +70,10 @@ void su_exit(void);
 
 #define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
 
+=======
+#define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /*
  * Extended scheduling parameters data structure.
  *
@@ -243,8 +248,11 @@ extern char ___assert_task_state[1 - 2*!!(
 #define TASK_STOPPED		(TASK_WAKEKILL | __TASK_STOPPED)
 #define TASK_TRACED		(TASK_WAKEKILL | __TASK_TRACED)
 
+<<<<<<< HEAD
 #define TASK_IDLE		(TASK_UNINTERRUPTIBLE | TASK_NOLOAD)
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* Convenience macros for the sake of wake_up */
 #define TASK_NORMAL		(TASK_INTERRUPTIBLE | TASK_UNINTERRUPTIBLE)
 #define TASK_ALL		(TASK_NORMAL | __TASK_STOPPED | __TASK_TRACED)
@@ -296,6 +304,19 @@ enum task_event {
 	IRQ_UPDATE	= 5,
 };
 
+<<<<<<< HEAD
+=======
+/* Note: this need to be in sync with migrate_type_names array */
+enum migrate_types {
+	GROUP_TO_RQ,
+	RQ_TO_GROUP,
+	RQ_TO_RQ,
+	GROUP_TO_GROUP,
+};
+
+extern const char *migrate_type_names[];
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #include <linux/spinlock.h>
 
 /*
@@ -902,6 +923,7 @@ enum cpu_idle_type {
 #define SCHED_CAPACITY_SHIFT	10
 #define SCHED_CAPACITY_SCALE	(1L << SCHED_CAPACITY_SHIFT)
 
+<<<<<<< HEAD
 struct sched_capacity_reqs {
 	unsigned long cfs;
 	unsigned long rt;
@@ -955,6 +977,8 @@ extern void wake_q_add(struct wake_q_head *head,
 		       struct task_struct *task);
 extern void wake_up_q(struct wake_q_head *head);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /*
  * sched-domains (multiprocessor balancing) declarations:
  */
@@ -965,8 +989,12 @@ extern void wake_up_q(struct wake_q_head *head);
 #define SD_BALANCE_FORK		0x0008	/* Balance on fork, clone */
 #define SD_BALANCE_WAKE		0x0010  /* Balance on wakeup */
 #define SD_WAKE_AFFINE		0x0020	/* Wake task to waking CPU */
+<<<<<<< HEAD
 #define SD_ASYM_CPUCAPACITY	0x0040  /* Groups have different max cpu capacities */
 #define SD_SHARE_CPUCAPACITY	0x0080	/* Domain members share cpu capacity */
+=======
+#define SD_SHARE_CPUCAPACITY	0x0080	/* Domain members share cpu power */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define SD_SHARE_POWERDOMAIN	0x0100	/* Domain members share power domain */
 #define SD_SHARE_PKG_RESOURCES	0x0200	/* Domain members share cpu pkg resources */
 #define SD_SERIALIZE		0x0400	/* Only a single load balancing instance */
@@ -974,7 +1002,10 @@ extern void wake_up_q(struct wake_q_head *head);
 #define SD_PREFER_SIBLING	0x1000	/* Prefer to place tasks in a sibling domain */
 #define SD_OVERLAP		0x2000	/* sched_domains of this level overlap */
 #define SD_NUMA			0x4000	/* cross-node balancing */
+<<<<<<< HEAD
 #define SD_SHARE_CAP_STATES	0x8000  /* Domain members share capacity state */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #ifdef CONFIG_SCHED_SMT
 static inline int cpu_smt_flags(void)
@@ -1242,9 +1273,24 @@ struct load_weight {
  * 2) for entity, support any load.weight always runnable
  */
 struct sched_avg {
+<<<<<<< HEAD
 	u64 last_update_time, load_sum;
 	u32 util_sum, period_contrib;
 	unsigned long load_avg, util_avg;
+=======
+	/*
+	 * These sums represent an infinite geometric series and so are bound
+	 * above by 1024/(1-y).  Thus we only need a u32 to store them for all
+	 * choices of y < 1-2^(-32)*1024.
+	 */
+	u32 runnable_avg_sum, runnable_avg_period;
+#ifdef CONFIG_SCHED_HMP
+	u32 runnable_avg_sum_scaled;
+#endif
+	u64 last_runnable_update;
+	s64 decay_count;
+	unsigned long load_avg_contrib;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 #ifdef CONFIG_SCHEDSTATS
@@ -1338,6 +1384,14 @@ struct ravg {
 	 *
 	 * 'prev_window' represents task's contribution to cpu busy time
 	 * statistics (rq->prev_runnable_sum) in previous window
+<<<<<<< HEAD
+=======
+	 *
+	 * 'pred_demand' represents task's current predicted cpu busy time
+	 *
+	 * 'busy_buckets' groups historical busy time into different buckets
+	 * used for prediction
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	 */
 	u64 mark_start;
 	u32 sum, demand;
@@ -1374,7 +1428,11 @@ struct sched_entity {
 #endif
 
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	/* Per entity load average tracking */
+=======
+	/* Per-entity load-tracking */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct sched_avg	avg;
 #endif
 };
@@ -1463,6 +1521,7 @@ enum perf_event_task_context {
 };
 
 struct task_struct {
+<<<<<<< HEAD
 #ifdef CONFIG_THREAD_INFO_IN_TASK
 	/*
 	 * For reasons of header soup (see current_thread_info()), this
@@ -1470,6 +1529,8 @@ struct task_struct {
 	 */
 	struct thread_info thread_info;
 #endif
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	volatile long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
 	void *stack;
 	atomic_t usage;
@@ -1553,8 +1614,16 @@ struct task_struct {
 #endif
 
 	struct mm_struct *mm, *active_mm;
+<<<<<<< HEAD
 	/* per-thread vma caching */
 	u64 vmacache_seqnum;
+=======
+#ifdef CONFIG_COMPAT_BRK
+	unsigned brk_randomized:1;
+#endif
+	/* per-thread vma caching */
+	u32 vmacache_seqnum;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct vm_area_struct *vmacache[VMACACHE_SIZE];
 #if defined(SPLIT_RSS_COUNTING)
 	struct task_rss_stat	rss_stat;
@@ -1577,12 +1646,17 @@ struct task_struct {
 	unsigned sched_contributes_to_load:1;
 	unsigned sched_migrated:1;
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT_BRK
 	unsigned brk_randomized:1;
 #endif
 
 	unsigned long atomic_flags; /* Flags needing atomic access. */
 
+=======
+	unsigned long atomic_flags; /* Flags needing atomic access. */
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	struct restart_block restart_block;
 	pid_t pid;
 	pid_t tgid;
@@ -1823,6 +1897,7 @@ struct task_struct {
 	struct numa_group *numa_group;
 
 	/*
+<<<<<<< HEAD
 	 * numa_faults is an array split into four regions:
 	 * faults_memory, faults_cpu, faults_memory_buffer, faults_cpu_buffer
 	 * in this precise order.
@@ -1840,6 +1915,30 @@ struct task_struct {
 	unsigned long total_numa_faults;
 
 	/*
+=======
+	 * Exponential decaying average of faults on a per-node basis.
+	 * Scheduling placement decisions are made based on the these counts.
+	 * The values remain static for the duration of a PTE scan
+	 */
+	unsigned long *numa_faults_memory;
+	unsigned long total_numa_faults;
+
+	/*
+	 * numa_faults_buffer records faults per node during the current
+	 * scan window. When the scan completes, the counts in
+	 * numa_faults_memory decay and these values are copied.
+	 */
+	unsigned long *numa_faults_buffer_memory;
+
+	/*
+	 * Track the nodes the process was running on when a NUMA hinting
+	 * fault was incurred.
+	 */
+	unsigned long *numa_faults_cpu;
+	unsigned long *numa_faults_buffer_cpu;
+
+	/*
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	 * numa_faults_locality tracks if faults recorded during the last
 	 * scan window were remote/local. The task scan period is adapted
 	 * based on the locality of the faults with different weights
@@ -1847,7 +1946,10 @@ struct task_struct {
 	 */
 	unsigned long numa_faults_locality[2];
 
+<<<<<<< HEAD
 	unsigned long numa_pages_migrated;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #endif /* CONFIG_NUMA_BALANCING */
 
 	struct rcu_head rcu;
@@ -2046,6 +2148,18 @@ static inline pid_t task_tgid_nr(struct task_struct *tsk)
 	return tsk->tgid;
 }
 
+<<<<<<< HEAD
+=======
+static inline pid_t task_tgid_nr_ns(struct task_struct *tsk, struct pid_namespace *ns)
+{
+	return __task_pid_nr_ns(tsk, __PIDTYPE_TGID, ns);
+}
+
+static inline pid_t task_tgid_vnr(struct task_struct *tsk)
+{
+	return __task_pid_nr_ns(tsk, __PIDTYPE_TGID, NULL);
+}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 static inline int pid_alive(const struct task_struct *p);
 
@@ -2072,6 +2186,7 @@ static inline pid_t task_session_vnr(struct task_struct *tsk)
 	return __task_pid_nr_ns(tsk, PIDTYPE_SID, NULL);
 }
 
+<<<<<<< HEAD
 static inline pid_t task_tgid_nr_ns(struct task_struct *tsk, struct pid_namespace *ns)
 {
 	return __task_pid_nr_ns(tsk, __PIDTYPE_TGID, ns);
@@ -2099,6 +2214,8 @@ static inline pid_t task_ppid_nr(const struct task_struct *tsk)
 	return task_ppid_nr_ns(tsk, &init_pid_ns);
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* obsolete, do not use */
 static inline pid_t task_pgrp_nr(struct task_struct *tsk)
 {
@@ -2214,7 +2331,70 @@ extern int task_free_unregister(struct notifier_block *n);
 #define PF_FREEZER_SKIP	0x40000000	/* Freezer should not count it as freezable */
 #define PF_SUSPEND_TASK 0x80000000      /* this thread called freeze_processes and should not be frozen */
 
+<<<<<<< HEAD
 #define PF_SU		0x10000000      /* task is su */
+=======
+#if defined(CONFIG_SCHED_QHMP) || !defined(CONFIG_SCHED_HMP)
+static inline int sched_update_freq_max_load(const cpumask_t *cpumask)
+{
+	return 0;
+}
+#else
+int sched_update_freq_max_load(const cpumask_t *cpumask);
+#endif
+
+#if defined(CONFIG_SCHED_FREQ_INPUT)
+extern int sched_set_window(u64 window_start, unsigned int window_size);
+extern unsigned long sched_get_busy(int cpu);
+extern void sched_get_cpus_busy(struct sched_load *busy,
+				const struct cpumask *query_cpus);
+extern void sched_set_io_is_busy(int val);
+#else
+static inline int sched_set_window(u64 window_start, unsigned int window_size)
+{
+	return -EINVAL;
+}
+static inline unsigned long sched_get_busy(int cpu)
+{
+	return 0;
+}
+static inline void sched_get_cpus_busy(struct sched_load *busy,
+				       const struct cpumask *query_cpus) {};
+static inline void sched_set_io_is_busy(int val) {};
+#endif
+
+/*
+ * Per process flags
+ */
+#define PF_WAKE_UP_IDLE 0x00000002	/* try to wake up on an idle CPU */
+#define PF_EXITING	0x00000004	/* getting shut down */
+#define PF_EXITPIDONE	0x00000008	/* pi exit done on shut down */
+#define PF_VCPU		0x00000010	/* I'm a virtual CPU */
+#define PF_WQ_WORKER	0x00000020	/* I'm a workqueue worker */
+#define PF_FORKNOEXEC	0x00000040	/* forked but didn't exec */
+#define PF_MCE_PROCESS  0x00000080      /* process policy on mce errors */
+#define PF_SUPERPRIV	0x00000100	/* used super-user privileges */
+#define PF_DUMPCORE	0x00000200	/* dumped core */
+#define PF_SIGNALED	0x00000400	/* killed by a signal */
+#define PF_MEMALLOC	0x00000800	/* Allocating memory */
+#define PF_NPROC_EXCEEDED 0x00001000	/* set_user noticed that RLIMIT_NPROC was exceeded */
+#define PF_USED_MATH	0x00002000	/* if unset the fpu must be initialized before use */
+#define PF_USED_ASYNC	0x00004000	/* used async_schedule*(), used by module init */
+#define PF_NOFREEZE	0x00008000	/* this thread should not be frozen */
+#define PF_FROZEN	0x00010000	/* frozen for system suspend */
+#define PF_FSTRANS	0x00020000	/* inside a filesystem transaction */
+#define PF_KSWAPD	0x00040000	/* I am kswapd */
+#define PF_MEMALLOC_NOIO 0x00080000	/* Allocating memory without IO involved */
+#define PF_LESS_THROTTLE 0x00100000	/* Throttle me less: I clean memory */
+#define PF_KTHREAD	0x00200000	/* I am a kernel thread */
+#define PF_RANDOMIZE	0x00400000	/* randomize virtual address space */
+#define PF_SWAPWRITE	0x00800000	/* Allowed to write to swap */
+#define PF_NO_SETAFFINITY 0x04000000	/* Userland is not allowed to meddle with cpus_allowed */
+#define PF_MCE_EARLY    0x08000000      /* Early kill for mce process policy */
+#define PF_MUTEX_TESTER	0x20000000	/* Thread belongs to the rt mutex tester */
+#define PF_FREEZER_SKIP	0x40000000	/* Freezer should not count it as freezable */
+#define PF_SUSPEND_TASK 0x80000000      /* this thread called freeze_processes and should not be frozen */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /*
  * Only the _current_ task can read/write to tsk->flags, but other
@@ -2267,7 +2447,10 @@ static inline void memalloc_noio_restore(unsigned int flags)
 #define PFA_NO_NEW_PRIVS 0	/* May not gain new privileges. */
 #define PFA_SPREAD_PAGE  1      /* Spread page cache over cpuset */
 #define PFA_SPREAD_SLAB  2      /* Spread some slab caches over cpuset */
+<<<<<<< HEAD
 #define PFA_LMK_WAITING  3      /* Lowmemorykiller is waiting */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 
 #define TASK_PFA_TEST(name, func)					\
@@ -2291,6 +2474,7 @@ TASK_PFA_TEST(SPREAD_SLAB, spread_slab)
 TASK_PFA_SET(SPREAD_SLAB, spread_slab)
 TASK_PFA_CLEAR(SPREAD_SLAB, spread_slab)
 
+<<<<<<< HEAD
 TASK_PFA_TEST(LMK_WAITING, lmk_waiting)
 TASK_PFA_SET(LMK_WAITING, lmk_waiting)
 
@@ -2299,6 +2483,13 @@ TASK_PFA_SET(LMK_WAITING, lmk_waiting)
  */
 #define JOBCTL_STOP_SIGMASK	0xffff	/* signr of the last group stop */
 
+=======
+/*
+ * task->jobctl flags
+ */
+#define JOBCTL_STOP_SIGMASK	0xffff	/* signr of the last group stop */
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #define JOBCTL_STOP_DEQUEUED_BIT 16	/* stop signal dequeued */
 #define JOBCTL_STOP_PENDING_BIT	17	/* task should stop for group stop */
 #define JOBCTL_STOP_CONSUME_BIT	18	/* consume group stop count */
@@ -2385,6 +2576,17 @@ void calc_load_exit_idle(void);
 static inline void calc_load_enter_idle(void) { }
 static inline void calc_load_exit_idle(void) { }
 #endif /* CONFIG_NO_HZ_COMMON */
+<<<<<<< HEAD
+=======
+
+static inline void set_wake_up_idle(bool enabled)
+{
+	if (enabled)
+		current->flags |= PF_WAKE_UP_IDLE;
+	else
+		current->flags &= ~PF_WAKE_UP_IDLE;
+}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #ifndef CONFIG_CPUMASK_OFFSTACK
 static inline int set_cpus_allowed(struct task_struct *p, cpumask_t new_mask)
@@ -2457,7 +2659,11 @@ extern unsigned long long
 task_sched_runtime(struct task_struct *task);
 
 /* sched_exec is called by processes performing an exec */
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
+=======
+#if defined(CONFIG_SMP)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 extern void sched_exec(void);
 #else
 #define sched_exec()   {}
@@ -2722,11 +2928,14 @@ static inline void mmdrop(struct mm_struct * mm)
 
 /* mmput gets rid of the mappings and all user-space */
 extern int mmput(struct mm_struct *);
+<<<<<<< HEAD
 /* same as above but performs the slow path from the async kontext. Can
  * be called from the atomic context as well
  */
 extern void mmput_async(struct mm_struct *);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* Grab a reference to a task's mm, if it is not already going away */
 extern struct mm_struct *get_task_mm(struct task_struct *task);
 /*
@@ -3138,6 +3347,16 @@ static inline void cond_resched_rcu(void)
 #endif
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_PREEMPT
+static inline unsigned long get_preempt_disable_ip(struct task_struct *p)
+{
+	return p->preempt_disable_ip;
+}
+#endif
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /*
  * Does a critical section need to be broken due to another
  * task waiting?: (technically does not depend on CONFIG_PREEMPT,
@@ -3297,6 +3516,18 @@ static inline void set_task_cpu(struct task_struct *p, unsigned int cpu)
 }
 
 #endif /* CONFIG_SMP */
+<<<<<<< HEAD
+=======
+
+extern struct atomic_notifier_head migration_notifier_head;
+struct migration_notify_data {
+	int src_cpu;
+	int dest_cpu;
+	int load;
+};
+
+extern struct atomic_notifier_head load_alert_notifier_head;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 extern long sched_setaffinity(pid_t pid, const struct cpumask *new_mask);
 extern long sched_getaffinity(pid_t pid, struct cpumask *mask);
@@ -3328,7 +3559,10 @@ static inline void inc_syscw(struct task_struct *tsk)
 {
 	tsk->ioac.syscw++;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static inline void inc_syscfs(struct task_struct *tsk)
 {
 	tsk->ioac.syscfs++;

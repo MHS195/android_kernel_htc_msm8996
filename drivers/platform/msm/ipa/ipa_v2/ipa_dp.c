@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -516,7 +520,10 @@ int ipa_send(struct ipa_sys_context *sys, u32 num_desc, struct ipa_desc *desc,
 
 		if (dma_mapping_error(ipa_ctx->pdev, tx_pkt->mem.phys_base)) {
 			IPAERR("dma_map_single failed\n");
+<<<<<<< HEAD
 			ret = -EFAULT;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			goto failure_dma_map;
 		}
 
@@ -2862,10 +2869,15 @@ void ipa_lan_rx_cb(void *priv, enum ipa_dp_evt_type evt, unsigned long data)
 	   ------------------------------------------
 	 */
 	*(u16 *)rx_skb->cb = ((metadata >> 16) & 0xFFFF);
+<<<<<<< HEAD
 	*(u8 *)(rx_skb->cb + 4) = ucp;
 	IPADBG_LOW("meta_data: 0x%x cb: 0x%x\n",
 		metadata, *(u32 *)rx_skb->cb);
 	IPADBG_LOW("ucp: %d\n", *(u8 *)(rx_skb->cb + 4));
+=======
+	IPADBG_LOW("meta_data: 0x%x cb: 0x%x\n",
+			metadata, *(u32 *)rx_skb->cb);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	ep->client_notify(ep->priv, IPA_RECEIVE, (unsigned long)(rx_skb));
 }

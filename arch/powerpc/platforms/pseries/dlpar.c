@@ -299,8 +299,11 @@ int dlpar_detach_node(struct device_node *dn)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	of_node_put(dn);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	return 0;
 }
 

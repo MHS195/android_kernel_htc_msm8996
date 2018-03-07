@@ -38,10 +38,16 @@
 
 #define _IOMMU_PRIV(_mmu) (&((_mmu)->priv.iommu))
 
+<<<<<<< HEAD
 #define ADDR_IN_GLOBAL(_mmu, _a) \
 	(((_a) >= KGSL_IOMMU_GLOBAL_MEM_BASE(_mmu)) && \
 	 ((_a) < (KGSL_IOMMU_GLOBAL_MEM_BASE(_mmu) + \
 	 KGSL_IOMMU_GLOBAL_MEM_SIZE)))
+=======
+#define ADDR_IN_GLOBAL(_a) \
+	(((_a) >= KGSL_IOMMU_GLOBAL_MEM_BASE) && \
+	 ((_a) < (KGSL_IOMMU_GLOBAL_MEM_BASE + KGSL_IOMMU_GLOBAL_MEM_SIZE)))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 static struct kgsl_mmu_pt_ops iommu_pt_ops;
 static bool need_iommu_sync;
@@ -632,7 +638,11 @@ static void _find_mem_entries(struct kgsl_mmu *mmu, uint64_t faultaddr,
 	/* Set the maximum possible size as an initial value */
 	nextentry->gpuaddr = (uint64_t) -1;
 
+<<<<<<< HEAD
 	if (ADDR_IN_GLOBAL(mmu, faultaddr)) {
+=======
+	if (ADDR_IN_GLOBAL(faultaddr)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		_get_global_entries(faultaddr, preventry, nextentry);
 	} else if (context) {
 		private = context->proc_priv;

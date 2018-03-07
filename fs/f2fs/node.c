@@ -691,6 +691,12 @@ static void truncate_node(struct dnode_of_data *dn)
 		dec_valid_inode_count(sbi);
 		f2fs_inode_synced(dn->inode);
 	}
+<<<<<<< HEAD
+=======
+
+	clear_node_page_dirty(dn->node_page);
+	set_sbi_flag(sbi, SBI_IS_DIRTY);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	clear_node_page_dirty(dn->node_page);
 	set_sbi_flag(sbi, SBI_IS_DIRTY);

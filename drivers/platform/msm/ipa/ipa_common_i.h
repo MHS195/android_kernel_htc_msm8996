@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -19,10 +23,13 @@
 #include <linux/ipa.h>
 #include <linux/ipa_uc_offload.h>
 #include <linux/ipa_wdi3.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
 
 #define WARNON_RATELIMIT_BURST 1
 #define IPA_RATELIMIT_BURST 1
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #define __FILENAME__ \
 	(strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)

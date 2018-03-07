@@ -444,9 +444,12 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch)
 	int nb = 0;
 	int count = 1;
 	int rc = NET_XMIT_SUCCESS;
+<<<<<<< HEAD
 
 	/* Do not fool qdisc_drop_all() */
 	skb->prev = NULL;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* Random duplication */
 	if (q->duplicate && q->duplicate >= get_crandom(&q->dup_cor))

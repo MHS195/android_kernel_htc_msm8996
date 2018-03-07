@@ -292,7 +292,11 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
 			return -EIO;
 
 		len -= slen;
+<<<<<<< HEAD
 		if (!ovl_can_list(s)) {
+=======
+		if (ovl_is_private_xattr(s)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			res -= slen;
 			memmove(s, s + slen, len);
 		} else {

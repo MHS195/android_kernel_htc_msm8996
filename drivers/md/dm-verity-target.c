@@ -201,9 +201,12 @@ static int verity_handle_err(struct dm_verity *v, enum verity_block_type type,
 	const char *type_str = "";
 	struct mapped_device *md = dm_table_get_md(v->ti->table);
 
+<<<<<<< HEAD
 	if (atomic_read(&em_remount))
 		return 0;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Corruption should be visible in device status in all modes */
 	v->hash_failed = 1;
 

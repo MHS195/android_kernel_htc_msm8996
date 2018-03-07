@@ -51,7 +51,11 @@ obj-$(CONFIG_USB_SWITCH_FSA9480) += fsa9480.o
 obj-$(CONFIG_ALTERA_STAPL)	+=altera-stapl/
 obj-$(CONFIG_INTEL_MEI)		+= mei/
 obj-$(CONFIG_VMWARE_VMCI)	+= vmw_vmci/
+<<<<<<< HEAD
 ifdef CONFIG_UULTRA
+=======
+ifeq (OCEAN_NOTE,$(findstring OCEAN_NOTE,$(PRIVATE_RCMS_NAME)))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 obj-$(CONFIG_FPR_FPC)		+= fpr_FingerprintCard_OCN/
 else
 obj-$(CONFIG_FPR_FPC)		+= fpr_FingerprintCard/

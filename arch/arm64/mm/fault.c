@@ -310,9 +310,13 @@ retry:
 	 * signal first. We do not need to release the mmap_sem because it
 	 * would already be released in __lock_page_or_retry in mm/filemap.c.
 	 */
+<<<<<<< HEAD
 	if ((fault & VM_FAULT_RETRY) && fatal_signal_pending(current)) {
 		if (!user_mode(regs))
 			goto no_context;
+=======
+	if ((fault & VM_FAULT_RETRY) && fatal_signal_pending(current))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return 0;
 	}
 

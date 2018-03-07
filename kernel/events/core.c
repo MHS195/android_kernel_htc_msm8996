@@ -4899,6 +4899,9 @@ static void perf_output_read_one(struct perf_output_handle *handle,
 	__output_copy(handle, values, n * sizeof(u64));
 }
 
+/*
+ * XXX PERF_FORMAT_GROUP vs inherited events seems difficult.
+ */
 static void perf_output_read_group(struct perf_output_handle *handle,
 			    struct perf_event *event,
 			    u64 enabled, u64 running)
@@ -7240,10 +7243,16 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
 	local64_set(&hwc->period_left, hwc->sample_period);
 
 	/*
+<<<<<<< HEAD
 	 * We currently do not support PERF_SAMPLE_READ on inherited events.
 	 * See perf_output_read().
 	 */
 	if (attr->inherit && (attr->sample_type & PERF_SAMPLE_READ))
+=======
+	 * we currently do not support PERF_FORMAT_GROUP on inherited events
+	 */
+	if (attr->inherit && (attr->read_format & PERF_FORMAT_GROUP))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		goto err_ns;
 
 	pmu = perf_init_event(event);
@@ -7646,6 +7655,7 @@ SYSCALL_DEFINE5(perf_event_open,
 		if (group_leader->group_leader != group_leader)
 			goto err_context;
 		/*
+<<<<<<< HEAD
 		 * Make sure we're both events for the same CPU;
 		 * grouping events for different CPUs is broken; since
 		 * you can never concurrently schedule them anyhow.
@@ -7669,6 +7679,32 @@ SYSCALL_DEFINE5(perf_event_open,
 			goto err_context;
 
 		/*
+=======
+		 * Do not allow to attach to a group in a different
+		 * task or CPU context:
+		 */
+		if (move_group) {
+			/*
+			 * Make sure we're both on the same task, or both
+			 * per-cpu events.
+			 */
+			if (group_leader->ctx->task != ctx->task)
+				goto err_context;
+
+			/*
+			 * Make sure we're both events for the same CPU;
+			 * grouping events for different CPUs is broken; since
+			 * you can never concurrently schedule them anyhow.
+			 */
+			if (group_leader->cpu != event->cpu)
+				goto err_context;
+		} else {
+			if (group_leader->ctx != ctx)
+				goto err_context;
+		}
+
+		/*
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		 * Only a group leader can be exclusive or pinned
 		 */
 		if (attr.exclusive || attr.pinned)

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -34,6 +38,7 @@ enum nat_table_type {
 #define NAT_TABLE_ENTRY_SIZE_BYTE 32
 #define NAT_INTEX_TABLE_ENTRY_SIZE_BYTE 4
 
+<<<<<<< HEAD
 /*
  * Max NAT table entries is limited 1000 entries.
  * Limit the memory size required by user to prevent kernel memory starvation
@@ -41,6 +46,8 @@ enum nat_table_type {
 #define IPA_TABLE_MAX_ENTRIES 1000
 #define MAX_ALLOC_NAT_SIZE (IPA_TABLE_MAX_ENTRIES * NAT_TABLE_ENTRY_SIZE_BYTE)
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static int ipa3_nat_vma_fault_remap(
 	 struct vm_area_struct *vma, struct vm_fault *vmf)
 {
@@ -401,7 +408,10 @@ int ipa3_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->expn_rules_offset >
 		(UINT_MAX - (TBL_ENTRY_SIZE * init->expn_table_entries))) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa3_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Expn Table Entry offset is not
@@ -421,7 +431,10 @@ int ipa3_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->index_offset >
 		UINT_MAX - (INDX_TBL_ENTRY_SIZE * (init->table_entries + 1))) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa3_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Indx Table Entry offset is not
@@ -441,7 +454,10 @@ int ipa3_nat_init_cmd(struct ipa_ioc_v4_nat_init *init)
 	if (init->index_expn_offset >
 		UINT_MAX - (INDX_TBL_ENTRY_SIZE * init->expn_table_entries)) {
 		IPAERR_RL("Detected overflow\n");
+<<<<<<< HEAD
 		mutex_unlock(&ipa3_ctx->nat_mem.lock);
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		return -EPERM;
 	}
 	/* Check Expn Table entry offset is not

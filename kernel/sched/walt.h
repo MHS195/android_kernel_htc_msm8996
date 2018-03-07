@@ -55,10 +55,16 @@ static inline void walt_migrate_sync_cpu(int cpu) { }
 static inline void walt_init_cpu_efficiency(void) { }
 static inline u64 walt_ktime_clock(void) { return 0; }
 
+<<<<<<< HEAD
 #define walt_cpu_high_irqload(cpu) false
 
 #endif /* CONFIG_SCHED_WALT */
 
 extern bool walt_disabled;
+=======
+#endif /* CONFIG_SCHED_WALT */
+
+extern unsigned int walt_disabled;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #endif

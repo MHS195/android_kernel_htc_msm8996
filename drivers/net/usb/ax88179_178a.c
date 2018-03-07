@@ -504,9 +504,12 @@ ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
 		return -ENOMEM;
 
 	*opt = 0;
+<<<<<<< HEAD
 
 	if (wolinfo->wolopts & ~(WAKE_PHY | WAKE_MAGIC))
 		return -EINVAL;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (wolinfo->wolopts & WAKE_PHY)
 		*opt |= AX_MONITOR_MODE_RWLC;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -85,11 +89,15 @@ const char *ipa_event_name[] = {
 	__stringify(ADD_VLAN_IFACE),
 	__stringify(DEL_VLAN_IFACE),
 	__stringify(ADD_L2TP_VLAN_MAPPING),
+<<<<<<< HEAD
 	__stringify(DEL_L2TP_VLAN_MAPPING),
 	__stringify(IPA_QUOTA_REACH),
 	__stringify(IPA_SSR_BEFORE_SHUTDOWN),
 	__stringify(IPA_SSR_AFTER_POWERUP),
 	__stringify(WLAN_FWR_SSR_BEFORE_SHUTDOWN),
+=======
+	__stringify(DEL_L2TP_VLAN_MAPPING)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 const char *ipa_hdr_l2_type_name[] = {
@@ -1900,7 +1908,11 @@ static ssize_t ipa_enable_ipc_low(struct file *file,
 				ipc_log_context_create(IPA_IPC_LOG_PAGES,
 				"ipa_low", 0);
 			if (ipa_ipc_low_buff == NULL)
+<<<<<<< HEAD
 				IPADBG("failed to get logbuf_low\n");
+=======
+				IPAERR("failed to get logbuf_low\n");
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		}
 		ipa_ctx->logbuf_low = ipa_ipc_low_buff;
 	} else {

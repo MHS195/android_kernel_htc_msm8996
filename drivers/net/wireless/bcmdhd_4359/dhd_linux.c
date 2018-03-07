@@ -219,11 +219,14 @@ static u32 vendor_oui = CONFIG_DHD_SET_RANDOM_MAC_VAL;
 #include <wl_android.h>
 #include <linux/moduleparam.h>
 
+<<<<<<< HEAD
 static int wlrx_divide = 1;
 static int wlctrl_divide = 1;
 module_param(wlrx_divide, int, 0644);
 module_param(wlctrl_divide, int, 0644);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* Maximum STA per radio */
 #define DHD_MAX_STA     32
 
@@ -389,6 +392,10 @@ static struct mutex enable_pktfilter_mutex;
 #endif /* PKT_FILTER_SUPPORT */
 
 void wl_android_set_screen_off(int off);
+<<<<<<< HEAD
+=======
+int dhd_set_keepalive(int value);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* HTC_WIFI_START */
 // ** [HPKB#7947] Tx stuck detection
 #ifdef TX_STUCK_DETECTION
@@ -2497,6 +2504,7 @@ void dhd_enable_packet_filter(int value, dhd_pub_t *dhd)
 	mutex_unlock(&enable_pktfilter_mutex);
 #endif
 #endif /* PKT_FILTER_SUPPORT */
+<<<<<<< HEAD
 }
 
 static void lineage_update_screen_state(dhd_pub_t *dhd, bool is_screen_off)
@@ -2523,6 +2531,8 @@ static void lineage_update_screen_state(dhd_pub_t *dhd, bool is_screen_off)
 	if (ret < 0) {
 		DHD_ERROR(("%s set mpc ret[%d] \n", __FUNCTION__, ret));
 	}
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static int dhd_set_suspend(int value, dhd_pub_t *dhd)
@@ -2569,8 +2579,11 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 	is_screen_off = value;
 	wl_android_set_screen_off(is_screen_off);
 
+<<<<<<< HEAD
 	lineage_update_screen_state(dhd, is_screen_off);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* clear p2p indicate event when screen off */
 	if (is_screen_off && !dhd->allow_p2p_event) {
 		ret = dhd_iovar(dhd, 0, "event_msgs", eventmask, WL_EVENTING_MASK_LEN, iovbuf,
@@ -2669,6 +2682,13 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 					DHD_ERROR(("failed to set intr_width (%d)\n", ret));
 				}
 #endif /* DYNAMIC_SWOOB_DURATION */
+<<<<<<< HEAD
+=======
+#ifdef CUSTOMER_HW_ONE
+				/* keep alive packet */
+				dhd_set_keepalive(1);
+#endif /* CUSTOMER_HW_ONE */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			} else {
 #ifdef PKT_FILTER_SUPPORT
 				dhd->early_suspended = 0;
@@ -2710,6 +2730,13 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 					if (ret < 0)
 						DHD_ERROR(("nd_ra_filter: %d\n", ret));
 				}
+<<<<<<< HEAD
+=======
+#ifdef CUSTOMER_HW_ONE
+				/* keep alive packet */
+				dhd_set_keepalive(0);
+#endif /* CUSTOMER_HW_ONE */
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			}
 	}
 	dhd_suspend_unlock(dhd);
@@ -14600,6 +14627,46 @@ void wl_android_enable_pktfilter(struct net_device *dev, int multicastlock)
 	dhd_enable_packet_filter(0, &dhd->pub);
 }
 
+<<<<<<< HEAD
+=======
+int dhd_set_keepalive(int value)
+{
+	char *str;
+	int str_len;
+	int buf_len;
+	char buf[256];
+	wl_keep_alive_pkt_t keep_alive_pkt;
+	wl_keep_alive_pkt_t *keep_alive_pktp;
+	int ret = 0;
+
+	dhd_pub_t *dhd = priv_dhdp;
+	memset(&keep_alive_pkt, 0, sizeof(keep_alive_pkt));
+
+	/* Set keep-alive attributes */
+	str = "keep_alive";
+	str_len = strlen(str);
+	strncpy(buf, str, str_len);
+	buf[str_len] = '\0';
+	buf_len = str_len + 1;
+	keep_alive_pktp = (wl_keep_alive_pkt_t *) (buf + str_len + 1);
+
+	keep_alive_pkt.period_msec = htod32(55000); /* Send NULL keepalive packet every 55s */
+	keep_alive_pkt.len_bytes = 0;
+	buf_len += WL_KEEP_ALIVE_FIXED_LEN;
+	bzero(keep_alive_pkt.data, sizeof(keep_alive_pkt.data));
+	/* Keep-alive attributes are set in local variable (keep_alive_pkt), and
+	 * then memcpy'ed into buffer (keep_alive_pktp) since there is no
+	 * guarantee that the buffer is properly aligned.
+	*/
+	memcpy((char*)keep_alive_pktp, &keep_alive_pkt, WL_KEEP_ALIVE_FIXED_LEN);
+
+	ret = dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, buf, buf_len, TRUE, 0);
+	DHD_ERROR(("%s set result ret[%d]\n", __FUNCTION__, ret));
+
+	return ret;
+}
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /* HTC_WIFI_START */
 // ** [HPKB#7947] Tx stuck detection
 #ifdef TX_STUCK_DETECTION

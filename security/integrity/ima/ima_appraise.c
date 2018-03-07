@@ -206,8 +206,12 @@ int ima_appraise_measurement(int func, struct integrity_iint_cache *iint,
 		if (opened & FILE_CREATED)
 			iint->flags |= IMA_NEW_FILE;
 		if ((iint->flags & IMA_NEW_FILE) &&
+<<<<<<< HEAD
 		    (!(iint->flags & IMA_DIGSIG_REQUIRED) ||
 		     (inode->i_size == 0)))
+=======
+		    !(iint->flags & IMA_DIGSIG_REQUIRED))
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			status = INTEGRITY_PASS;
 		goto out;
 	}

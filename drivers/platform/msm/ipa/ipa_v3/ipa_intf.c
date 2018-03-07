@@ -386,6 +386,7 @@ static void ipa3_send_msg_free(void *buff, u32 len, u32 type)
 	kfree(buff);
 }
 
+<<<<<<< HEAD
 static int wlan_msg_process(struct ipa_msg_meta *meta, void *buff)
 {
 	struct ipa3_push_msg *msg_dup;
@@ -488,6 +489,8 @@ static int wlan_msg_process(struct ipa_msg_meta *meta, void *buff)
 	return 0;
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 /**
  * ipa3_send_msg() - Send "message" from kernel client to IPA driver
  * @meta: [in] message meta-data

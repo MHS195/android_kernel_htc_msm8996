@@ -1559,6 +1559,7 @@ void ipahal_get_aggr_force_close_valmask(int ep_idx,
 		return;
 	}
 
+<<<<<<< HEAD
 	memset(valmask, 0, sizeof(struct ipahal_reg_valmask));
 
 	if (ipahal_ctx->hw_type <= IPA_HW_v3_1) {
@@ -1571,6 +1572,18 @@ void ipahal_get_aggr_force_close_valmask(int ep_idx,
 		IPA_AGGR_FORCE_CLOSE_AGGR_FORCE_CLOSE_PIPE_BITMAP_BMSK_V3_5;
 	}
 
+=======
+	if (ipahal_ctx->hw_type <= IPA_HW_v3_1) {
+		shft = IPA_AGGR_FORCE_CLOSE_AGGR_FORCE_CLOSE_PIPE_BITMAP_SHFT;
+		bmsk = IPA_AGGR_FORCE_CLOSE_AGGR_FORCE_CLOSE_PIPE_BITMAP_BMSK;
+	} else {
+		shft =
+		IPA_AGGR_FORCE_CLOSE_AGGR_FORCE_CLOSE_PIPE_BITMAP_SHFT_V3_5;
+		bmsk =
+		IPA_AGGR_FORCE_CLOSE_AGGR_FORCE_CLOSE_PIPE_BITMAP_BMSK_V3_5;
+	}
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (ep_idx > (sizeof(valmask->val) * 8 - 1)) {
 		IPAHAL_ERR("too big ep_idx %d\n", ep_idx);
 		ipa_assert();

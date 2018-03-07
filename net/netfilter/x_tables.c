@@ -877,7 +877,11 @@ void *xt_copy_counters_from_user(const void __user *user, unsigned int len,
 		if (copy_from_user(&compat_tmp, user, sizeof(compat_tmp)) != 0)
 			return ERR_PTR(-EFAULT);
 
+<<<<<<< HEAD
 		memcpy(info->name, compat_tmp.name, sizeof(info->name) - 1);
+=======
+		strlcpy(info->name, compat_tmp.name, sizeof(info->name));
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		info->num_counters = compat_tmp.num_counters;
 		user += sizeof(compat_tmp);
 	} else
@@ -890,9 +894,15 @@ void *xt_copy_counters_from_user(const void __user *user, unsigned int len,
 		if (copy_from_user(info, user, sizeof(*info)) != 0)
 			return ERR_PTR(-EFAULT);
 
+<<<<<<< HEAD
 		user += sizeof(*info);
 	}
 	info->name[sizeof(info->name) - 1] = '\0';
+=======
+		info->name[sizeof(info->name) - 1] = '\0';
+		user += sizeof(*info);
+	}
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	size = sizeof(struct xt_counters);
 	size *= info->num_counters;

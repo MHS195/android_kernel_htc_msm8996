@@ -64,6 +64,10 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, unsigned int flags)
 	if ((lower_dentry->d_flags & DCACHE_OP_REVALIDATE)) {
 		err = lower_dentry->d_op->d_revalidate(lower_dentry, flags);
 		if (err == 0) {
+<<<<<<< HEAD
+=======
+			d_drop(dentry);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			goto out;
 		}
 	}
@@ -90,6 +94,10 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, unsigned int flags)
 	}
 
 	if (!qstr_case_eq(&dentry->d_name, &lower_dentry->d_name)) {
+<<<<<<< HEAD
+=======
+		__d_drop(dentry);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		err = 0;
 	}
 
@@ -108,6 +116,10 @@ static int sdcardfs_d_revalidate(struct dentry *dentry, unsigned int flags)
 	if (inode) {
 		data = top_data_get(SDCARDFS_I(inode));
 		if (!data || data->abandoned) {
+<<<<<<< HEAD
+=======
+			d_drop(dentry);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			err = 0;
 		}
 		if (data)

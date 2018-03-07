@@ -241,7 +241,11 @@ struct dentry *msm_vidc_debugfs_init_core(struct msm_vidc_core *core,
 		goto failed_create_dir;
 	}
 
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(debugfs_create_file("info", S_IRUGO, dir, core, &core_info_fops))) {
+=======
+	if (!debugfs_create_file("info", S_IRUGO, dir, core, &core_info_fops)) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		dprintk(VIDC_ERR, "debugfs_create_file: fail\n");
 		goto failed_create_file;
 	}
@@ -437,7 +441,11 @@ static const struct file_operations inst_info_fops = {
 struct dentry *msm_vidc_debugfs_init_inst(struct msm_vidc_inst *inst,
 		struct dentry *parent)
 {
+<<<<<<< HEAD
 	struct dentry *dir, *info;
+=======
+	struct dentry *dir = NULL, *info = NULL;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	char debugfs_name[MAX_DEBUGFS_NAME];
 	struct core_inst_pair *idata = NULL;
 
@@ -464,7 +472,11 @@ struct dentry *msm_vidc_debugfs_init_inst(struct msm_vidc_inst *inst,
 
 	info = debugfs_create_file("info", S_IRUGO, dir,
 			idata, &inst_info_fops);
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(info)) {
+=======
+	if (!info) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		dprintk(VIDC_ERR, "debugfs_create_file: fail\n");
 		goto failed_create_file;
 	}
@@ -475,10 +487,18 @@ struct dentry *msm_vidc_debugfs_init_inst(struct msm_vidc_inst *inst,
 
 failed_create_file:
 	debugfs_remove_recursive(dir);
+<<<<<<< HEAD
 failed_create_dir:
 	kfree(idata);
 exit:
 	return NULL;
+=======
+	dir = NULL;
+failed_create_dir:
+	kfree(idata);
+exit:
+	return dir;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 void msm_vidc_debugfs_deinit_inst(struct msm_vidc_inst *inst)

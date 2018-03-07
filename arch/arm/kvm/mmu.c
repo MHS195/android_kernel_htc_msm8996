@@ -845,6 +845,7 @@ static int stage2_set_pmd_huge(struct kvm *kvm, struct kvm_mmu_memory_cache
 
 	old_pmd = *pmd;
 	if (pmd_present(old_pmd)) {
+<<<<<<< HEAD
 		/*
 		 * Multiple vcpus faulting on the same PMD entry, can
 		 * lead to them sequentially updating the PMD with the
@@ -872,6 +873,8 @@ static int stage2_set_pmd_huge(struct kvm *kvm, struct kvm_mmu_memory_cache
 		 */
 		VM_BUG_ON(pmd_pfn(old_pmd) != pmd_pfn(*new_pmd));
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		pmd_clear(pmd);
 		kvm_tlb_flush_vmid_ipa(kvm, addr);
 	} else {
@@ -916,6 +919,7 @@ static int stage2_set_pte(struct kvm *kvm, struct kvm_mmu_memory_cache *cache,
 	/* Create 2nd stage page table mapping - Level 3 */
 	old_pte = *pte;
 	if (pte_present(old_pte)) {
+<<<<<<< HEAD
 		/* Skip page table update if there is no change */
 		if (pte_val(old_pte) == pte_val(*new_pte))
 			return 0;
@@ -926,6 +930,14 @@ static int stage2_set_pte(struct kvm *kvm, struct kvm_mmu_memory_cache *cache,
 		get_page(virt_to_page(pte));
 	}
 
+=======
+		kvm_set_pte(pte, __pte(0));
+		kvm_tlb_flush_vmid_ipa(kvm, addr);
+	} else {
+		get_page(virt_to_page(pte));
+	}
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	kvm_set_pte(pte, *new_pte);
 	return 0;
 }

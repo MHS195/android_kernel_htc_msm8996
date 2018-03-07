@@ -120,9 +120,12 @@ static int parse_options(struct super_block *sb, char *options, int silent,
 				return 0;
 			opts->reserved_mb = option;
 			break;
+<<<<<<< HEAD
 		case Opt_gid_derivation:
 			opts->gid_derivation = true;
 			break;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* unknown option */
 		default:
 			if (!silent)
@@ -176,16 +179,23 @@ int parse_options_remount(struct super_block *sb, char *options, int silent,
 				return 0;
 			vfsopts->mask = option;
 			break;
+<<<<<<< HEAD
 		case Opt_unshared_obb:
 		case Opt_default_normal:
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		case Opt_multiuser:
 		case Opt_userid:
 		case Opt_fsuid:
 		case Opt_fsgid:
 		case Opt_reserved_mb:
+<<<<<<< HEAD
 		case Opt_gid_derivation:
 			if (!silent)
 				pr_warn("Option \"%s\" can't be changed during remount\n", p);
+=======
+			pr_warn("Option \"%s\" can't be changed during remount\n", p);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			break;
 		/* unknown option */
 		default:
@@ -262,7 +272,11 @@ static int sdcardfs_read_super(struct vfsmount *mnt, struct super_block *sb,
 
 	pr_info("sdcardfs: dev_name -> %s\n", dev_name);
 	pr_info("sdcardfs: options -> %s\n", (char *)raw_data);
+<<<<<<< HEAD
 	pr_info("sdcardfs: mnt -> %pK\n", mnt);
+=======
+	pr_info("sdcardfs: mnt -> %p\n", mnt);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* parse lower path */
 	err = kern_path(dev_name, LOOKUP_FOLLOW | LOOKUP_DIRECTORY,
@@ -293,6 +307,7 @@ static int sdcardfs_read_super(struct vfsmount *mnt, struct super_block *sb,
 	atomic_inc(&lower_sb->s_active);
 	sdcardfs_set_lower_super(sb, lower_sb);
 
+<<<<<<< HEAD
 	sb->s_stack_depth = lower_sb->s_stack_depth + 1;
 	if (sb->s_stack_depth > FILESYSTEM_MAX_STACK_DEPTH) {
 		pr_err("sdcardfs: maximum fs stacking depth exceeded\n");
@@ -300,6 +315,8 @@ static int sdcardfs_read_super(struct vfsmount *mnt, struct super_block *sb,
 		goto out_sput;
 	}
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* inherit maxbytes from lower file system */
 	sb->s_maxbytes = lower_sb->s_maxbytes;
 
@@ -346,11 +363,21 @@ static int sdcardfs_read_super(struct vfsmount *mnt, struct super_block *sb,
 	mutex_lock(&sdcardfs_super_list_lock);
 	if (sb_info->options.multiuser) {
 		setup_derived_state(sb->s_root->d_inode, PERM_PRE_ROOT,
+<<<<<<< HEAD
 				sb_info->options.fs_user_id, AID_ROOT);
 		snprintf(sb_info->obbpath_s, PATH_MAX, "%s/obb", dev_name);
 	} else {
 		setup_derived_state(sb->s_root->d_inode, PERM_ROOT,
 				sb_info->options.fs_user_id, AID_ROOT);
+=======
+				sb_info->options.fs_user_id, AID_ROOT,
+				false, SDCARDFS_I(sb->s_root->d_inode)->data);
+		snprintf(sb_info->obbpath_s, PATH_MAX, "%s/obb", dev_name);
+	} else {
+		setup_derived_state(sb->s_root->d_inode, PERM_ROOT,
+				sb_info->options.fs_user_id, AID_ROOT,
+				false, SDCARDFS_I(sb->s_root->d_inode)->data);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		snprintf(sb_info->obbpath_s, PATH_MAX, "%s/Android/obb", dev_name);
 	}
 	fixup_tmp_permissions(sb->s_root->d_inode);
@@ -426,7 +453,11 @@ void sdcardfs_kill_sb(struct super_block *sb)
 {
 	struct sdcardfs_sb_info *sbi;
 
+<<<<<<< HEAD
 	if (sb->s_magic == SDCARDFS_SUPER_MAGIC && sb->s_fs_info) {
+=======
+	if (sb->s_magic == SDCARDFS_SUPER_MAGIC) {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		sbi = SDCARDFS_SB(sb);
 		mutex_lock(&sdcardfs_super_list_lock);
 		list_del(&sbi->list);

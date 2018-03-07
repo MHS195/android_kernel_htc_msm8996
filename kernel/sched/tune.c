@@ -5,7 +5,10 @@
 #include <linux/printk.h>
 #include <linux/rcupdate.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/list.h>
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 #include <trace/events/sched.h>
 
@@ -13,6 +16,7 @@
 #include "tune.h"
 
 #ifdef CONFIG_CGROUP_SCHEDTUNE
+<<<<<<< HEAD
 bool schedtune_initialized = false;
 #endif
 
@@ -35,6 +39,14 @@ struct boost_slot {
 	int idx;
 };
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
+=======
+static bool schedtune_initialized = false;
+#endif
+
+int sysctl_sched_cfs_boost __read_mostly;
+
+extern struct target_nrg schedtune_target_nrg;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /* Performance Boost region (B) threshold params */
 static int perf_boost_idx;
@@ -124,6 +136,7 @@ __schedtune_accept_deltas(int nrg_delta, int cap_delta,
 
 /*
  * EAS scheduler tunables for task groups.
+<<<<<<< HEAD
  *
  * When CGroup support is enabled, we have to synchronize two different
  * paths:
@@ -182,6 +195,8 @@ __schedtune_accept_deltas(int nrg_delta, int cap_delta,
  *                                                        |                                 +
  *                                                        |          schedtune_tasks_update()
  *                                                        |
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
  */
 
 /* SchdTune tunables for a group of tasks */
@@ -204,6 +219,7 @@ struct schedtune {
 	/* Hint to bias scheduling of tasks on that SchedTune CGroup
 	 * towards idle CPUs */
 	int prefer_idle;
+<<<<<<< HEAD
 
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 	/*
@@ -225,6 +241,8 @@ struct schedtune {
 	/* Array of tracked boost values of each slot */
 	int slot_boost[DYNAMIC_BOOST_SLOTS_COUNT];
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 static inline struct schedtune *css_st(struct cgroup_subsys_state *css)
@@ -257,6 +275,7 @@ root_schedtune = {
 	.perf_boost_idx = 0,
 	.perf_constrain_idx = 0,
 	.prefer_idle = 0,
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 	.boost_default = 0,
 	.sched_boost = 0,
@@ -271,6 +290,8 @@ root_schedtune = {
 	},
 	.slot_boost = {0},
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 };
 
 int
@@ -315,7 +336,11 @@ schedtune_accept_deltas(int nrg_delta, int cap_delta,
  *    implementation especially for the computation of the per-CPU boost
  *    value
  */
+<<<<<<< HEAD
 #define BOOSTGROUPS_COUNT 5
+=======
+#define BOOSTGROUPS_COUNT 4
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 /* Array of configured boostgroups */
 static struct schedtune *allocated_group[BOOSTGROUPS_COUNT] = {
@@ -333,23 +358,33 @@ static struct schedtune *allocated_group[BOOSTGROUPS_COUNT] = {
  */
 struct boost_groups {
 	/* Maximum boost value for all RUNNABLE tasks on a CPU */
+<<<<<<< HEAD
 	int boost_max;
 	u64 boost_ts;
 	struct {
 		/* True when this boost group maps an actual cgroup */
 		bool valid;
+=======
+	bool idle;
+	int boost_max;
+	struct {
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* The boost for tasks on that boost group */
 		int boost;
 		/* Count of RUNNABLE tasks on that boost group */
 		unsigned tasks;
+<<<<<<< HEAD
 		/* Timestamp of boost activation */
 		u64 ts;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	} group[BOOSTGROUPS_COUNT];
 	/* CPU's boost group locking */
 	raw_spinlock_t lock;
 };
 
 /* Boost groups affecting each CPU in the system */
+<<<<<<< HEAD
 DEFINE_PER_CPU(struct boost_groups, cpu_boost_groups);
 
 static inline bool schedtune_boost_timeout(u64 now, u64 ts)
@@ -372,10 +407,20 @@ schedtune_cpu_update(int cpu, u64 now)
 	struct boost_groups *bg;
 	u64 boost_ts = now;
 	int boost_max = INT_MIN;
+=======
+static DEFINE_PER_CPU(struct boost_groups, cpu_boost_groups);
+
+static void
+schedtune_cpu_update(int cpu)
+{
+	struct boost_groups *bg;
+	int boost_max;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	int idx;
 
 	bg = &per_cpu(cpu_boost_groups, cpu);
 
+<<<<<<< HEAD
 	for (idx = 0; idx < BOOSTGROUPS_COUNT; ++idx) {
 
 		/* Ignore non boostgroups not mapping a cgroup */
@@ -404,6 +449,25 @@ schedtune_cpu_update(int cpu, u64 now)
 
 	bg->boost_max = boost_max;
 	bg->boost_ts = boost_ts;
+=======
+	/* The root boost group is always active */
+	boost_max = bg->group[0].boost;
+	for (idx = 1; idx < BOOSTGROUPS_COUNT; ++idx) {
+		/*
+		 * A boost group affects a CPU only if it has
+		 * RUNNABLE tasks on that CPU
+		 */
+		if (bg->group[idx].tasks == 0)
+			continue;
+
+		boost_max = max(boost_max, bg->group[idx].boost);
+	}
+	/* Ensures boost_max is non-negative when all cgroup boost values
+	 * are neagtive. Avoids under-accounting of cpu capacity which may cause
+	 * task stacking and frequency spikes.*/
+	boost_max = max(boost_max, 0);
+	bg->boost_max = boost_max;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static int
@@ -413,15 +477,21 @@ schedtune_boostgroup_update(int idx, int boost)
 	int cur_boost_max;
 	int old_boost;
 	int cpu;
+<<<<<<< HEAD
 	u64 now;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* Update per CPU boost groups */
 	for_each_possible_cpu(cpu) {
 		bg = &per_cpu(cpu_boost_groups, cpu);
 
+<<<<<<< HEAD
 		/* CGroups are never associated to non active cgroups */
 		BUG_ON(!bg->group[idx].valid);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/*
 		 * Keep track of current boost values to compute the per CPU
 		 * maximum only when it has been affected by the new value of
@@ -433,6 +503,7 @@ schedtune_boostgroup_update(int idx, int boost)
 		/* Update the boost value of this boost group */
 		bg->group[idx].boost = boost;
 
+<<<<<<< HEAD
 		now = sched_clock_cpu(cpu);
 		/*
 		 * Check if this update increase current max.
@@ -442,13 +513,22 @@ schedtune_boostgroup_update(int idx, int boost)
 			bg->boost_max = boost;
 			bg->boost_ts = bg->group[idx].ts;
 
+=======
+		/* Check if this update increase current max */
+		if (boost > cur_boost_max && bg->group[idx].tasks) {
+			bg->boost_max = boost;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			trace_sched_tune_boostgroup_update(cpu, 1, bg->boost_max);
 			continue;
 		}
 
 		/* Check if this update has decreased current max */
 		if (cur_boost_max == old_boost && old_boost > boost) {
+<<<<<<< HEAD
 			schedtune_cpu_update(cpu, now);
+=======
+			schedtune_cpu_update(cpu);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 			trace_sched_tune_boostgroup_update(cpu, -1, bg->boost_max);
 			continue;
 		}
@@ -462,6 +542,7 @@ schedtune_boostgroup_update(int idx, int boost)
 #define ENQUEUE_TASK  1
 #define DEQUEUE_TASK -1
 
+<<<<<<< HEAD
 static inline bool
 schedtune_update_timestamp(struct task_struct *p)
 {
@@ -471,11 +552,14 @@ schedtune_update_timestamp(struct task_struct *p)
 	return task_has_rt_policy(p);
 }
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static inline void
 schedtune_tasks_update(struct task_struct *p, int cpu, int idx, int task_count)
 {
 	struct boost_groups *bg = &per_cpu(cpu_boost_groups, cpu);
 	int tasks = bg->group[idx].tasks + task_count;
+<<<<<<< HEAD
 	u64 now;
 
 	/* Update boosted tasks count while avoiding to make it negative */
@@ -494,6 +578,18 @@ schedtune_tasks_update(struct task_struct *p, int cpu, int idx, int task_count)
 	trace_sched_tune_tasks_update(p, cpu, tasks, idx,
 			bg->group[idx].boost, bg->boost_max,
 			bg->group[idx].ts);
+=======
+
+	/* Update boosted tasks count while avoiding to make it negative */
+	bg->group[idx].tasks = max(0, tasks);
+
+	trace_sched_tune_tasks_update(p, cpu, tasks, idx,
+			bg->group[idx].boost, bg->boost_max);
+
+	/* Boost group activation or deactivation on that RQ */
+	if (tasks == 1 || tasks == 0)
+		schedtune_cpu_update(cpu);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 /*
@@ -535,6 +631,7 @@ void schedtune_enqueue_task(struct task_struct *p, int cpu)
 	raw_spin_unlock_irqrestore(&bg->lock, irq_flags);
 }
 
+<<<<<<< HEAD
 int schedtune_allow_attach(struct cgroup_subsys_state *css,
 			   struct cgroup_taskset *tset)
 {
@@ -544,6 +641,10 @@ int schedtune_allow_attach(struct cgroup_subsys_state *css,
 
 int schedtune_can_attach(struct cgroup_subsys_state *css,
 		      struct cgroup_taskset *tset)
+=======
+static int schedtune_can_attach(struct cgroup_subsys_state *css,
+			  struct cgroup_taskset *tset)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	struct task_struct *task;
 	struct boost_groups *bg;
@@ -553,12 +654,18 @@ int schedtune_can_attach(struct cgroup_subsys_state *css,
 	int src_bg; /* Source boost group index */
 	int dst_bg; /* Destination boost group index */
 	int tasks;
+<<<<<<< HEAD
 	u64 now;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	if (!unlikely(schedtune_initialized))
 		return 0;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	cgroup_taskset_for_each(task, tset) {
 
 		/*
@@ -599,12 +706,16 @@ int schedtune_can_attach(struct cgroup_subsys_state *css,
 		 * current boost group.
 		 */
 
+<<<<<<< HEAD
 		now = sched_clock_cpu(cpu);
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		/* Move task from src to dst boost group */
 		tasks = bg->group[src_bg].tasks - 1;
 		bg->group[src_bg].tasks = max(0, tasks);
 		bg->group[dst_bg].tasks += 1;
+<<<<<<< HEAD
 		bg->group[dst_bg].ts = now;
 
 		/* update next time someone asks */
@@ -612,13 +723,28 @@ int schedtune_can_attach(struct cgroup_subsys_state *css,
 
 		raw_spin_unlock(&bg->lock);
 		unlock_rq_of(rq, task, &irq_flags);
+=======
+
+		raw_spin_unlock(&bg->lock);
+		unlock_rq_of(rq, task, &irq_flags);
+
+		/* Update CPU boost group */
+		if (bg->group[src_bg].tasks == 0 || bg->group[dst_bg].tasks == 1)
+			schedtune_cpu_update(task_cpu(task));
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 void schedtune_cancel_attach(struct cgroup_subsys_state *css,
 		         struct cgroup_taskset *tset)
+=======
+static void schedtune_cancel_attach(struct cgroup_subsys_state *css,
+				    struct cgroup_taskset *tset)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	/* This can happen only if SchedTune controller is mounted with
 	 * other hierarchies ane one of them fails. Since usually SchedTune is
@@ -693,6 +819,7 @@ void schedtune_exit_task(struct task_struct *tsk)
 int schedtune_cpu_boost(int cpu)
 {
 	struct boost_groups *bg;
+<<<<<<< HEAD
 	u64 now;
 
 	bg = &per_cpu(cpu_boost_groups, cpu);
@@ -702,6 +829,10 @@ int schedtune_cpu_boost(int cpu)
 	if (schedtune_boost_timeout(now, bg->boost_ts))
 		schedtune_cpu_update(cpu, now);
 
+=======
+
+	bg = &per_cpu(cpu_boost_groups, cpu);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	return bg->boost_max;
 }
 
@@ -710,9 +841,12 @@ int schedtune_task_boost(struct task_struct *p)
 	struct schedtune *st;
 	int task_boost;
 
+<<<<<<< HEAD
 	if (!unlikely(schedtune_initialized))
 		return 0;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Get task boost value */
 	rcu_read_lock();
 	st = task_schedtune(p);
@@ -727,9 +861,12 @@ int schedtune_prefer_idle(struct task_struct *p)
 	struct schedtune *st;
 	int prefer_idle;
 
+<<<<<<< HEAD
 	if (!unlikely(schedtune_initialized))
 		return 0;
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	/* Get prefer_idle value */
 	rcu_read_lock();
 	st = task_schedtune(p);
@@ -788,9 +925,12 @@ boost_write(struct cgroup_subsys_state *css, struct cftype *cft,
 	st->perf_constrain_idx = threshold_idx;
 
 	st->boost = boost;
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 	st->boost_default = boost;
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	if (css == &root_schedtune.css) {
 		sysctl_sched_cfs_boost = boost;
 		perf_boost_idx  = threshold_idx;
@@ -800,11 +940,20 @@ boost_write(struct cgroup_subsys_state *css, struct cftype *cft,
 	/* Update CPU boost */
 	schedtune_boostgroup_update(st->idx, st->boost);
 
+<<<<<<< HEAD
 	trace_sched_tune_config(st->boost);
+=======
+	trace_sched_tune_config(st->boost,
+			threshold_gains[st->perf_boost_idx].nrg_gain,
+			threshold_gains[st->perf_boost_idx].cap_gain,
+			threshold_gains[st->perf_constrain_idx].nrg_gain,
+			threshold_gains[st->perf_constrain_idx].cap_gain);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 static s64
 sched_boost_read(struct cgroup_subsys_state *css, struct cftype *cft)
@@ -862,6 +1011,8 @@ boost_slots_release(struct schedtune *st)
 }
 #endif // CONFIG_DYNAMIC_STUNE_BOOST
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 static struct cftype files[] = {
 	{
 		.name = "boost",
@@ -873,6 +1024,7 @@ static struct cftype files[] = {
 		.read_u64 = prefer_idle_read,
 		.write_u64 = prefer_idle_write,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 	{
 		.name = "sched_boost",
@@ -885,10 +1037,18 @@ static struct cftype files[] = {
 
 static void
 schedtune_boostgroup_init(struct schedtune *st, int idx)
+=======
+	{ }	/* terminate */
+};
+
+static int
+schedtune_boostgroup_init(struct schedtune *st)
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 {
 	struct boost_groups *bg;
 	int cpu;
 
+<<<<<<< HEAD
 	/* Initialize per CPUs boost group support */
 	for_each_possible_cpu(cpu) {
 		bg = &per_cpu(cpu_boost_groups, cpu);
@@ -904,6 +1064,19 @@ schedtune_boostgroup_init(struct schedtune *st, int idx)
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 	boost_slots_init(st);
 #endif // CONFIG_DYNAMIC_STUNE_BOOST
+=======
+	/* Keep track of allocated boost groups */
+	allocated_group[st->idx] = st;
+
+	/* Initialize the per CPU boost groups */
+	for_each_possible_cpu(cpu) {
+		bg = &per_cpu(cpu_boost_groups, cpu);
+		bg->group[st->idx].boost = 0;
+		bg->group[st->idx].tasks = 0;
+	}
+
+	return 0;
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 }
 
 static struct cgroup_subsys_state *
@@ -936,10 +1109,21 @@ schedtune_css_alloc(struct cgroup_subsys_state *parent_css)
 		goto out;
 
 	/* Initialize per CPUs boost group support */
+<<<<<<< HEAD
 	schedtune_boostgroup_init(st, idx);
 
 	return &st->css;
 
+=======
+	st->idx = idx;
+	if (schedtune_boostgroup_init(st))
+		goto release;
+
+	return &st->css;
+
+release:
+	kfree(st);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 out:
 	return ERR_PTR(-ENOMEM);
 }
@@ -947,6 +1131,7 @@ out:
 static void
 schedtune_boostgroup_release(struct schedtune *st)
 {
+<<<<<<< HEAD
 	struct boost_groups *bg;
 	int cpu;
 
@@ -961,6 +1146,10 @@ schedtune_boostgroup_release(struct schedtune *st)
 	/* Free dynamic boost slots */
 	boost_slots_release(st);
 #endif // CONFIG_DYNAMIC_STUNE_BOOST
+=======
+	/* Reset this boost group */
+	schedtune_boostgroup_update(st->idx, 0);
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 
 	/* Keep track of allocated boost groups */
 	allocated_group[st->idx] = NULL;
@@ -971,7 +1160,10 @@ schedtune_css_free(struct cgroup_subsys_state *css)
 {
 	struct schedtune *st = css_st(css);
 
+<<<<<<< HEAD
 	/* Release per CPUs boost group support */
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	schedtune_boostgroup_release(st);
 	kfree(st);
 }
@@ -979,7 +1171,10 @@ schedtune_css_free(struct cgroup_subsys_state *css)
 struct cgroup_subsys schedtune_cgrp_subsys = {
 	.css_alloc	= schedtune_css_alloc,
 	.css_free	= schedtune_css_free,
+<<<<<<< HEAD
 	.allow_attach   = schedtune_allow_attach,
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	.can_attach     = schedtune_can_attach,
 	.cancel_attach  = schedtune_cancel_attach,
 	.legacy_cftypes	= files,
@@ -996,7 +1191,10 @@ schedtune_init_cgroups(void)
 	for_each_possible_cpu(cpu) {
 		bg = &per_cpu(cpu_boost_groups, cpu);
 		memset(bg, 0, sizeof(struct boost_groups));
+<<<<<<< HEAD
 		bg->group[0].valid = true;
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 		raw_spin_lock_init(&bg->lock);
 	}
 
@@ -1006,6 +1204,7 @@ schedtune_init_cgroups(void)
 	schedtune_initialized = true;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_STUNE_BOOST
 static struct schedtune *getSchedtune(char *st_name)
 {
@@ -1224,6 +1423,8 @@ int do_stune_boost(char *st_name, int boost, int *slot)
 
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
 
+=======
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 #else /* CONFIG_CGROUP_SCHEDTUNE */
 
 int
@@ -1426,13 +1627,23 @@ schedtune_init(void)
 	pr_info("schedtune: configured to support global boosting only\n");
 #endif
 
+<<<<<<< HEAD
 	schedtune_spc_rdiv = reciprocal_value(100);
 
 	return 0;
 
 nodata:
 	pr_warning("schedtune: disabled!\n");
+=======
+	return 0;
+
+nodata:
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 	rcu_read_unlock();
 	return -EINVAL;
 }
 postcore_initcall(schedtune_init);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
