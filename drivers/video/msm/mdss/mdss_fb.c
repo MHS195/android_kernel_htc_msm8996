@@ -523,6 +523,35 @@ static struct led_classdev sub_backlight_led = {
 	.max_brightness = MDSS_MAX_BL_BRIGHTNESS,
 };
 
+#ifdef CONFIG_BACKLIGHT_DIMMER
+#ifdef CONFIG_UCI
+extern int input_is_screen_on(void);
+
+// registered user uci listener
+static void uci_user_listener(void) {
+	bool change = false;
+	int on = backlight_dimmer_uci?1:0;
+	int backlight_min_curr = backlight_min;
+	uci_user_backlight_dimmer_setting = true;
+	backlight_min = uci_get_user_property_int_mm("backlight_min", backlight_min, 1, 4095);
+	on = uci_get_user_property_int_mm("backlight_dimmer", on, 0, 1);
+
+	if (!!on != backlight_dimmer_uci || backlight_min_curr != backlight_min) change = true;
+
+	backlight_dimmer_uci = !!on;
+
+	if (first_brightness_set && change) {
+		if (last_brightness!=LED_OFF && input_is_screen_on()) {
+#ifdef CONFIG_UULTRA
+			//mdss_fb_set_bl_brightness_hybrid(&backlight_hybrid, last_brightness);
+#else
+			mdss_fb_set_bl_brightness(&backlight_led, last_brightness);
+#endif
+		}
+	}
+}
+#endif
+#endif
 static ssize_t mdss_fb_get_type(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -5459,6 +5488,7 @@ int __init mdss_fb_init(void)
 	if (platform_driver_register(&mdss_fb_driver))
 		return rc;
 
+#ifdef CONFIG_BACKLIGHT_DIMMER
 	backlight_dimmer_kobj = kobject_create_and_add("backlight_dimmer", NULL);
 	if (backlight_dimmer_kobj == NULL) {
 		pr_warn("%s kobject create failed!\n", __func__);

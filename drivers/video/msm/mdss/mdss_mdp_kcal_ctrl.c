@@ -57,6 +57,11 @@ struct kcal_lut_data {
 	int cont;
 };
 
+#ifdef CONFIG_UULTRA
+static int screen_on = 1;
+static int set_through_sysfs = 0;
+#endif
+
 static uint32_t igc_Table_Inverted[IGC_LUT_ENTRIES] = {
 	267390960, 266342368, 265293776, 264245184,
 	263196592, 262148000, 261099408, 260050816,
@@ -343,6 +348,9 @@ static ssize_t kcal_store(struct device *dev, struct device_attribute *attr,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -403,6 +411,9 @@ static ssize_t kcal_enable_store(struct device *dev,
 	} else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -432,6 +443,9 @@ static ssize_t kcal_invert_store(struct device *dev,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -460,6 +474,9 @@ static ssize_t kcal_sat_store(struct device *dev,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -488,6 +505,9 @@ static ssize_t kcal_hue_store(struct device *dev,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -516,6 +536,9 @@ static ssize_t kcal_val_store(struct device *dev,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -544,6 +567,9 @@ static ssize_t kcal_cont_store(struct device *dev,
 	else
 		lut_data->queue_changes = true;
 
+#ifdef CONFIG_UULTRA
+	set_through_sysfs = lut_data->enable;
+#endif
 	return count;
 }
 
@@ -581,7 +607,64 @@ static int mdss_mdp_kcal_update_queue(struct device *dev)
 	return 0;
 }
 
+#ifdef CONFIG_UCI
+static int first_parse = 1;
+static int last_enable_state = 0;
+static void uci_user_listener(void);
+
+#define CONFIG_UPDATE_ON_UNBLANK
+static void kcal_uci_set(struct work_struct * kcal_uci_set_work) {
+	if (last_enable_state == 1) {
+#ifdef CONFIG_UPDATE_ON_UNBLANK
+		last_enable_state = 0; // simply set to last enable false and ...
+		uci_user_listener(); // ... call listener as if config changed, it will set stuff...
+#endif
+	}
+}
+DECLARE_DELAYED_WORK(kcal_uci_set_work, kcal_uci_set);
+
+#endif
+
 #if defined(CONFIG_FB) && !defined(CONFIG_MMI_PANEL_NOTIFICATIONS)
+#ifdef CONFIG_UULTRA
+static int fb_notifier_callback(struct notifier_block *nb,
+	unsigned long event, void *data)
+{
+	struct fb_event *evdata = data;
+	struct kcal_lut_data *lut_data =
+		container_of(nb, struct kcal_lut_data, panel_nb);
+
+#if 1
+        if (evdata && evdata->data && event == FB_EVENT_AOD_MODE) {
+                int aod_mode = *(int *)evdata->data;
+                if (aod_mode == FB_AOD_IDLE || aod_mode == FB_AOD_PARTIAL_ON) {
+                        pr_info("%s kcal off intent... \n", __func__);
+                        if (screen_on) {
+                                // screen off
+                                screen_on = 0;
+                        }
+                } else {
+                        pr_info("%s kcal on intent... \n", __func__);
+                        if (!screen_on) {
+                                // screen on
+                                screen_on = 1;
+#ifdef CONFIG_UCI
+				if (last_enable_state == 1) {
+					// on some devices like u ultra, on screen on we need to set the kcal again if it's enabled
+					// because of probably another screen off blank/unblank or framework sets over the kcal values.
+					lut_data->queue_changes = false; // dequeue
+					schedule_delayed_work(&kcal_uci_set_work,20);
+				} else
+#endif
+				mdss_mdp_kcal_update_queue(&lut_data->dev);
+                        }
+                }
+        }
+
+#endif
+	return 0;
+}
+#else
 static int fb_notifier_callback(struct notifier_block *nb,
 	unsigned long event, void *data)
 {
@@ -597,6 +680,66 @@ static int fb_notifier_callback(struct notifier_block *nb,
 	}
 
 	return 0;
+}
+#endif
+#endif
+
+struct platform_device *g_dev = NULL;
+
+#ifdef CONFIG_UCI
+// register sys uci listener
+static void uci_user_listener(void) {
+	if (g_dev && &g_dev->dev) {
+
+	struct kcal_lut_data *lut_data = dev_get_drvdata(&g_dev->dev);
+	int sat = lut_data->sat;
+	int val = lut_data->val;
+	int cont = lut_data->cont;
+	int min = lut_data->minimum;
+	int r = lut_data->red;
+	int g = lut_data->green;
+	int b = lut_data->blue;
+	int enable = lut_data->enable;
+	sat = uci_get_user_property_int_mm("kcal_sat", sat, 128, 383);
+	if (sat<224) sat = 128;
+	val = uci_get_user_property_int_mm("kcal_val", val, 128, 383);
+	cont = uci_get_user_property_int_mm("kcal_cont", cont, 128, 383);
+	min = uci_get_user_property_int_mm("kcal_min", min, 0, 256);
+	r = uci_get_user_property_int_mm("kcal_red", r, 0, 256);
+	g = uci_get_user_property_int_mm("kcal_green", g, 0, 256);
+	b = uci_get_user_property_int_mm("kcal_blue", b, 0, 256);
+#ifdef CONFIG_UULTRA
+	enable = uci_get_user_property_int_mm("kcal_enable", enable&&set_through_sysfs, 0, 1);
+#else
+	enable = uci_get_user_property_int_mm("kcal_enable", enable, 0, 1);
+#endif
+	// don't apply anything if enable is still off and already off. That messes up the sRGB
+	// ... for users with no intention to use kcal control.
+	if (first_parse && !enable) goto exit;
+	if (last_enable_state == enable && !enable) goto exit;
+
+	lut_data->sat = sat;
+	lut_data->val = val;
+	lut_data->cont = cont;
+	lut_data->minimum = min;
+	lut_data->red = r;
+	lut_data->green = g;
+	lut_data->blue = b;
+	lut_data->enable = enable;
+#ifdef CONFIG_UULTRA
+	if (mdss_mdp_kcal_is_panel_on() && screen_on) {
+#else
+	if (mdss_mdp_kcal_is_panel_on()) {
+#endif
+		mdss_mdp_kcal_update_pcc(lut_data);
+		mdss_mdp_kcal_update_pa(lut_data);
+		mdss_mdp_kcal_update_igc(lut_data);
+	} else
+		lut_data->queue_changes = true;
+exit:
+	first_parse = 0;
+	last_enable_state = enable;
+	}
 }
 #endif
 
