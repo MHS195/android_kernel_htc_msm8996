@@ -22,6 +22,16 @@
 #include <linux/htc_flashlight.h>
 //HTC_END
 
+#ifndef CONFIG_LEDS_QPNP_BUTTON_BLINK
+#define CONFIG_LEDS_QPNP_BUTTON_BLINK
+#endif
+
+#ifdef CONFIG_LEDS_QPNP_BUTTON_BLINK
+#include <linux/alarmtimer.h>
+#include <linux/notification/notification.h>
+#include <linux/uci/uci.h>
+#endif
+
 #undef CDBG
 #define CDBG(fmt, args...) pr_info("[CAM][FL]"fmt, ##args)
 
