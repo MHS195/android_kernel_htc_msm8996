@@ -22,20 +22,25 @@
 #include "power.h"
 #include <soc/qcom/htc_util.h>
 
-#ifdef CONFIG_BOEFFLA_WL_BLOCKER
-#include "boeffla_wl_blocker.h"
-
-char list_wl_search[LENGTH_LIST_WL_SEARCH] = {0};
-bool wl_blocker_active = false;
-bool wl_blocker_debug = false;
-
-static void wakeup_source_deactivate(struct wakeup_source *ws);
+#ifdef CONFIG_UULTRA
+static bool enable_ipa_ws = true;
+static bool enable_wlan_wake = true;
+static bool enable_timerfd_ws = true;
+static bool enable_netlink_ws = true;
+static bool enable_netmgr_wl_ws = true;
+#else
+static bool enable_ipa_ws = false;
+static bool enable_wlan_wake = false;
+static bool enable_timerfd_ws = false;
+static bool enable_netlink_ws = false;
+static bool enable_netmgr_wl_ws = false;
 #endif
+module_param(enable_ipa_ws, bool, 0644);
+module_param(enable_wlan_wake, bool, 0644);
+module_param(enable_timerfd_ws, bool, 0644);
+module_param(enable_netlink_ws, bool, 0644);
+module_param(enable_netmgr_wl_ws, bool, 0644);
 
-/*
- * If set, the suspend/hibernate code will abort transitions to a sleep state
- * if wakeup events are registered during or immediately before the transition.
- */
 bool events_check_enabled __read_mostly;
 
 /* If set and the system is suspending, terminate the suspend. */
