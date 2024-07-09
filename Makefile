@@ -1,10 +1,6 @@
 VERSION = 3
 PATCHLEVEL = 18
-<<<<<<< HEAD
-SUBLEVEL = 136
-=======
 SUBLEVEL = 63
->>>>>>> 15f585416 (tree: merge oreo update 3.16.708.3_R)
 EXTRAVERSION =
 NAME = Diseased Newt
 

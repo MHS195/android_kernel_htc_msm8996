@@ -1,0 +1,1 @@
+#define UTS_RELEASE "3.18.136-IceMan-EAS-HTC10-V1.7.0"
